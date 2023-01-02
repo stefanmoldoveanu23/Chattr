@@ -1,4 +1,5 @@
 ﻿using Discord_Copycat.Models.Base;
+using Discord_Copycat.Models.Enums;
 
 namespace Discord_Copycat.Models
 {
@@ -9,5 +10,7 @@ namespace Discord_Copycat.Models
 
         public Guid ServerId { get; set; }
         public Server Server { get; set; }
+
+        public Roles Role { get; set; }
     }
 }

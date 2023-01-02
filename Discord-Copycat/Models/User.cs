@@ -10,11 +10,14 @@ namespace Discord_Copycat.Models
         public String Password { get; set; } = "";
         public String Email { get; set; } = "";
 
+        public Settings Settings { get; set; }
+
         public ICollection<MemberOfServer> Servers { get; set; }
 
-        public ICollection<Friendship> Friends { get; set; }
+        public ICollection<Friendship> FirstFriend { get; set; }
+        public ICollection<Friendship> SecondFriend { get; set; }
 
         public ICollection<FriendLog> FriendMessages { get; set; }
-        public ICollection<ThreadLog> ThreadMessages { get; set; }
+        public ICollection<ChatLog> ThreadMessages { get; set; }
     }
 }

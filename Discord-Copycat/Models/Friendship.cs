@@ -8,12 +8,12 @@ namespace Discord_Copycat.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public Guid User1Id { get; set; }
+        public Guid? User1Id { get; set; }
         public User User1 { get; set; }
 
-        public Guid User2Id { get; set;}
+        public Guid? User2Id { get; set;}
         public User User2 { get; set; }
 
-        public ICollection<FriendLog> Log { get; set; }
+        public ICollection<FriendLog> Logs { get; set; }
     }
 }
