@@ -129,5 +129,8 @@
       }
     }
   },
-  "defaultProject": "Discord_Copycat"
+  "defaultProject": "Discord_Copycat",
+  "cli": {
+    "analytics": "b5810d13-5e08-427a-82f7-31d5eb5705a7"
+  }
 }
