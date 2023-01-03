@@ -12,6 +12,13 @@ namespace Discord_Copycat.Models
 
         public Settings Settings { get; set; }
 
+        public User()
+        {
+            FirstFriend = new List<Friendship>();
+            SecondFriend = new List<Friendship>();
+            Servers = new List<MemberOfServer>();
+        }
+
         public ICollection<MemberOfServer> Servers { get; set; }
 
         public ICollection<Friendship> FirstFriend { get; set; }

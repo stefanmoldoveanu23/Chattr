@@ -3,6 +3,7 @@ using Discord_Copycat.Models;
 using Discord_Copycat.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace Discord_Copycat.Controllers
@@ -25,13 +26,29 @@ namespace Discord_Copycat.Controllers
             return Ok(allUsers);
         }
 
+        [HttpGet("get-friends/{id}")]
+        public async Task<IActionResult> GetFriends([FromRoute]Guid id)
+        {
+            var friends1 = await _discordContext.Friendships
+                .Where(f => f.User1Id == id)
+                .Select(f => f.User2)
+                .ToListAsync();
+
+            var friends2 = await _discordContext.Friendships
+                .Where(f => f.User2Id == id)
+                .Select(f => f.User1)
+                .ToListAsync();
+
+            return Ok(friends1.Concat(friends2));
+        }
+
         [HttpPost("create-user")]
-        public async Task<IActionResult> CreateUser(UserDTO User)
+        public async Task<IActionResult> CreateUser([FromBody]UserDTO User)
         {
             User newUser = new();
             newUser.Username = User.Username;
             newUser.Password = User.Password;
-            newUser.Email= User.Email;
+            newUser.Email = User.Email;
 
             await _discordContext.AddAsync(newUser);
             await _discordContext.SaveChangesAsync();
@@ -39,10 +56,14 @@ namespace Discord_Copycat.Controllers
             return Ok(newUser);
         }
 
-        [HttpPost("add-friend")]
-        public async Task<IActionResult> AddFriend([FromForm]Guid Id, [FromForm]UserDTO Friend)
+        [HttpPost("add-friend/{Id}")]
+        public async Task<IActionResult> AddFriend([FromRoute]Guid Id, [FromBody]UserDTO Friend)
         {
             var User = await _discordContext.Users.FirstOrDefaultAsync(x => x.Id == Id);
+            if (User == null)
+            {
+                return Ok(null);
+            }
 
             User newFriend = new();
             newFriend.Username = Friend.Username;
@@ -54,7 +75,9 @@ namespace Discord_Copycat.Controllers
             friendship.User2 = newFriend;
 
             User.FirstFriend.Add(friendship);
-            newFriend.SecondFriend.Add(friendship);
+
+            _discordContext.Update(User).State = EntityState.Modified;
+            await _discordContext.SaveChangesAsync();
 
             return Ok(newFriend);
         }

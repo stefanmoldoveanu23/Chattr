@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+import { UsersComponent } from './users/users.component'
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -12,6 +13,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 
 @NgModule({
   declarations: [
+    UsersComponent,
     AppComponent,
     NavMenuComponent,
     HomeComponent,
