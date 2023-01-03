@@ -35,6 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\data\types\IForm.ts" />
     <TypeScriptCompile Include="ClientApp\src\data\interfaces\User.ts" />
   </ItemGroup>
