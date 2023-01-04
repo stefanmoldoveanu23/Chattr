@@ -11,8 +11,8 @@ namespace ClassLibrary.Repositories.GenericRep
 {
     internal class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly DiscordContext _discordContext;
-        private readonly DbSet<TEntity> _table;
+        protected readonly DiscordContext _discordContext;
+        protected readonly DbSet<TEntity> _table;
 
         public GenericRepository(DiscordContext discordContext)
         {

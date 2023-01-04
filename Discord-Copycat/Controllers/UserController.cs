@@ -62,7 +62,7 @@ namespace Discord_Copycat.Controllers
             var User = await _discordContext.Users.FirstOrDefaultAsync(x => x.Id == Id);
             if (User == null)
             {
-                return Ok(null);
+                return BadRequest("User id given doesn't exist");
             }
 
             User newFriend = new();
