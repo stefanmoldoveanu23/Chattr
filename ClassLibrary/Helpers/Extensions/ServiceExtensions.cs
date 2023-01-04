@@ -1,4 +1,5 @@
-﻿using ClassLibrary.Helpers.UOW;
+﻿using ClassLibrary.Helpers.Seeders;
+using ClassLibrary.Helpers.UOW;
 using ClassLibrary.Repositories.ChatRep;
 using ClassLibrary.Repositories.ServerRep;
 using ClassLibrary.Repositories.UserRep;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Helpers.Extentions
 {
-    public static class ServiceExtentions
+    public static class ServiceExtensions
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
@@ -32,6 +33,13 @@ namespace ClassLibrary.Helpers.Extentions
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IServerService, ServerService>();
             services.AddTransient<IChatService, ChatService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddSeeders(this IServiceCollection services)
+        {
+            services.AddTransient<UserSeeder>();
 
             return services;
         }

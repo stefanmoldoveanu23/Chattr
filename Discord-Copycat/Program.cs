@@ -1,4 +1,5 @@
 using ClassLibrary.Helpers.Extentions;
+using ClassLibrary.Helpers.Seeders;
 using Discord_Copycat.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,10 +20,12 @@ builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
 
 builder.Services.AddRepositories();
 builder.Services.AddServices();
+builder.Services.AddSeeders();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
+SeedData(app);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -45,3 +48,13 @@ app.MapControllerRoute(
 app.MapFallbackToFile("index.html"); ;
 
 app.Run();
+
+void SeedData(IHost app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+    using (var scope = scopedFactory.CreateScope())
+    {
+        var service = scope.ServiceProvider.GetService<UserSeeder>();
+        service.SeedAdmin();
+    }
+}
