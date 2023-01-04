@@ -64,5 +64,13 @@ namespace ClassLibrary.Repositories.UserRep
 
             return servers;
         }
+
+        public async Task<User> GetWithSettingsAsync(Guid id)
+        {
+            User settings = await _table.Where(u => u.Id == id)
+                .Include(u => u.Settings)
+                .FirstAsync();
+            return settings;
+        }
     }
 }

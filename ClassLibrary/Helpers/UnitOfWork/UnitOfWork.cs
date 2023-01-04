@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Helpers.UnitOfWork
 {
-    internal class UnitOfWork: IUnitOfWork
+    internal class UnitOfWork
     {
         protected DiscordContext _discordContext;
-        protected IUserRepository _userRepository;
-        protected IServerRepository _serverRepository;
-        protected IChatRepository _chatRepository;
+        public IUserRepository _userRepository;
+        public IServerRepository _serverRepository;
+        public IChatRepository _chatRepository;
 
         public UnitOfWork(DiscordContext discordContext)
         {

@@ -14,6 +14,8 @@ namespace ClassLibrary.Repositories.UserRep
 
         Task<User> GetWithServersAsync(Guid id);
 
+        Task<User> GetWithSettingsAsync(Guid id);
+
         Task<User?> GetWithLogsAsync(Guid id, Guid friendId);
     }
 }
