@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Repositories.ChatRep
 {
-    internal interface IChatRepository: IGenericRepository<Chat>
+    public interface IChatRepository: IGenericRepository<Chat>
     {
         Task<Chat> GetWithLogs(Guid id);
 

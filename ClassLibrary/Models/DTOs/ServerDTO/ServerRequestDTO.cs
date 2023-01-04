@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Models.DTOs.ServerDTO
 {
-    internal class ServerRequestDTO
+    public class ServerRequestDTO
     {
         public String Name { get; set; } = "";
         public String Description { get; set; } = "";

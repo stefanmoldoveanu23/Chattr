@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Services.ChatService
 {
-    internal interface IChatService
+    public interface IChatService
     {
         Task<List<Chat>> GetChatsAsync();
 

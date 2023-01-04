@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ClassLibrary.Models.DTOs;
 using ClassLibrary.Models.DTOs.ChatDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
@@ -15,13 +16,16 @@ namespace ClassLibrary.Helpers.Mapper
     {
         public MapperProfile()
         {
-            CreateMap<UserRequestDTO, User>();
+            CreateMap<UserRequestDTO, User>(MemberList.Source);
 
-            CreateMap<ServerRequestDTO, Server>();
-            CreateMap<Server, ServerResponseDTO>();
+            CreateMap<ServerRequestDTO, Server>(MemberList.Source);
+            CreateMap<Server, ServerResponseDTO>(MemberList.Destination);
 
-            CreateMap<ChatRequestDTO, Chat>();
-            CreateMap<Chat, ChatResponseDTO>();
+            CreateMap<ChatRequestDTO, Chat>(MemberList.Source);
+            CreateMap<Chat, ChatResponseDTO>(MemberList.Destination);
+
+            CreateMap<FriendLog, LogDTO>(MemberList.Destination);
+            CreateMap<ChatLog, LogDTO>(MemberList.Destination);
         }
     }
 }

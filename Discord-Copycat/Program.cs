@@ -1,3 +1,4 @@
+using ClassLibrary.Helpers.Extentions;
 using Discord_Copycat.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,11 @@ builder.Services.AddCors(options => options.AddPolicy(name: "DiscordOrigins",
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
+builder.Services.AddRepositories();
+builder.Services.AddServices();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

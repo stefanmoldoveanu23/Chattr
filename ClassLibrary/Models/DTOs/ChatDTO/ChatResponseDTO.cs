@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Models.DTOs.ChatDTO
 {
-    internal class ChatResponseDTO
+    public class ChatResponseDTO
     {
         public Guid Id { get; set; }
         public String Name { get; set; } = "General";

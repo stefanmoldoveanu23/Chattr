@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Models.DTOs.ServerDTO
 {
-    internal class ServerResponseDTO
+    public class ServerResponseDTO
     {
         public Guid Id { get; set; }
         public String Name { get; set; } = "";

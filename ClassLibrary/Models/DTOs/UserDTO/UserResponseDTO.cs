@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Models.DTOs.UserDTO
 {
-    internal class UserResponseDTO
+    public class UserResponseDTO
     {
         public Guid Id { get; set; }
         public String Username { get; set; } = "";

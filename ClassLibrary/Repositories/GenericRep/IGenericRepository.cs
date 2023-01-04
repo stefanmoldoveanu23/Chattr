@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Repositories.GenericRep
 {
-    internal interface IGenericRepository<TEntity> where TEntity : BaseEntity
+    public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     {
         Task<List<TEntity>> GetAllAsync();
         IQueryable<TEntity> GetAllAsQueryable();

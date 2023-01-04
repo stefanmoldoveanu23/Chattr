@@ -1,4 +1,4 @@
-﻿using ClassLibrary.Helpers.UnitOfWork;
+﻿using ClassLibrary.Helpers.UOW;
 using Discord_Copycat.Models;
 using System;
 using System.Collections.Generic;
@@ -10,9 +10,9 @@ namespace ClassLibrary.Services.ChatService
 {
     internal class ChatService : IChatService
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ChatService(UnitOfWork unitOfWork)
+        public ChatService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

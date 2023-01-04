@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Services.ServerService
 {
-    internal interface IServerService
+    public interface IServerService
     {
         Task<List<Server>> GetServersAsync();
 

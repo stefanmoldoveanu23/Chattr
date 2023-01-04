@@ -8,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibrary.Helpers.UnitOfWork
+namespace ClassLibrary.Helpers.UOW
 {
-    internal class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         protected DiscordContext _discordContext;
-        public IUserRepository _userRepository;
-        public IServerRepository _serverRepository;
-        public IChatRepository _chatRepository;
+        public IUserRepository _userRepository { get; }
+        public IServerRepository _serverRepository { get; }
+        public IChatRepository _chatRepository { get; }
 
         public UnitOfWork(DiscordContext discordContext)
         {

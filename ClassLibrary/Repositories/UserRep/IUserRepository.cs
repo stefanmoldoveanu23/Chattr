@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Repositories.UserRep
 {
-    internal interface IUserRepository : IGenericRepository<User>
+    public interface IUserRepository : IGenericRepository<User>
     {
         Task<User> GetWithFriendsAsync(Guid id);
 

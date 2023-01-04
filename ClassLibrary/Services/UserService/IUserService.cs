@@ -1,4 +1,6 @@
 ﻿using ClassLibrary.Models.DTOs;
+using ClassLibrary.Models.DTOs.UserDTO;
+using ClassLibrary.Models.DTOs.ServerDTO;
 using Discord_Copycat.Models;
 using Discord_Copycat.Models.Base;
 using System;
@@ -9,23 +11,23 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Services.UserService
 {
-    internal interface IUserService
+    public interface IUserService
     {
-        Task<List<User>> GetUsersAsync();
+        Task<List<UserResponseDTO>> GetUsersAsync();
 
-        Task<User?> GetUserByIdAsync(Guid id);
+        Task<UserResponseDTO?> GetUserByIdAsync(Guid id);
 
-        Task CreateUserAsync(User user);
+        Task CreateUserAsync(UserRequestDTO userDTO);
 
         void UpdateUser(User user);
 
         void DeleteUser(User user);
 
-        Task<List<User>> GetFriendsAsync(Guid id);
+        Task<List<UserResponseDTO>> GetFriendsAsync(Guid id);
 
-        Task<List<Server>> GetServersAsync(Guid id);
+        Task<List<ServerResponseDTO>> GetServersAsync(Guid id);
 
-        Task<List<FriendLog>?> GetLogsWithFriendAsync(Guid id, Guid friendId);
+        Task<List<LogDTO>?> GetLogsWithFriendAsync(Guid id, Guid friendId);
 
         Task<User> GetWithSettingsAsync(Guid id);
     }

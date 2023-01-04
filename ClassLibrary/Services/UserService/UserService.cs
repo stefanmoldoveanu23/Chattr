@@ -1,4 +1,8 @@
-﻿using ClassLibrary.Helpers.UnitOfWork;
+﻿using AutoMapper;
+using ClassLibrary.Helpers.UOW;
+using ClassLibrary.Models.DTOs;
+using ClassLibrary.Models.DTOs.ServerDTO;
+using ClassLibrary.Models.DTOs.UserDTO;
 using Discord_Copycat.Models;
 using System;
 using System.Collections.Generic;
@@ -10,15 +14,19 @@ namespace ClassLibrary.Services.UserService
 {
     internal class UserService : IUserService
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UserService(UnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task CreateUserAsync(User user)
+        public async Task CreateUserAsync(UserRequestDTO userDTO)
         {
+            User user = _mapper.Map<User>(userDTO);
+
             await _unitOfWork._userRepository.CreateAsync(user);
             await _unitOfWork._userRepository.SaveAsync();
         }
@@ -28,25 +36,25 @@ namespace ClassLibrary.Services.UserService
             _unitOfWork._userRepository.Delete(user);
         }
 
-        public async Task<List<User>> GetFriendsAsync(Guid id)
+        public async Task<List<UserResponseDTO>> GetFriendsAsync(Guid id)
         {
             User user = await _unitOfWork._userRepository.GetWithFriendsAsync(id);
-            List<User> friends = new List<User>();
+            List<UserResponseDTO> friends = new();
 
             foreach (Friendship friend in user.FirstFriend)
             {
-                friends.Add(friend.User2);
+                friends.Add(new UserResponseDTO(friend.User2, ""));
             }
 
             foreach (Friendship friend in user.SecondFriend)
             {
-                friends.Add(friend.User1);
+                friends.Add(new UserResponseDTO(friend.User1, ""));
             }
 
             return friends;
         }
 
-        public async Task<List<FriendLog>?> GetLogsWithFriendAsync(Guid id, Guid friendId)
+        public async Task<List<LogDTO>?> GetLogsWithFriendAsync(Guid id, Guid friendId)
         {
             User? user = await _unitOfWork._userRepository.GetWithLogsAsync(id, friendId);
 
@@ -55,42 +63,62 @@ namespace ClassLibrary.Services.UserService
                 return null;
             }
 
-            List<FriendLog> logs;
+            List<LogDTO> logs = new();
 
             if (user.FirstFriend != null)
             {
-                logs = user.FirstFriend.First().Logs.ToList();
-            } else
+                foreach(FriendLog log in user.FirstFriend.First().Logs)
+                {
+                    logs.Add(_mapper.Map<LogDTO>(log));
+                }
+            }
+            else
             {
-                logs = user.SecondFriend.First().Logs.ToList();
+                foreach (FriendLog log in user.SecondFriend.First().Logs)
+                {
+                    logs.Add(_mapper.Map<LogDTO>(log));
+                }
             }
 
             return logs;
         }
 
-        public async Task<List<Server>> GetServersAsync(Guid id)
+        public async Task<List<ServerResponseDTO>> GetServersAsync(Guid id)
         {
             User user = await _unitOfWork._userRepository.GetWithServersAsync(id);
 
-            List<Server> servers = new List<Server>();
+            List<ServerResponseDTO> servers = new();
 
             foreach (MemberOfServer memberOfServer in user.Servers)
             {
-                servers.Add(memberOfServer.Server);
+                servers.Add(_mapper.Map<ServerResponseDTO>(memberOfServer.Server));
             }
 
             return servers;
         }
 
 
-        public async Task<User?> GetUserByIdAsync(Guid id)
+        public async Task<UserResponseDTO?> GetUserByIdAsync(Guid id)
         {
-            return await _unitOfWork._userRepository.FindByIdAsync(id);
+            User? user = await _unitOfWork._userRepository.FindByIdAsync(id);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new UserResponseDTO(user, "");
         }
 
-        public async Task<List<User>> GetUsersAsync()
+        public async Task<List<UserResponseDTO>> GetUsersAsync()
         {
-            return await _unitOfWork._userRepository.GetAllAsync();
+            List<UserResponseDTO> users = new();
+
+            foreach (User user in await _unitOfWork._userRepository.GetAllAsync())
+            {
+                users.Add(new UserResponseDTO(user, ""));
+            }
+
+            return users;
         }
 
         public async Task<User> GetWithSettingsAsync(Guid id)

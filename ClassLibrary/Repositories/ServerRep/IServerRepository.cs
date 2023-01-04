@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Repositories.ServerRep
 {
-    internal interface IServerRepository: IGenericRepository<Server>
+    public interface IServerRepository: IGenericRepository<Server>
     {
         Task<Server> GetWithUsers(Guid id);
 
