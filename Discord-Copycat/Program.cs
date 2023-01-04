@@ -1,4 +1,6 @@
+using ClassLibrary.Helpers;
 using ClassLibrary.Helpers.Extentions;
+using ClassLibrary.Helpers.Middleware;
 using ClassLibrary.Helpers.Seeders;
 using Discord_Copycat.Data;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,9 @@ builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddSeeders();
+builder.Services.AddUtils();
+
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -38,7 +43,9 @@ app.UseCors("DiscordOrigins");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
+app.UseMiddleware<JwtMiddleware>();
 
 
 app.MapControllerRoute(

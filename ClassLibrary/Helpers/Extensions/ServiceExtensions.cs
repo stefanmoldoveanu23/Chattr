@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Helpers.Seeders;
 using ClassLibrary.Helpers.UOW;
+using ClassLibrary.Helpers.Utils;
 using ClassLibrary.Repositories.ChatRep;
 using ClassLibrary.Repositories.ServerRep;
 using ClassLibrary.Repositories.UserRep;
@@ -40,6 +41,13 @@ namespace ClassLibrary.Helpers.Extentions
         public static IServiceCollection AddSeeders(this IServiceCollection services)
         {
             services.AddTransient<UserSeeder>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddUtils(this IServiceCollection services)
+        {
+            services.AddScoped<IJwtUtils, JwtUtils>();
 
             return services;
         }
