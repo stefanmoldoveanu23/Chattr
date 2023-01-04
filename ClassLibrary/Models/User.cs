@@ -17,6 +17,7 @@ namespace Discord_Copycat.Models
             FirstFriend = new List<Friendship>();
             SecondFriend = new List<Friendship>();
             Servers = new List<MemberOfServer>();
+            Role = Roles.User;
         }
 
         public ICollection<MemberOfServer> Servers { get; set; }

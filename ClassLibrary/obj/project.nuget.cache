@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "UWB4dpn9wMYgRJYqhHnUb8/LhoelRtX8xX0fBhG5tnRvCw5lnR5soKzWWPBLWRQGryMjjz1tRxKtv/hwzkrh6A==",
+  "dgSpecHash": "R7OHerVDjLuVmaJlrpu4wqFxHUx84zf74ABIcmSkLl8S/NYEAwsb4FKkQHEC/L9dXXt48yElcLc3GFwVna4Kew==",
   "success": true,
   "projectFilePath": "C:\\Users\\stefa\\DOTNET\\Discord-Copycat\\ClassLibrary\\ClassLibrary.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\stefa\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
+    "C:\\Users\\stefa\\.nuget\\packages\\automapper.collection\\9.0.0\\automapper.collection.9.0.0.nupkg.sha512",
+    "C:\\Users\\stefa\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
