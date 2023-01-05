@@ -10,9 +10,14 @@ namespace ClassLibrary.Helpers.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage(LogDTO message)
+        public async void JoinGroup(String group)
         {
-            await Clients.Others.SendAsync("ReceiveMessage", message);
+            await Groups.AddToGroupAsync(Context.ConnectionId, group);
+        }
+
+        public async Task SendMessage(LogDTO message, String group)
+        {
+            await Clients.Group(group).SendAsync("ReceiveMessage", message);
         }
     }
 }
