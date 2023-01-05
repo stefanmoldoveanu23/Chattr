@@ -1,5 +1,6 @@
 using ClassLibrary.Helpers;
 using ClassLibrary.Helpers.Extentions;
+using ClassLibrary.Helpers.Hubs;
 using ClassLibrary.Helpers.Middleware;
 using ClassLibrary.Helpers.Seeders;
 using Discord_Copycat.Data;
@@ -29,6 +30,8 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 SeedData(app);
 
@@ -52,7 +55,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-app.MapFallbackToFile("index.html"); ;
+app.MapFallbackToFile("index.html");
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();
 

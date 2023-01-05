@@ -1,0 +1,22 @@
+<div>
+  <h2>Input new user:</h2>
+
+  <form [formGroup]="form1" (ngSubmit)="onSubmitCreate()">
+    <label for="username">Username</label>
+    <input id="username" type="text" formControlName="username" />
+
+    <br />
+
+    <label for="password">Password</label>
+    <input id="password" type="text" formControlName="password" />
+
+    <br />
+
+    <label for="email">Email</label>
+    <input id="email" type="text" formControlName="email" />
+
+    <br />
+
+    <button type="submit" [disabled]="!form1.valid">Submit</button>
+  </form>
+</div>

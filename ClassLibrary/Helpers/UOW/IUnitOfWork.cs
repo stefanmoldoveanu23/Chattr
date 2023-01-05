@@ -14,6 +14,8 @@ namespace ClassLibrary.Helpers.UOW
         public IUserRepository _userRepository { get; }
         public IServerRepository _serverRepository { get; }
         public IChatRepository _chatRepository { get; }
+
+        void Save();
         Task SaveAsync();
     }
 }

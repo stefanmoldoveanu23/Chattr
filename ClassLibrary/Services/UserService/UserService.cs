@@ -28,12 +28,13 @@ namespace ClassLibrary.Services.UserService
             User user = _mapper.Map<User>(userDTO);
 
             await _unitOfWork._userRepository.CreateAsync(user);
-            await _unitOfWork._userRepository.SaveAsync();
+            await _unitOfWork.SaveAsync();
         }
 
         public void DeleteUser(User user)
         {
             _unitOfWork._userRepository.Delete(user);
+            _unitOfWork.Save();
         }
 
         public async Task<List<UserResponseDTO>> GetFriendsAsync(Guid id)
@@ -129,6 +130,7 @@ namespace ClassLibrary.Services.UserService
         public void UpdateUser(User user)
         {
             _unitOfWork._userRepository.Update(user);
+            _unitOfWork.Save();
         }
     }
 }

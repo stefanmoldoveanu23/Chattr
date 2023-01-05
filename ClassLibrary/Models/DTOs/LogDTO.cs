@@ -9,6 +9,9 @@ namespace ClassLibrary.Models.DTOs
 {
     public class LogDTO
     {
+        public Guid Id { get; set; }
+        public DateTime DateCreated { get; set; }
+
         public Guid SenderId { get; set; }
         public String Message { get; set; } = "";
     }

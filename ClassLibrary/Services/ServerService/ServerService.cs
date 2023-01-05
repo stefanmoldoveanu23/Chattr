@@ -20,11 +20,13 @@ namespace ClassLibrary.Services.ServerService
         public async Task CreateServerAsync(Server server)
         {
             await _unitOfWork._serverRepository.CreateAsync(server);
+            await _unitOfWork.SaveAsync();
         }
 
         public void DeleteServer(Server server)
         {
             _unitOfWork._serverRepository.Delete(server);
+            _unitOfWork.Save();
         }
 
         public async Task<List<Chat>> GetChatsAsync(Guid id)
@@ -67,6 +69,7 @@ namespace ClassLibrary.Services.ServerService
         public void UpdateServer(Server server)
         {
             _unitOfWork._serverRepository.Update(server);
+            _unitOfWork.Save();
         }
     }
 }

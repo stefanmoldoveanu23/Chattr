@@ -25,6 +25,11 @@ namespace ClassLibrary.Helpers.UOW
             _chatRepository = new ChatRepository(_discordContext);
         }
 
+        public void Save()
+        {
+            _discordContext.SaveChanges();
+        }
+
         public async Task SaveAsync()
         {
             await _discordContext.SaveChangesAsync();

@@ -4,12 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import { UsersComponent } from './users/users.component'
+import { UsersComponent } from './pages/users/users.component'
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { NavMenuComponent } from './pages/nav-menu/nav-menu.component';
+import { HomeComponent } from './pages/home/home.component';
+import { CounterComponent } from './pages/counter/counter.component';
+import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +27,10 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
+      {
+        path: 'counter', component: CounterComponent
+      }, 
+      { path: 'fetch-data', component: FetchDataComponent, }
     ])
   ],
   providers: [],

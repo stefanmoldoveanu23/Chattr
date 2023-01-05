@@ -20,11 +20,13 @@ namespace ClassLibrary.Services.ChatService
         public async Task CreateChatAsync(Chat chat)
         {
             await _unitOfWork._chatRepository.CreateAsync(chat);
+            await _unitOfWork.SaveAsync();
         }
 
         public void DeleteChat(Chat chat)
         {
             _unitOfWork._chatRepository.Delete(chat);
+            _unitOfWork.Save();
         }
 
         public async Task<Chat?> GetChatByIdAsync(Guid id)
@@ -68,6 +70,7 @@ namespace ClassLibrary.Services.ChatService
         public void UpdateChat(Chat chat)
         {
             _unitOfWork._chatRepository.Update(chat);
+            _unitOfWork.Save();
         }
     }
 }
