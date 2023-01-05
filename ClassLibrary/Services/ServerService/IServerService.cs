@@ -1,4 +1,7 @@
-﻿using Discord_Copycat.Models;
+﻿using ClassLibrary.Models.DTOs.ChatDTO;
+using ClassLibrary.Models.DTOs.ServerDTO;
+using ClassLibrary.Models.DTOs.UserDTO;
+using Discord_Copycat.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +12,18 @@ namespace ClassLibrary.Services.ServerService
 {
     public interface IServerService
     {
-        Task<List<Server>> GetServersAsync();
+        Task<List<ServerResponseDTO>> GetServersAsync();
 
-        Task<Server?> GetServerByIdAsync(Guid id);
+        Task<ServerResponseDTO?> GetServerByIdAsync(Guid id);
 
-        Task CreateServerAsync(Server server);
+        Task CreateServerAsync(ServerRequestDTO server);
 
         void UpdateServer(Server server);
 
         void DeleteServer(Server server);
 
-        Task<List<User>> GetUsersAsync(Guid id);
+        Task<List<UserResponseDTO>> GetUsersAsync(Guid id);
 
-        Task<List<Chat>> GetChatsAsync(Guid id);
+        Task<List<ChatResponseDTO>> GetChatsAsync(Guid id);
     }
 }

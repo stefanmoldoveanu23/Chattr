@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClassLibrary.Models.DTOs.LogDTO;
 
 namespace ClassLibrary.Services.UserService
 {
@@ -27,7 +28,7 @@ namespace ClassLibrary.Services.UserService
 
         Task<List<ServerResponseDTO>> GetServersAsync(Guid id);
 
-        Task<List<LogDTO>?> GetLogsWithFriendAsync(Guid id, Guid friendId);
+        Task<List<LogResponseDTO>?> GetLogsWithFriendAsync(Guid id, Guid friendId);
 
         Task<User> GetWithSettingsAsync(Guid id);
     }

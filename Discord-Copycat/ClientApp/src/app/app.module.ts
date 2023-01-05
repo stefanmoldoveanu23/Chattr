@@ -1,10 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { MatListModule } from '@angular/material/list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
-import { UsersComponent } from './pages/users/users.component'
+import { UsersComponent } from './pages/users/users.component';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './pages/nav-menu/nav-menu.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -18,10 +23,15 @@ import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent
+    FetchDataComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    CommonModule,
+    MatFormFieldModule,
+    MatListModule,
+    MatInputModule,
+    MatButtonModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

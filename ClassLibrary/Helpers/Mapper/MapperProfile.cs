@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ClassLibrary.Models.DTOs;
 using ClassLibrary.Models.DTOs.ChatDTO;
+using ClassLibrary.Models.DTOs.LogDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using Discord_Copycat.Models;
@@ -24,8 +25,8 @@ namespace ClassLibrary.Helpers.Mapper
             CreateMap<ChatRequestDTO, Chat>(MemberList.Source);
             CreateMap<Chat, ChatResponseDTO>(MemberList.Destination);
 
-            CreateMap<FriendLog, LogDTO>(MemberList.Destination);
-            CreateMap<ChatLog, LogDTO>(MemberList.Destination);
+            CreateMap<FriendLog, LogResponseDTO>(MemberList.Destination);
+            CreateMap<ChatLog, LogResponseDTO>(MemberList.Destination);
         }
     }
 }

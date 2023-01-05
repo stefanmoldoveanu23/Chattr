@@ -1,4 +1,8 @@
-﻿using ClassLibrary.Helpers.UOW;
+﻿using AutoMapper;
+using ClassLibrary.Helpers.UOW;
+using ClassLibrary.Models.DTOs.ChatDTO;
+using ClassLibrary.Models.DTOs.ServerDTO;
+using ClassLibrary.Models.DTOs.UserDTO;
 using Discord_Copycat.Models;
 using System;
 using System.Collections.Generic;
@@ -11,15 +15,17 @@ namespace ClassLibrary.Services.ServerService
     internal class ServerService : IServerService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ServerService(IUnitOfWork unitOfWork)
+        public ServerService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task CreateServerAsync(Server server)
+        public async Task CreateServerAsync(ServerRequestDTO server)
         {
-            await _unitOfWork._serverRepository.CreateAsync(server);
+            await _unitOfWork._serverRepository.CreateAsync(_mapper.Map<Server>(server));
             await _unitOfWork.SaveAsync();
         }
 
@@ -29,38 +35,50 @@ namespace ClassLibrary.Services.ServerService
             _unitOfWork.Save();
         }
 
-        public async Task<List<Chat>> GetChatsAsync(Guid id)
+        public async Task<List<ChatResponseDTO>> GetChatsAsync(Guid id)
         {
             Server server = await _unitOfWork._serverRepository.GetWithChats(id);
 
-            List<Chat> chats = new();
+            List<ChatResponseDTO> chats = new();
             foreach (Chat chat in server.Chats)
             {
-                chats.Add(chat);
+                chats.Add(_mapper.Map<ChatResponseDTO>(chat));
             }
 
             return chats;
         }
 
-        public async Task<Server?> GetServerByIdAsync(Guid id)
+        public async Task<ServerResponseDTO?> GetServerByIdAsync(Guid id)
         {
-            return await _unitOfWork._serverRepository.FindByIdAsync(id);
+            Server? server = await _unitOfWork._serverRepository.FindByIdAsync(id);
+            if (server == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<ServerResponseDTO>(server);
         }
 
-        public async Task<List<Server>> GetServersAsync()
+        public async Task<List<ServerResponseDTO>> GetServersAsync()
         {
-            return await _unitOfWork._serverRepository.GetAllAsync();
+            List<ServerResponseDTO> servers = new();
+            foreach(Server server in await _unitOfWork._serverRepository.GetAllAsync())
+            {
+                servers.Add(_mapper.Map<ServerResponseDTO>(server));
+            }
+
+            return servers;
         }
 
-        public async Task<List<User>> GetUsersAsync(Guid id)
+        public async Task<List<UserResponseDTO>> GetUsersAsync(Guid id)
         {
             Server server = await _unitOfWork._serverRepository.GetWithUsers(id);
 
-            List<User> users = new();
+            List<UserResponseDTO> users = new();
 
             foreach (MemberOfServer memberOfServer in server.Users)
             {
-                users.Add(memberOfServer.User);
+                users.Add(_mapper.Map<UserResponseDTO>(memberOfServer.User));
             }
 
             return users;

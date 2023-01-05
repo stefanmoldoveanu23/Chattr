@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ClassLibrary.Helpers.UOW;
 using ClassLibrary.Models.DTOs;
+using ClassLibrary.Models.DTOs.LogDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using Discord_Copycat.Models;
@@ -55,7 +56,7 @@ namespace ClassLibrary.Services.UserService
             return friends;
         }
 
-        public async Task<List<LogDTO>?> GetLogsWithFriendAsync(Guid id, Guid friendId)
+        public async Task<List<LogResponseDTO>?> GetLogsWithFriendAsync(Guid id, Guid friendId)
         {
             User? user = await _unitOfWork._userRepository.GetWithLogsAsync(id, friendId);
 
@@ -64,20 +65,20 @@ namespace ClassLibrary.Services.UserService
                 return null;
             }
 
-            List<LogDTO> logs = new();
+            List<LogResponseDTO> logs = new();
 
             if (user.FirstFriend != null)
             {
                 foreach(FriendLog log in user.FirstFriend.First().Logs)
                 {
-                    logs.Add(_mapper.Map<LogDTO>(log));
+                    logs.Add(_mapper.Map<LogResponseDTO>(log));
                 }
             }
             else
             {
                 foreach (FriendLog log in user.SecondFriend.First().Logs)
                 {
-                    logs.Add(_mapper.Map<LogDTO>(log));
+                    logs.Add(_mapper.Map<LogResponseDTO>(log));
                 }
             }
 

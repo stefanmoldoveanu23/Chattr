@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Models.DTOs;
+using ClassLibrary.Models.DTOs.LogDTO;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibrary.Helpers.Hubs
+namespace ClassLibrary.Helpers.Hubs 
 {
     public class ChatHub : Hub
     {
@@ -15,9 +16,9 @@ namespace ClassLibrary.Helpers.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, group);
         }
 
-        public async Task SendMessage(LogDTO message, String group)
+        public async void SendMessage(LogRequestDTO message, String group)
         {
-            await Clients.Group(group).SendAsync("ReceiveMessage", message);
+            await Clients.Group(group).SendAsync("ReceiveMessage", new LogResponseDTO(message));
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Discord_Copycat.Models;
+﻿using ClassLibrary.Models.DTOs.ChatDTO;
+using ClassLibrary.Models.DTOs.LogDTO;
+using ClassLibrary.Models.DTOs.UserDTO;
+using Discord_Copycat.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +12,18 @@ namespace ClassLibrary.Services.ChatService
 {
     public interface IChatService
     {
-        Task<List<Chat>> GetChatsAsync();
+        Task<List<ChatResponseDTO>> GetChatsAsync();
 
-        Task<Chat?> GetChatByIdAsync(Guid id);
+        Task<ChatResponseDTO?> GetChatByIdAsync(Guid id);
 
-        Task CreateChatAsync(Chat chat);
+        Task CreateChatAsync(ChatRequestDTO chat);
 
         void UpdateChat(Chat chat);
 
         void DeleteChat(Chat chat);
 
-        Task<List<User>> GetUsersAsync(Guid id);
+        Task<List<UserResponseDTO>> GetUsersAsync(Guid id);
 
-        Task<List<ChatLog>> GetLogsAsync(Guid id);
+        Task<List<LogResponseDTO>> GetLogsAsync(Guid id);
     }
 }

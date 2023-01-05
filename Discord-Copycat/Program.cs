@@ -15,7 +15,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddCors(options => options.AddPolicy(name: "DiscordOrigins",
     policy =>
     {
-        policy.WithOrigins("https://localhost:44458").AllowAnyMethod().AllowAnyHeader();
+        policy.WithOrigins("https://localhost:44458").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
     }));
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
