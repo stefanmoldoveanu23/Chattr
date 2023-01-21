@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace ClassLibrary.Repositories.UserRep
 {
@@ -41,6 +42,11 @@ namespace ClassLibrary.Repositories.UserRep
             }
 
             return null;
+        }
+
+        public User? FindByData(String username, String password)
+        {
+            return _table.Where(u => u.Username == username).ToList().FindAll(u => BCryptNet.Verify(password, u.Password)).FirstOrDefault();
         }
 
         public async Task<User> GetWithFriendsAsync(Guid id)

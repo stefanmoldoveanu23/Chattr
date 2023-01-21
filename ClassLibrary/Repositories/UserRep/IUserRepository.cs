@@ -17,5 +17,7 @@ namespace ClassLibrary.Repositories.UserRep
         Task<User> GetWithSettingsAsync(Guid id);
 
         Task<User?> GetWithLogsAsync(Guid id, Guid friendId);
+
+        User? FindByData(String username, String password);
     }
 }

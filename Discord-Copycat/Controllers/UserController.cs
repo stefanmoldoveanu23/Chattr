@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Discord_Copycat.Controllers
 {
@@ -35,12 +36,26 @@ namespace Discord_Copycat.Controllers
             return Ok(friends);
         }
 
-        [HttpPost("create-user")]
-        public async Task<IActionResult> CreateUser([FromBody]UserRequestDTO User)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody]UserRequestDTO User)
         {
+            User.Password = BCryptNet.HashPassword(User.Password);
             await _userService.CreateUserAsync(User);
-
             return Ok();
+        }
+
+
+        [HttpPost("login")]
+        public IActionResult Login([FromBody]UserRequestDTO User)
+        {
+
+            UserResponseDTO? response = _userService.Authenticate(User);
+            if (response == null)
+            {
+                return BadRequest("User or password is wrong. Try again.");
+            }
+
+            return Ok(response);
         }
     }
 }

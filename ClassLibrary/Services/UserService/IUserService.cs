@@ -31,5 +31,7 @@ namespace ClassLibrary.Services.UserService
         Task<List<LogResponseDTO>?> GetLogsWithFriendAsync(Guid id, Guid friendId);
 
         Task<User> GetWithSettingsAsync(Guid id);
+
+        UserResponseDTO? Authenticate(UserRequestDTO req);
     }
 }

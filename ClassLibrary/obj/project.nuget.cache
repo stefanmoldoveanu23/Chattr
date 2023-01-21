@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "rxP1nW4XLXamMNXbZGTHl+EboCNNchPuTaxYe7klqsD7BEphMiuFNM45de4eYRlq3O4X8OGVS1vhj6nm3jR0lA==",
+  "dgSpecHash": "ObPvNG81ow8iMpTDf5ybGma8Fro3GQUsuo0pORhf5xOVc3foaGJUj0UVaoZqibMbR3i1ssQnuj5+OsZDqTaYUQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\stefa\\DOTNET\\Discord-Copycat\\ClassLibrary\\ClassLibrary.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\stefa\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\stefa\\.nuget\\packages\\bcrypt.net-core\\1.6.0\\bcrypt.net-core.1.6.0.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\jquery\\1.6.4\\jquery.1.6.4.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\microsoft.aspnet.signalr\\2.4.3\\microsoft.aspnet.signalr.2.4.3.nupkg.sha512",

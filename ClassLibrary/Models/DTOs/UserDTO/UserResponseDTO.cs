@@ -16,7 +16,7 @@ namespace ClassLibrary.Models.DTOs.UserDTO
         public String Email { get; set; } = "";
         public String Token { get; set; } = "";
 
-        public UserResponseDTO(User user, String token)
+        public UserResponseDTO(User user, String token = "")
         {
             Id = user.Id;
             Username = user.Username;

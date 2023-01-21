@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClassLibrary.Helpers.UOW;
+using ClassLibrary.Helpers.Utils;
 using ClassLibrary.Models.DTOs;
 using ClassLibrary.Models.DTOs.LogDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
@@ -16,11 +17,13 @@ namespace ClassLibrary.Services.UserService
     internal class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IJwtUtils _jwtUtils;
         private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IJwtUtils jwtUtils, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _jwtUtils = jwtUtils;
             _mapper = mapper;
         }
 
@@ -45,12 +48,12 @@ namespace ClassLibrary.Services.UserService
 
             foreach (Friendship friend in user.FirstFriend)
             {
-                friends.Add(new UserResponseDTO(friend.User2, ""));
+                friends.Add(new UserResponseDTO(friend.User2));
             }
 
             foreach (Friendship friend in user.SecondFriend)
             {
-                friends.Add(new UserResponseDTO(friend.User1, ""));
+                friends.Add(new UserResponseDTO(friend.User1));
             }
 
             return friends;
@@ -132,6 +135,19 @@ namespace ClassLibrary.Services.UserService
         {
             _unitOfWork._userRepository.Update(user);
             _unitOfWork.Save();
+        }
+
+        public UserResponseDTO? Authenticate(UserRequestDTO req)
+        {
+            User? user = _unitOfWork._userRepository.FindByData(req.Username, req.Password);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            string jwtToken = _jwtUtils.GenerateJwtToken(user);
+            return new UserResponseDTO(user, jwtToken);
         }
     }
 }
