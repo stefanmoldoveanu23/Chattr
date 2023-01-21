@@ -10,7 +10,7 @@
     <form [formGroup]="form" (ngSubmit)="onSendMessage()">
       <mat-form-field>
         <mat-label>Write message here...</mat-label>
-        <input matInput placeholder="Hi!" formControlName="message"/>
+        <input matInput placeholder="Hi!" formControlName="message" />
       </mat-form-field>
       <button mat-button type="submit" [disabled]="!form.valid">Submit</button>
     </form>

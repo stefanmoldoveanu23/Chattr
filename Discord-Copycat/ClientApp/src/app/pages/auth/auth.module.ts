@@ -9,9 +9,10 @@ import { AuthRoutingModule } from './auth-routing.module';
 
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { AuthComponent } from './auth.component';
 
 @NgModule({
-  declarations: [RegisterComponent, LoginComponent],
+  declarations: [AuthComponent, RegisterComponent, LoginComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,

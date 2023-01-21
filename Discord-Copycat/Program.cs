@@ -45,6 +45,8 @@ if (!app.Environment.IsDevelopment())
 app.UseCors("DiscordOrigins");
 
 app.UseHttpsRedirection();
+
+app.UseAuthorization();
 app.UseStaticFiles();
 
 app.UseRouting();
