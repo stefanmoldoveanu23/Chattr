@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Log } from '../../../data/interfaces/Log';
+import { ApiService } from '../../core/services/api/api.service';
 import { SignalrService } from '../../core/services/signalr/signalr.service';
 
 @Component({
@@ -18,7 +19,7 @@ export class HomeComponent {
 
   form;
 
-  constructor(private formBuilder: FormBuilder, private signalR: SignalrService) {
+  constructor(private formBuilder: FormBuilder, private signalR: SignalrService, private readonly apiService: ApiService) {
     signalR.startConnection('sampleGroup');
     signalR.receiveMessage();
     this.logs = [];
@@ -42,5 +43,13 @@ export class HomeComponent {
     this.baseLog = { id: '00000000-0000-4000-0000-000000000000', dateCreated: date, senderId: '00000000-0000-4000-0000-000000000000', message: message };
 
     this.signalR.sendMessage(this.baseLog);
+  }
+
+  getAll() {
+    console.log('hello?');
+    this.apiService.get<any>('user/').subscribe(
+      result => console.log(result),
+      error => console.error(error)
+    );
   }
 }

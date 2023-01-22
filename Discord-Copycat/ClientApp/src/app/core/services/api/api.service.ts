@@ -13,6 +13,7 @@ export class ApiService {
   }
 
   get<T>(path: String, params = {}): Observable<any> {
+    console.log(path);
     return this.httpClient.get<T>(`${this.apiUrl}${path}`, { params });
   }
 
@@ -21,8 +22,6 @@ export class ApiService {
   }
 
   post<T>(path: String, body = {}): Observable<any> {
-    console.log(path);
-    console.log(body);
     return this.httpClient.post<T>(`${this.apiUrl}${path}`, body);
   }
 

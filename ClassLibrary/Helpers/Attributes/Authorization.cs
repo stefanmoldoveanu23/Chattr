@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Helpers.Attributes
 {
-    internal class AuthorizationAttribute : Attribute, IAuthorizationFilter
+    public class AuthorizationAttribute : Attribute, IAuthorizationFilter
     {
         private readonly ICollection<Roles> _roles;
 
@@ -25,12 +25,18 @@ namespace ClassLibrary.Helpers.Attributes
             var unauthorizedStatusObject = new JsonResult(new { Message = "Unauthorized" })
             { StatusCode = StatusCodes.Status401Unauthorized };
 
+            Console.WriteLine("Hi");
+
             if (_roles == null)
             {
                 context.Result = unauthorizedStatusObject;
             }
 
             User? user = context.HttpContext.Items["User"] as User;
+            if (user != null)
+            {
+                Console.WriteLine(user.Id);
+            }
 
             if (user == null || !_roles.Contains(user.Role))
             {

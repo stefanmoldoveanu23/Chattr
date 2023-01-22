@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DiscordContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllersWithViews();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options => options.AddPolicy(name: "DiscordOrigins",
     policy =>
     {
@@ -47,10 +48,10 @@ app.UseCors("DiscordOrigins");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseMiddleware<JwtMiddleware>();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseMiddleware<JwtMiddleware>();
 
 
 app.MapControllerRoute(

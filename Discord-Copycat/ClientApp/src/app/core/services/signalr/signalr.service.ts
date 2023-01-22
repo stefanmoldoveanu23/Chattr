@@ -11,9 +11,12 @@ export class SignalrService {
   group !: String;
   private hubConnection !: signalR.HubConnection;
 
-  public startConnection(group : String) {
+  public startConnection(group: String) {
+
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:7291/chatHub')
+      .withUrl('https://localhost:7291/chatHub', {
+        accessTokenFactory: () => (localStorage.getItem('token') ?? '')
+      })
       .build();
 
     this.group = group;

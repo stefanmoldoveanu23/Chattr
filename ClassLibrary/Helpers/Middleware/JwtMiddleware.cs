@@ -20,7 +20,7 @@ namespace ClassLibrary.Helpers.Middleware
 
         public async Task Invoke(HttpContext httpContext, IUserService userService, IJwtUtils jwtUtils)
         {
-            var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split("").Last();
+            var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             Console.WriteLine(token);
 
             var userId = jwtUtils.ValidateJwtToken(token);

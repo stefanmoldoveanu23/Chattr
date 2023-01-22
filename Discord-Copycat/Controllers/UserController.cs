@@ -1,7 +1,10 @@
-﻿using ClassLibrary.Models.DTOs.UserDTO;
+﻿using ClassLibrary.Helpers.Attributes;
+using ClassLibrary.Models.DTOs.UserDTO;
 using ClassLibrary.Services.UserService;
 using Discord_Copycat.Data;
 using Discord_Copycat.Models;
+using Discord_Copycat.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
