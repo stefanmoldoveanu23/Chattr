@@ -6,12 +6,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { HomeComponent } from './home.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CreateServerDialogComponent } from './create-server-dialog/create-server-dialog.component';
 
 
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, CreateServerDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -20,6 +24,9 @@ import { HomeComponent } from './home.component';
     MatInputModule,
     MatButtonModule,
     MatListModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatDialogModule,
     HomeRoutingModule,
   ]
 })

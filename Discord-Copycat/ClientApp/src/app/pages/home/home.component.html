@@ -1,20 +1,31 @@
-<div>
-  <button type="button" mat-button (click)="getAll()"> Get Alll </button>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" [opened]="true" class="servers-menu"
+               [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+    <button class="server-button text-button" type="button" mat-fab>MY</button>
+    <mat-divider></mat-divider>
+    <div class="servers"></div>
+    <button class="server-button" type="button" mat-fab (click)="openCreateServer()"><mat-icon>add</mat-icon></button>
+  </mat-sidenav>
 
-  <h2>Logs</h2>
-  <div *ngFor="let log of logs">
-    <p>Date Sent: {{log.dateCreated}}</p> <br />
-    <p>Sender: {{log.senderId}}</p> <br />
-    <p id="{{log.id}}">Message: {{log.message}}</p> <br />
-  </div>
+  <mat-sidenav-content class="servers-content">
+    <button type="button" mat-button (click)="getAll()"> Get Alll </button>
 
-  <div>
-    <form [formGroup]="form" (ngSubmit)="onSendMessage()">
-      <mat-form-field>
-        <mat-label>Write message here...</mat-label>
-        <input matInput placeholder="Hi!" formControlName="message" />
-      </mat-form-field>
-      <button mat-button type="submit" [disabled]="!form.valid">Submit</button>
-    </form>
-  </div>
-</div>
+    <h2>Logs</h2>
+    <div *ngFor="let log of logs">
+      <p>Date Sent: {{log.dateCreated}}</p> <br />
+      <p>Sender: {{log.senderId}}</p> <br />
+      <p id="{{log.id}}">Message: {{log.message}}</p> <br />
+    </div>
+
+    <div>
+      <form [formGroup]="form" (ngSubmit)="onSendMessage()">
+        <mat-form-field>
+          <mat-label>Write message here...</mat-label>
+          <input matInput placeholder="Hi!" formControlName="message" />
+        </mat-form-field>
+        <button mat-button type="submit" [disabled]="!form.valid">Submit</button>
+      </form>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

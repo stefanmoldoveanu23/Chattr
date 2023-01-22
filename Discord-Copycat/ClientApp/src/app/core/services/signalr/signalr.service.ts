@@ -23,19 +23,19 @@ export class SignalrService {
 
     this.hubConnection
       .start()
-      .then((data) => {
+      .then((data: any) => {
         this.hubConnection.invoke('JoinGroup', this.group)
-          .catch(error => {
+          .catch((error: any) => {
             console.log('Error entering group ' + this.group);
             return;
           })
         console.log('Connection started!');
       })
-      .catch(error => console.log('Error while starting connection: ' + error));
+      .catch((error: any) => console.log('Error while starting connection: ' + error));
   }
 
   public receiveMessage() {
-    this.hubConnection.on('ReceiveMessage', (data) => {
+    this.hubConnection.on('ReceiveMessage', (data: any) => {
       console.log('Data received.');
       this.messageReceived.emit(data);
       console.log(data);
@@ -45,7 +45,7 @@ export class SignalrService {
   public sendMessage(data: Log) {
     this.hubConnection.invoke('SendMessage', data, this.group)
       .then(() => console.log('Message sent succesfully.'))
-      .catch(error => {
+      .catch((error: any) => {
         console.log('An error has occured sending message ' + error);
       })
   }

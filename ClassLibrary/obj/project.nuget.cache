@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ObPvNG81ow8iMpTDf5ybGma8Fro3GQUsuo0pORhf5xOVc3foaGJUj0UVaoZqibMbR3i1ssQnuj5+OsZDqTaYUQ==",
+  "dgSpecHash": "Hyjsp6tpgMdYdn74k5tEoVLO6dIoZgMqMrtnO+QaEw6HcLaGaNzzAux5tYLvahziIBJ+u6y+4HW/HMwPuZxPLQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\stefa\\DOTNET\\Discord-Copycat\\ClassLibrary\\ClassLibrary.csproj",
+  "projectFilePath": "C:\\Users\\stefa\\DOTNET\\test\\Discord-Copycat\\ClassLibrary\\ClassLibrary.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\stefa\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\automapper.collection\\9.0.0\\automapper.collection.9.0.0.nupkg.sha512",

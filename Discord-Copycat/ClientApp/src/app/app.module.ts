@@ -7,6 +7,8 @@ import { AuthModule } from './pages/auth/auth.module';
 import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 
 export function tokenGetter() {
   console.log(localStorage.getItem('token'));
@@ -23,6 +25,8 @@ export function tokenGetter() {
     HttpClientModule,
     AppRoutingModule,
     AuthModule,
+    MatDialogModule,
+    MatDividerModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

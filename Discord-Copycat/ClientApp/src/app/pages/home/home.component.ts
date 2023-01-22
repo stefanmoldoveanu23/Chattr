@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Log } from '../../../data/interfaces/Log';
 import { ApiService } from '../../core/services/api/api.service';
 import { SignalrService } from '../../core/services/signalr/signalr.service';
+import { CreateServerDialogComponent } from './create-server-dialog/create-server-dialog.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
   logs: Log[];
@@ -19,7 +22,7 @@ export class HomeComponent {
 
   form;
 
-  constructor(private formBuilder: FormBuilder, private signalR: SignalrService, private readonly apiService: ApiService) {
+  constructor(private readonly matDialog: MatDialog, private formBuilder: FormBuilder, private signalR: SignalrService, private readonly apiService: ApiService) {
     signalR.startConnection('sampleGroup');
     signalR.receiveMessage();
     this.logs = [];
@@ -52,4 +55,17 @@ export class HomeComponent {
       error => console.error(error)
     );
   }
+
+  openCreateServer() {
+    const dialogRef = this.matDialog.open(CreateServerDialogComponent, {
+      width: '250px',
+    });
+
+    dialogRef.afterClosed().subscribe(
+      result => console.log(result),
+      error => console.log(error)
+    );
+  }
+
+  
 }

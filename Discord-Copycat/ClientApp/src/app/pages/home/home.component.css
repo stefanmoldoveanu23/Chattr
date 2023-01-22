@@ -1,0 +1,19 @@
+.servers-menu {
+}
+
+.servers {
+    width: auto;
+}
+
+.servers-content {
+   padding-left: 10px;
+}
+
+.server-button {
+    margin: 10px 10px 10px 10px;
+    bottom: 0px;
+}
+
+.text-button {
+    font-size: 1.4em;
+}
