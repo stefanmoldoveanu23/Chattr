@@ -3,7 +3,10 @@
                [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
     <button class="server-button text-button" type="button" mat-fab>MY</button>
     <mat-divider></mat-divider>
-    <div class="servers"></div>
+    <div *ngFor="let server of servers">
+      <button class="server-button" mat-fab (click)="onGetName(server.name)">{{server.name}}</button>
+      
+    </div>
     <button class="server-button" type="button" mat-fab (click)="openCreateServer()"><mat-icon>add</mat-icon></button>
   </mat-sidenav>
 
@@ -26,9 +29,6 @@
         <button mat-button type="submit" [disabled]="!form.valid">Submit</button>
       </form>
     </div>
-
-    <button mat-button type="button" (click)="onJoinServer()">Join Server</button>
-    <button mat-button type="button" (click)="onGetServers()">Get Servers</button>
   </mat-sidenav-content>
 
 </mat-sidenav-container>

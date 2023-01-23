@@ -38,6 +38,7 @@
   <ItemGroup>
     <None Remove="ClientApp\src\data\interfaces\IForm.ts" />
     <None Remove="ClientApp\src\data\interfaces\log.ts" />
+    <None Remove="ClientApp\src\data\interfaces\server.ts" />
     <None Remove="ClientApp\src\data\interfaces\UserRequest.ts" />
     <None Remove="ClientApp\src\data\interfaces\UserResponse.ts" />
   </ItemGroup>
@@ -48,6 +49,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\data\interfaces\Log.ts" />
+    <TypeScriptCompile Include="ClientApp\src\data\interfaces\server.ts" />
     <TypeScriptCompile Include="ClientApp\src\data\interfaces\UserResponse.ts" />
     <TypeScriptCompile Include="ClientApp\src\data\types\IForm.ts" />
     <TypeScriptCompile Include="ClientApp\src\data\interfaces\UserRequest.ts" />
