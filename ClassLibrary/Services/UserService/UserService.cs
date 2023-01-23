@@ -6,6 +6,8 @@ using ClassLibrary.Models.DTOs.LogDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using Discord_Copycat.Models;
+using Discord_Copycat.Models.Enums;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +29,14 @@ namespace ClassLibrary.Services.UserService
             _mapper = mapper;
         }
 
-        public async Task CreateUserAsync(UserRequestDTO userDTO)
+        public async Task<UserResponseDTO> CreateUserAsync(UserRequestDTO userDTO)
         {
             User user = _mapper.Map<User>(userDTO);
 
             await _unitOfWork._userRepository.CreateAsync(user);
             await _unitOfWork.SaveAsync();
+
+            return new UserResponseDTO(user);
         }
 
         public void DeleteUser(User user)
@@ -148,6 +152,22 @@ namespace ClassLibrary.Services.UserService
 
             string jwtToken = _jwtUtils.GenerateJwtToken(user);
             return new UserResponseDTO(user, jwtToken);
+        }
+
+        public async Task JoinServerAsync(Guid id, Guid serverId, Roles role)
+        {
+            Console.WriteLine("Enter join server");
+            User? user = await _unitOfWork._userRepository.GetWithServersAsync(id);
+            if (user.Servers.Any(member => member.ServerId == serverId))
+            {
+                return;
+            }
+
+            Console.WriteLine("Before add join server");
+            user.Servers.Add(new MemberOfServer { UserId = id, ServerId = serverId, Role = role });
+            _unitOfWork._userRepository.Update(user);
+            await _unitOfWork.SaveAsync();
+            
         }
     }
 }

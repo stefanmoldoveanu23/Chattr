@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClassLibrary.Models.DTOs.LogDTO;
+using Discord_Copycat.Models.Enums;
 
 namespace ClassLibrary.Services.UserService
 {
@@ -18,7 +19,7 @@ namespace ClassLibrary.Services.UserService
 
         Task<UserResponseDTO?> GetUserByIdAsync(Guid id);
 
-        Task CreateUserAsync(UserRequestDTO userDTO);
+        Task<UserResponseDTO> CreateUserAsync(UserRequestDTO userDTO);
 
         void UpdateUser(User user);
 
@@ -27,6 +28,8 @@ namespace ClassLibrary.Services.UserService
         Task<List<UserResponseDTO>> GetFriendsAsync(Guid id);
 
         Task<List<ServerResponseDTO>> GetServersAsync(Guid id);
+
+        Task JoinServerAsync(Guid id, Guid serverId, Roles role);
 
         Task<List<LogResponseDTO>?> GetLogsWithFriendAsync(Guid id, Guid friendId);
 

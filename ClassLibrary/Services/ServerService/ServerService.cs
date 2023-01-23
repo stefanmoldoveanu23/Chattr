@@ -23,10 +23,13 @@ namespace ClassLibrary.Services.ServerService
             _mapper = mapper;
         }
 
-        public async Task CreateServerAsync(ServerRequestDTO server)
+        public async Task<ServerResponseDTO> CreateServerAsync(ServerRequestDTO server)
         {
-            await _unitOfWork._serverRepository.CreateAsync(_mapper.Map<Server>(server));
+            Server newServer = _mapper.Map<Server>(server);
+
+            await _unitOfWork._serverRepository.CreateAsync(newServer);
             await _unitOfWork.SaveAsync();
+            return _mapper.Map<ServerResponseDTO>(newServer);
         }
 
         public void DeleteServer(Server server)
@@ -78,7 +81,7 @@ namespace ClassLibrary.Services.ServerService
 
             foreach (MemberOfServer memberOfServer in server.Users)
             {
-                users.Add(_mapper.Map<UserResponseDTO>(memberOfServer.User));
+                users.Add(new UserResponseDTO(memberOfServer.User));
             }
 
             return users;

@@ -1,4 +1,5 @@
 ﻿using Discord_Copycat.Models;
+using Discord_Copycat.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +15,7 @@ namespace ClassLibrary.Models.DTOs.UserDTO
         public String Username { get; set; } = "";
         public String Password { get; set; } = "";
         public String Email { get; set; } = "";
+        public Roles Role { get; set; }
         public String Token { get; set; } = "";
 
         public UserResponseDTO(User user, String token = "")
@@ -22,6 +24,7 @@ namespace ClassLibrary.Models.DTOs.UserDTO
             Username = user.Username;
             Password = user.Password;
             Email = user.Email;
+            Role = user.Role;
             Token = token;
         }
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ClassLibrary.Models.DTOs.LogDTO
 {
     public class LogRequestDTO
-    {
+    { 
         public String Id { get; set; } = "";
         public DateTime DateCreated { get; set; }
 

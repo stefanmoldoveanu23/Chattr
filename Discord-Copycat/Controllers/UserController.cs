@@ -1,4 +1,6 @@
 ﻿using ClassLibrary.Helpers.Attributes;
+using ClassLibrary.Helpers.Hubs;
+using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using ClassLibrary.Services.UserService;
 using Discord_Copycat.Data;
@@ -8,7 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Discord_Copycat.Controllers
@@ -32,7 +36,7 @@ namespace Discord_Copycat.Controllers
         }
 
         [HttpGet("get-friends/{id}")]
-        public async Task<IActionResult> GetFriends([FromRoute]Guid id)
+        public async Task<IActionResult> GetFriends([FromRoute] Guid id)
         {
             var friends = await _userService.GetFriendsAsync(id);
 
@@ -40,7 +44,7 @@ namespace Discord_Copycat.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]UserRequestDTO User)
+        public async Task<IActionResult> Register([FromBody] UserRequestDTO User)
         {
             User.Password = BCryptNet.HashPassword(User.Password);
             await _userService.CreateUserAsync(User);
@@ -49,9 +53,8 @@ namespace Discord_Copycat.Controllers
 
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody]UserRequestDTO User)
+        public IActionResult Login([FromBody] UserRequestDTO User)
         {
-
             UserResponseDTO? response = _userService.Authenticate(User);
             if (response == null)
             {
@@ -59,6 +62,25 @@ namespace Discord_Copycat.Controllers
             }
 
             return Ok(response);
+        }
+
+        [HttpGet("get-servers")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> GetServers()
+        {
+            List<ServerResponseDTO> Servers = await _userService.GetServersAsync((HttpContext.Items["User"] as UserResponseDTO).Id);
+
+            return Ok(Servers);
+        }
+
+        [HttpPost("join-server/{ServerId}/{role}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> JoinServer([FromRoute]Guid ServerId , [FromRoute] Roles role)
+        {
+            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
+
+            await _userService.JoinServerAsync(UserId, ServerId, role);
+            return Ok();
         }
     }
 }

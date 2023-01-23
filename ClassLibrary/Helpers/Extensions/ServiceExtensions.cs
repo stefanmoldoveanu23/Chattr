@@ -1,4 +1,5 @@
-﻿using ClassLibrary.Helpers.Seeders;
+﻿using ClassLibrary.Helpers.Hubs;
+using ClassLibrary.Helpers.Seeders;
 using ClassLibrary.Helpers.UOW;
 using ClassLibrary.Helpers.Utils;
 using ClassLibrary.Repositories.ChatRep;

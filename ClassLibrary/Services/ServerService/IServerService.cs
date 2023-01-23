@@ -16,7 +16,7 @@ namespace ClassLibrary.Services.ServerService
 
         Task<ServerResponseDTO?> GetServerByIdAsync(Guid id);
 
-        Task CreateServerAsync(ServerRequestDTO server);
+        Task<ServerResponseDTO> CreateServerAsync(ServerRequestDTO server);
 
         void UpdateServer(Server server);
 

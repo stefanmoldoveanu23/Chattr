@@ -23,10 +23,13 @@ namespace ClassLibrary.Services.ChatService
             _mapper = mapper;
         }
 
-        public async Task CreateChatAsync(ChatRequestDTO chat)
+        public async Task<ChatResponseDTO> CreateChatAsync(ChatRequestDTO chat)
         {
-            await _unitOfWork._chatRepository.CreateAsync(_mapper.Map<Chat>(chat));
+            Chat newChat = _mapper.Map<Chat>(chat);
+            await _unitOfWork._chatRepository.CreateAsync(newChat);
             await _unitOfWork.SaveAsync();
+
+            return _mapper.Map<ChatResponseDTO>(newChat);
         }
 
         public void DeleteChat(Chat chat)

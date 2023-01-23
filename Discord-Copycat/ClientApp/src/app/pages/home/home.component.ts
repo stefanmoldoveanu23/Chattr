@@ -62,6 +62,40 @@ export class HomeComponent {
     });
 
     dialogRef.afterClosed().subscribe(
+      form => {
+        this.apiService.post<any>('server/create', form.data).subscribe(
+          serverResponse => {
+            this.apiService.post<any>(`user/join-server/${serverResponse.id}/2`).subscribe(
+              ok => {
+                this.apiService.get<any>('user/get-servers').subscribe(
+                  servers => console.log(servers),
+                  error => console.error('Error getting servers ' + error)
+                )
+
+                this.apiService.get<any>(`server/get-members/${serverResponse.id}`).subscribe(
+                  members => console.log(members),
+                  error => console.error('Error getting members: ' + error)
+                )
+              },
+              error => console.log('Error joining creating server: ' + error)
+            )
+          },
+          error => console.log('Error creating server: ' + error)
+        )
+      },
+      error => console.log(error)
+    );
+  }
+
+  onJoinServer() {
+    this.apiService.post<any>('user/join-server/00000000-0000-4000-0000-000000000000/1').subscribe(
+      result => console.log(result),
+      error => console.error(error)
+    );
+  }
+
+  onGetServers() {
+    this.apiService.get<any>('user/get-servers').subscribe(
       result => console.log(result),
       error => console.log(error)
     );
