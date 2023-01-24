@@ -22,6 +22,10 @@ export class UserService {
   }
 
   joinServer(serverId: string, role: roles) {
-    return this.apiService.post<any>(`${this.route}${serverId}/${role}`);
+    return this.apiService.post<any>(`${this.route}join-server/${serverId}/${role}`);
+  }
+
+  deleteAll() {
+    return this.apiService.delete<any>(`${this.route}`);
   }
 }

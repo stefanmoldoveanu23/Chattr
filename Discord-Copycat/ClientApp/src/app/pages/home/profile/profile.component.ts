@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../../../data/interfaces/user';
 import { UserService } from '../../../core/services/api/user/user.service';
 
@@ -9,16 +10,28 @@ import { UserService } from '../../../core/services/api/user/user.service';
 })
 export class ProfileComponent implements OnInit {
 
-  friends: User[] = [{ id: 'hi', username: 'my', email: '', token: '' }];
+  addFriend = this.formBuilder.group({
+    id: ['', Validators.required]
+  });
 
-  constructor(private readonly userService: UserService) {
+  friends: User[] = [{ id: 'hi', username: 'MY', email: '', token: '' }];
+
+  constructor(private readonly userService: UserService, private readonly formBuilder: FormBuilder) {
     userService.getFriends().subscribe(
-      friends => this.friends = friends,
+      friends => {
+        if (friends.length > 0) {
+          this.friends = friends
+        }
+      },
       error => console.error(error)
     );
   }
 
   ngOnInit(): void {
+  }
+
+  onAddFriend() {
+
   }
 
 }

@@ -40,8 +40,6 @@ export class HomeComponent {
       servers => this.servers = servers,
       error => console.error(error)
     );
-
-    console.log(this.servers);
   }
 
   subscribeToEvents() {

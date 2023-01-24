@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms'
+import { UserService } from '../../../core/services/api/user/user.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit {
     password: ['', Validators.required]
   });
 
-  constructor(private readonly formBuilder: FormBuilder, private readonly authService: AuthService) { }
+  constructor(private readonly formBuilder: FormBuilder, private readonly authService: AuthService, private readonly userService: UserService) { }
 
   ngOnInit(): void {
   }
@@ -30,6 +31,13 @@ export class LoginComponent implements OnInit {
     if (!this.authService.isLoggedIn()) {
       this.failed = true;
     }
+  }
+
+  onDelete() {
+    this.userService.deleteAll().subscribe(
+      result => console.log(result),
+      error => console.log(error)
+    );
   }
 
 }

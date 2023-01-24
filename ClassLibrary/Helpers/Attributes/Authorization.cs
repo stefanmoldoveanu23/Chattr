@@ -33,10 +33,6 @@ namespace ClassLibrary.Helpers.Attributes
             }
 
             UserResponseDTO? user = context.HttpContext.Items["User"] as UserResponseDTO;
-            if (user != null)
-            {
-                Console.WriteLine(user.Role);
-            }
 
             if (user == null || !_roles.Contains(user.Role))
             {

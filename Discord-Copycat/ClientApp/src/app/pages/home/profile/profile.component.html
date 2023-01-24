@@ -1,18 +1,24 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="side" [opened]="true" class="chats-menu"
                [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+    <h3>Friends</h3>
     <div>
-      <form>
-
+      <form [formGroup]="addFriend" (ngSubmit)="onAddFriend()">
+        <mat-form-field>
+          <mat-label>Add a new friend :)</mat-label>
+          <input matInput placeholder="Id goes here" formControlName="id" />
+        </mat-form-field>
+        <button matSuffix type="submit" mat-icon-button><mat-icon>add</mat-icon></button>
       </form>
     </div>
-    <button class="chat-button" type="button" mat-fab><mat-icon>add</mat-icon></button>
     <mat-divider></mat-divider>
-    <div *ngFor="let friend of friends"><p>{{friend.id}}</p></div>
+    <div *ngFor="let friend of friends">
+      <p class="friend" type="button" mat-button>{{friend.username}}<button class="to-the-right" type="button" mat-icon-button><mat-icon>close</mat-icon></button></p>
+    </div>
     <!-- <div *ngFor="let server of servers">
     <button class="chat-button" type="button" mat-fab (click)="onSetServer(server.id)">{{server.name}}</button>
   </div> -->
-    <p type="button" mat-button>HIIIIIIIIIII<button type="button" mat-icon-button><mat-icon>close</mat-icon></button></p>
+    
   </mat-sidenav>
 
   <mat-sidenav-content class="chats-content">

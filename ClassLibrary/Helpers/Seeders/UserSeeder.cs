@@ -5,32 +5,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Discord_Copycat.Models;
+using ClassLibrary.Helpers.UOW;
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace ClassLibrary.Helpers.Seeders
 {
     public class UserSeeder
     {
-        public readonly DiscordContext _discordContext;
+        public readonly IUnitOfWork _unitOfWork;
 
-        public UserSeeder(DiscordContext discordContext)
+        public UserSeeder(IUnitOfWork unitOfWork)
         {
-            _discordContext = discordContext;
+            _unitOfWork = unitOfWork;
         }
 
         public void SeedAdmin()
         {
-            if (!_discordContext.Users.Any())
+            if (!_unitOfWork._userRepository.GetAllAsQueryable().Any())
             {
                 User User = new User
                 {
                     Username = "admin",
-                    Password = "extraword12",
+                    Password = BCryptNet.HashPassword("extraword12"),
                     Email = "characterme1001@gmail.com",
                     Role = Discord_Copycat.Models.Enums.Roles.Admin,
                 };
 
-                _discordContext.Add(User);
-                _discordContext.SaveChanges();
+                _unitOfWork._userRepository.CreateAsync(User);
+                _unitOfWork.SaveAsync();
             }
         }
     }

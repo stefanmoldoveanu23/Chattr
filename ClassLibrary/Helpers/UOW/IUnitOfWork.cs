@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Helpers.UOW
 {
-    internal interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         public IUserRepository _userRepository { get; }
         public IServerRepository _serverRepository { get; }

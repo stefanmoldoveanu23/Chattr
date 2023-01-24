@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
-using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Discord_Copycat.Controllers
 {
@@ -28,6 +27,19 @@ namespace Discord_Copycat.Controllers
             _userService = userService;
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAll()
+        {
+            Console.WriteLine("Hi");
+            foreach (UserResponseDTO user in await _userService.GetUsersAsync())
+            {
+                Console.WriteLine(user.Id);
+                _userService.DeleteUser(new User { Id = user.Id });
+            }
+
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -38,6 +50,11 @@ namespace Discord_Copycat.Controllers
         [HttpGet("get-friends")]
         public async Task<IActionResult> GetFriends()
         {
+            if (HttpContext.Items["User"] == null)
+            {
+                return BadRequest("You are not logged in as a valid user.");
+            }
+
             Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
             List<UserResponseDTO> friends = (await _userService.GetFriendsAsync(UserId));
             foreach (UserResponseDTO friend in friends)
@@ -51,7 +68,6 @@ namespace Discord_Copycat.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRequestDTO User)
         {
-            User.Password = BCryptNet.HashPassword(User.Password);
             await _userService.CreateUserAsync(User);
             return Ok();
         }
@@ -73,9 +89,12 @@ namespace Discord_Copycat.Controllers
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetServers()
         {
-            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
-            Console.WriteLine(UserId);
+            if (HttpContext.Items["User"] == null)
+            {
+                return BadRequest("You are not logged in as a valid user.");
+            }
 
+            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
             List<ServerResponseDTO> Servers = await _userService.GetServersAsync(UserId);
 
             return Ok(Servers);
@@ -85,6 +104,11 @@ namespace Discord_Copycat.Controllers
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> JoinServer([FromRoute]Guid ServerId , [FromRoute] Roles role)
         {
+            if (HttpContext.Items["User"] == null)
+            {
+                return BadRequest("You are not logged in as a valid user.");
+            }
+
             Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
 
             await _userService.JoinServerAsync(UserId, ServerId, role);

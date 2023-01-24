@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace ClassLibrary.Services.UserService
 {
@@ -31,6 +32,7 @@ namespace ClassLibrary.Services.UserService
 
         public async Task<UserResponseDTO> CreateUserAsync(UserRequestDTO userDTO)
         {
+            userDTO.Password = BCryptNet.HashPassword(userDTO.Password);
             User user = _mapper.Map<User>(userDTO);
 
             await _unitOfWork._userRepository.CreateAsync(user);
