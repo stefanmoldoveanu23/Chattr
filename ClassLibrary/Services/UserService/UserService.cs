@@ -156,20 +156,37 @@ namespace ClassLibrary.Services.UserService
             return new UserResponseDTO(user, jwtToken);
         }
 
-        public async Task JoinServerAsync(Guid id, Guid serverId, Roles role)
+        public async Task<UserResponseDTO?> JoinServerAsync(Guid id, Guid serverId, Roles role)
         {
-            Console.WriteLine("Enter join server");
             User? user = await _unitOfWork._userRepository.GetWithServersAsync(id);
-            if (user.Servers.Any(member => member.ServerId == serverId))
+            Server? server = await _unitOfWork._serverRepository.FindByIdAsync(serverId);
+            if (server == null)
             {
-                return;
+                return null;
             }
 
-            Console.WriteLine("Before add join server");
             user.Servers.Add(new MemberOfServer { UserId = id, ServerId = serverId, Role = role });
             _unitOfWork._userRepository.Update(user);
             await _unitOfWork.SaveAsync();
-            
+
+            return new UserResponseDTO(user);
+        }
+
+        public async Task<UserResponseDTO?> AddFriend(Guid id, Guid friendId)
+        {
+            User user = await _unitOfWork._userRepository.GetWithFriendsAsync(id);
+            User? friend = await _unitOfWork._userRepository.FindByIdAsync(friendId);
+
+            if (friend == null)
+            {
+                return null;
+            }
+
+            user.FirstFriend.Add(new Friendship { User1Id = id, User2Id = friendId });
+            _unitOfWork._userRepository.Update(user);
+            await _unitOfWork.SaveAsync();
+
+            return new UserResponseDTO(user);
         }
     }
 }

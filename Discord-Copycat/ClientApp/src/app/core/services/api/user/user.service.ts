@@ -17,12 +17,15 @@ export class UserService {
   }
 
   getServers() {
-    console.log('hi');
     return this.apiService.get<Server[]>(`${this.route}get-servers`);
   }
 
   joinServer(serverId: string, role: roles) {
     return this.apiService.post<any>(`${this.route}join-server/${serverId}/${role}`);
+  }
+
+  addFriend(friendId: string) {
+    return this.apiService.post<any>(`${this.route}add-friend/${friendId}`);
   }
 
   deleteAll() {

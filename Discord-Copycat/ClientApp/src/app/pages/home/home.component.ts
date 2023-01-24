@@ -69,7 +69,7 @@ export class HomeComponent {
         this.serverService.create(form.data).subscribe(
           serverResponse => {
             this.userService.joinServer(serverResponse.id, roles.admin).subscribe(
-              ok => window.location.reload(),
+              () => window.location.reload(),
               error => console.log('Error joining creating server: ' + error)
             )
           },

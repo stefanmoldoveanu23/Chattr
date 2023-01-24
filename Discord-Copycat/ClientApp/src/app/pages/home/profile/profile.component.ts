@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
     userService.getFriends().subscribe(
       friends => {
         if (friends.length > 0) {
-          this.friends = friends
+          this.friends = friends;
         }
       },
       error => console.error(error)
@@ -31,7 +31,12 @@ export class ProfileComponent implements OnInit {
   }
 
   onAddFriend() {
-
+    if (this.addFriend.value.id != null) {
+      this.userService.addFriend(this.addFriend.value.id).subscribe(
+        () => window.location.reload(),
+        error => console.error("Error adding friend " + error)
+      );
+    }
   }
 
 }
