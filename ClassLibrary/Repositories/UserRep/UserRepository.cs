@@ -20,6 +20,7 @@ namespace ClassLibrary.Repositories.UserRep
             User friend1 = await _table.Where(u => u.Id == id)
                 .Include(u => u.FirstFriend)
                 .ThenInclude(f => f.Logs)
+                .AsSplitQuery()
                 .FirstAsync();
 
             friend1.FirstFriend = friend1.FirstFriend.Where(f => f.User2Id == friendId).ToList();
@@ -32,6 +33,7 @@ namespace ClassLibrary.Repositories.UserRep
             User friend2 = await _table.Where(u => u.Id == id)
                 .Include(u => u.SecondFriend)
                 .ThenInclude(f => f.Logs)
+                .AsSplitQuery()
                 .FirstAsync();
 
             friend2.SecondFriend = friend2.SecondFriend.Where(f => f.User1Id == friendId).ToList();
@@ -56,6 +58,7 @@ namespace ClassLibrary.Repositories.UserRep
                 .ThenInclude(f => f.User2)
                 .Include(u => u.SecondFriend)
                 .ThenInclude(f => f.User1)
+                .AsSplitQuery()
                 .FirstAsync();
 
             return friends;
@@ -66,6 +69,7 @@ namespace ClassLibrary.Repositories.UserRep
             User servers = await _table.Where(u => u.Id == id)
                 .Include(u => u.Servers)
                 .ThenInclude(s => s.Server)
+                .AsSplitQuery()
                 .FirstAsync();
 
             return servers;
@@ -75,6 +79,7 @@ namespace ClassLibrary.Repositories.UserRep
         {
             User settings = await _table.Where(u => u.Id == id)
                 .Include(u => u.Settings)
+                .AsSplitQuery()
                 .FirstAsync();
             return settings;
         }

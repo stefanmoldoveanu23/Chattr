@@ -19,6 +19,7 @@ namespace ClassLibrary.Repositories.ChatRep
         {
             Chat logs = await _table.Where(c => c.Id == id)
                 .Include(c => c.Logs)
+                .AsSplitQuery()
                 .FirstAsync();
             return logs;
         }
@@ -29,6 +30,7 @@ namespace ClassLibrary.Repositories.ChatRep
                 .Include(c => c.Server)
                 .ThenInclude(s => s.Users)
                 .ThenInclude(u => u.User)
+                .AsSplitQuery()
                 .FirstAsync();
 
             users.Server.Users = users.Server.Users.Where(u => u.Role >= users.Role).ToList();

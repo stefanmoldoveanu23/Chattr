@@ -1,0 +1,23 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" [opened]="true" class="chats-menu"
+               [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+    <div>
+      <form>
+
+      </form>
+    </div>
+    <button class="chat-button" type="button" mat-fab><mat-icon>add</mat-icon></button>
+    <mat-divider></mat-divider>
+    <div *ngFor="let friend of friends"><p>{{friend.id}}</p></div>
+    <!-- <div *ngFor="let server of servers">
+    <button class="chat-button" type="button" mat-fab (click)="onSetServer(server.id)">{{server.name}}</button>
+  </div> -->
+    <p type="button" mat-button>HIIIIIIIIIII<button type="button" mat-icon-button><mat-icon>close</mat-icon></button></p>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="chats-content">
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

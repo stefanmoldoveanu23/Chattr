@@ -35,10 +35,15 @@ namespace Discord_Copycat.Controllers
             return Ok(allUsers);
         }
 
-        [HttpGet("get-friends/{id}")]
-        public async Task<IActionResult> GetFriends([FromRoute] Guid id)
+        [HttpGet("get-friends")]
+        public async Task<IActionResult> GetFriends()
         {
-            var friends = await _userService.GetFriendsAsync(id);
+            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
+            List<UserResponseDTO> friends = (await _userService.GetFriendsAsync(UserId));
+            foreach (UserResponseDTO friend in friends)
+            {
+                friend.Email = "";
+            }
 
             return Ok(friends);
         }
@@ -68,7 +73,10 @@ namespace Discord_Copycat.Controllers
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetServers()
         {
-            List<ServerResponseDTO> Servers = await _userService.GetServersAsync((HttpContext.Items["User"] as UserResponseDTO).Id);
+            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
+            Console.WriteLine(UserId);
+
+            List<ServerResponseDTO> Servers = await _userService.GetServersAsync(UserId);
 
             return Ok(Servers);
         }

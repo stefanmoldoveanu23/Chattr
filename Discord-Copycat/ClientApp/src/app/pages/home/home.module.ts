@@ -9,13 +9,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { HomeComponent } from './home.component';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { CreateServerDialogComponent } from './create-server-dialog/create-server-dialog.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
 @NgModule({
-  declarations: [HomeComponent, CreateServerDialogComponent],
+  declarations: [HomeComponent, CreateServerDialogComponent, ProfileComponent],
   imports: [
     CommonModule,
     FormsModule,

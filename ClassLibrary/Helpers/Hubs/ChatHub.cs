@@ -29,7 +29,6 @@ namespace ClassLibrary.Helpers.Hubs
             Guid userId = _jwtUtils.ValidateJwtToken(token);
 
             Console.WriteLine("Join Group " + userId);*/
-            Console.WriteLine(Context.GetHttpContext().Request.Headers["Authorization"]);
             await Groups.AddToGroupAsync(Context.ConnectionId, group);
         }
 

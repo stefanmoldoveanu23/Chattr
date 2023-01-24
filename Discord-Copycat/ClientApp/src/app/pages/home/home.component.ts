@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { roles } from '../../../data/enums/roles';
 import { Log } from '../../../data/interfaces/Log';
 import { Server } from '../../../data/interfaces/server';
-import { ApiService } from '../../core/services/api/api.service';
+import { ServerService } from '../../core/services/api/server/server.service';
+import { UserService } from '../../core/services/api/user/user.service';
 import { SignalrService } from '../../core/services/signalr/signalr.service';
 import { CreateServerDialogComponent } from './create-server-dialog/create-server-dialog.component';
 
@@ -13,7 +16,7 @@ import { CreateServerDialogComponent } from './create-server-dialog/create-serve
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  servers: Server[];
+  servers: Server[] = [];
 
   logs: Log[];
   baseLog: Log = {
@@ -25,19 +28,20 @@ export class HomeComponent {
 
   form;
 
-  constructor(private readonly matDialog: MatDialog, private formBuilder: FormBuilder, private signalR: SignalrService, private readonly apiService: ApiService) {
+  constructor(private readonly route: ActivatedRoute, private readonly router: Router, private readonly matDialog: MatDialog, private readonly formBuilder: FormBuilder, private readonly signalR: SignalrService, private readonly userService: UserService, private readonly serverService: ServerService) {
     signalR.startConnection('sampleGroup');
     signalR.receiveMessage();
     this.logs = [];
     this.subscribeToEvents();
 
     this.form = formBuilder.group(this.baseLog);
-    this.servers = [];
 
-    this.apiService.get<Server[]>('user/get-servers').subscribe(
+    this.userService.getServers().subscribe(
       servers => this.servers = servers,
       error => console.error(error)
     );
+
+    console.log(this.servers);
   }
 
   subscribeToEvents() {
@@ -57,14 +61,6 @@ export class HomeComponent {
     this.signalR.sendMessage(this.baseLog);
   }
 
-  getAll() {
-    console.log('hello?');
-    this.apiService.get<any>('user/').subscribe(
-      result => console.log(result),
-      error => console.error(error)
-    );
-  }
-
   openCreateServer() {
     const dialogRef = this.matDialog.open(CreateServerDialogComponent, {
       width: '250px',
@@ -72,9 +68,9 @@ export class HomeComponent {
 
     dialogRef.afterClosed().subscribe(
       form => {
-        this.apiService.post<any>('server/create', form.data).subscribe(
+        this.serverService.create(form.data).subscribe(
           serverResponse => {
-            this.apiService.post<any>(`user/join-server/${serverResponse.id}/2`).subscribe(
+            this.userService.joinServer(serverResponse.id, roles.admin).subscribe(
               ok => window.location.reload(),
               error => console.log('Error joining creating server: ' + error)
             )
@@ -86,14 +82,7 @@ export class HomeComponent {
     );
   }
 
-  onGetServers() {
-    this.apiService.get<any>('user/get-servers').subscribe(
-      result => console.log(result),
-      error => console.log(error)
-    );
-  }
-
-  onGetName(name: string) {
-    console.log(name)
+  onSetServer(id: string) {
+    this.router.navigate([`${id}`], { relativeTo: this.route });
   }
 }

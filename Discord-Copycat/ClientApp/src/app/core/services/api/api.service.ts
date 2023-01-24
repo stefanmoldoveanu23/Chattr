@@ -13,7 +13,6 @@ export class ApiService {
   }
 
   get<T>(path: String, params = {}): Observable<any> {
-    console.log(path);
     return this.httpClient.get<T>(`${this.apiUrl}${path}`, { params });
   }
 

@@ -25,8 +25,6 @@ namespace ClassLibrary.Helpers.Utils
             var tokenHandler = new JwtSecurityTokenHandler();
             var appPrivateKey = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
 
-            Console.WriteLine(user.Id);
-
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -64,12 +62,9 @@ namespace ClassLibrary.Helpers.Utils
 
             try
             {
-                Console.WriteLine(token);
                 tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validationToken);
-                Console.WriteLine(validationToken);
 
                 var jwtToken = (JwtSecurityToken)validationToken;
-                Console.WriteLine(jwtToken);
                 var userId = new Guid(jwtToken.Claims.FirstOrDefault(x => x.Type == "id").Value);
 
                 return userId;

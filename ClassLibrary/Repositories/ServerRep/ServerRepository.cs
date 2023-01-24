@@ -18,6 +18,7 @@ namespace ClassLibrary.Repositories.ServerRep
         {
             Server chats = await _table.Where(s => s.Id == id)
                 .Include(s => s.Chats)
+                .AsSplitQuery()
                 .FirstAsync();
             return chats;
         }
@@ -27,6 +28,7 @@ namespace ClassLibrary.Repositories.ServerRep
             Server users = await _table.Where(s => s.Id == id)
                 .Include(s => s.Users)
                 .ThenInclude(u => u.User)
+                .AsSplitQuery()
                 .FirstAsync();
             return users;
         }

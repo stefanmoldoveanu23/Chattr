@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { map, ReplaySubject } from 'rxjs'
-import { UserRequest } from '../../../../data/interfaces/UserRequest';
-import { UserResponse } from '../../../../data/interfaces/UserResponse';
 import { ApiService } from '../api/api.service';
 
 @Injectable({
