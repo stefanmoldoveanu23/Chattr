@@ -13,7 +13,6 @@ namespace ClassLibrary.Models.DTOs.UserDTO
     {
         public Guid Id { get; set; }
         public String Username { get; set; } = "";
-        public String Password { get; set; } = "";
         public String Email { get; set; } = "";
         public Roles Role { get; set; }
         public String Token { get; set; } = "";
@@ -22,7 +21,6 @@ namespace ClassLibrary.Models.DTOs.UserDTO
         {
             Id = user.Id;
             Username = user.Username;
-            Password = user.Password;
             Email = user.Email;
             Role = user.Role;
             Token = token;

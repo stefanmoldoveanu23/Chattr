@@ -24,7 +24,7 @@ namespace ClassLibrary.Helpers.Middleware
             _nextRequestDelegate = nextRequestDelegate;
         }
 
-        public async Task Invoke(HttpContext httpContext, IUserService userService, IJwtUtils jwtUtils, IMapper mapper)
+        public async Task Invoke(HttpContext httpContext, IUserService userService, IJwtUtils jwtUtils)
         {
 
             var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();

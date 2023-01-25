@@ -2,6 +2,7 @@
 using ClassLibrary.Helpers.Hubs;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
+using ClassLibrary.Repositories.UserRep;
 using ClassLibrary.Services.UserService;
 using Discord_Copycat.Data;
 using Discord_Copycat.Models;
@@ -27,20 +28,14 @@ namespace Discord_Copycat.Controllers
             _userService = userService;
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteAll()
+        [HttpGet("get-self")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public UserResponseDTO GetSelf()
         {
-            Console.WriteLine("Hi");
-            foreach (UserResponseDTO user in await _userService.GetUsersAsync())
-            {
-                Console.WriteLine(user.Id);
-                _userService.DeleteUser(new User { Id = user.Id });
-            }
-
-            return Ok();
+            return HttpContext.Items["User"] as UserResponseDTO;
         }
 
-        [HttpGet]
+
         public async Task<IActionResult> GetAll()
         {
             var allUsers = await _userService.GetUsersAsync();

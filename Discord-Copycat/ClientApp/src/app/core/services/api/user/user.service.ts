@@ -12,6 +12,10 @@ export class UserService {
 
   constructor(private readonly apiService: ApiService) { }
 
+  getSelf() {
+    return this.apiService.get<User>(`${this.route}get-self`);
+  }
+
   getFriends() {
     return this.apiService.get<User[]>(`${this.route}get-friends`);
   }

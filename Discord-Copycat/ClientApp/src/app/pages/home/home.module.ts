@@ -10,6 +10,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { HomeComponent } from './home.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CreateServerDialogComponent } from './create-server-dialog/create-server-dialog.component';
 import { ProfileComponent } from './profile/profile.component';
 
@@ -28,6 +30,8 @@ import { ProfileComponent } from './profile/profile.component';
     MatSidenavModule,
     MatIconModule,
     MatDialogModule,
+    MatCardModule,
+    ClipboardModule,
     HomeRoutingModule,
   ]
 })

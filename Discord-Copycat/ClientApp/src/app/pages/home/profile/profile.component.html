@@ -1,6 +1,10 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="side" [opened]="true" class="chats-menu"
                [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+    <div>
+      <p class="friend">{{self.username}}<button class="to-the-right" type="button" mat-icon-button (click)="onCopyId()"><mat-icon>library_books</mat-icon></button></p>
+    </div>
+    <mat-divider></mat-divider>
     <h3>Friends</h3>
     <div>
       <form [formGroup]="addFriend" (ngSubmit)="onAddFriend()">
@@ -15,14 +19,11 @@
     <div *ngFor="let friend of friends">
       <p class="friend" type="button" mat-button>{{friend.username}}<button class="to-the-right" type="button" mat-icon-button><mat-icon>close</mat-icon></button></p>
     </div>
-    <!-- <div *ngFor="let server of servers">
-    <button class="chat-button" type="button" mat-fab (click)="onSetServer(server.id)">{{server.name}}</button>
-  </div> -->
     
   </mat-sidenav>
 
   <mat-sidenav-content class="chats-content">
-
+    <p>{{self.id}}</p>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 
