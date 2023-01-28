@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../../../data/interfaces/user';
 import { UserService } from '../../../core/services/api/user/user.service';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +20,7 @@ export class ProfileComponent implements OnInit {
 
   friends: User[] = [{ id: 'hi', username: 'MY', email: '', token: '' }];
 
-  constructor(private readonly userService: UserService, private readonly formBuilder: FormBuilder, private readonly clipboard: Clipboard) {
+  constructor(private readonly authService: AuthService, private readonly userService: UserService, private readonly formBuilder: FormBuilder, private readonly clipboard: Clipboard) {
     this.userService.getFriends().subscribe(
       friends => {
         if (friends.length > 0) {
@@ -56,6 +57,10 @@ export class ProfileComponent implements OnInit {
 
   onCopyId() {
     this.clipboard.copy(this.self.id);
+  }
+
+  onLogout() {
+    this.authService.logout();
   }
 
 }

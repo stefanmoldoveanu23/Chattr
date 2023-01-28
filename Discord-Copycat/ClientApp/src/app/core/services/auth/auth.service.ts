@@ -17,12 +17,25 @@ export class AuthService {
     return this.apiService.post<any>(this.route + '/login', user).pipe(
       map((response: any) => {
         if (response) {
+          var users = JSON.parse(localStorage.getItem('users') ?? '[]');
+          users.push(response.token);
+          localStorage.setItem('users', JSON.stringify(users));
           sessionStorage.setItem('token', response.token);
-        } else {
-          console.log("HELLO");
+          window.location.reload();
         }
       })
     );
+  }
+
+  logout() {
+    var token = sessionStorage.getItem('token');
+    var users = JSON.parse(localStorage.getItem('users') ?? '[]');
+
+    users = users.filter((user: string) => user !== token);
+    console.log(users);
+
+    localStorage.setItem('users', JSON.stringify(users));
+    window.location.reload();
   }
 
   register(user: any) {

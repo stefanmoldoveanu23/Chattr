@@ -14,12 +14,20 @@ export class LoggedGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (sessionStorage.getItem('token') == null && localStorage.getItem('token') != null) {
-      sessionStorage.setItem('token', localStorage.getItem('token') ?? '');
-    }
+    if (sessionStorage.getItem('token') != null) {
+      const token = sessionStorage.getItem('token');
+      const users = JSON.parse(localStorage.getItem('users') ?? '[]');
 
-    if (localStorage.getItem('token') == null && sessionStorage.getItem('token') != null) {
-      localStorage.setItem('token', sessionStorage.getItem('token') ?? '');
+      if (!users.find((user: string) => user === token)) {
+        sessionStorage.removeItem('token');
+      }
+    } else if (localStorage.getItem('users') != '[]') {
+      const obj = JSON.parse(localStorage.getItem('users') ?? '[]');
+      console.log(obj);
+
+      if (obj.length != 0) {
+        sessionStorage.setItem('token', obj.at(-1));
+      }
     }
 
     if (this.authService.isLoggedIn()) {
