@@ -14,6 +14,14 @@ export class LoggedGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
+    if (sessionStorage.getItem('token') == null && localStorage.getItem('token') != null) {
+      sessionStorage.setItem('token', localStorage.getItem('token') ?? '');
+    }
+
+    if (localStorage.getItem('token') == null && sessionStorage.getItem('token') != null) {
+      localStorage.setItem('token', sessionStorage.getItem('token') ?? '');
+    }
+
     if (this.authService.isLoggedIn()) {
       return true;
     } else {

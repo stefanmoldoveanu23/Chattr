@@ -29,6 +29,8 @@ namespace ClassLibrary.Services.UserService
 
         Task<UserResponseDTO?> AddFriend(Guid id, Guid friendId);
 
+        Task<UserResponseDTO?> RemoveFriend(Guid id, Guid friendId);
+
         Task<List<ServerResponseDTO>> GetServersAsync(Guid id);
 
         Task<UserResponseDTO?> JoinServerAsync(Guid id, Guid serverId, Roles role);

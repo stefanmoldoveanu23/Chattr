@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
   friends: User[] = [{ id: 'hi', username: 'MY', email: '', token: '' }];
 
   constructor(private readonly userService: UserService, private readonly formBuilder: FormBuilder, private readonly clipboard: Clipboard) {
-    userService.getFriends().subscribe(
+    this.userService.getFriends().subscribe(
       friends => {
         if (friends.length > 0) {
           this.friends = friends;
@@ -29,9 +29,9 @@ export class ProfileComponent implements OnInit {
       error => console.error(error)
     );
 
-    userService.getSelf().subscribe(
+    this.userService.getSelf().subscribe(
       user => this.self = user,
-      error => console.error("Error getting self.")
+      error => console.error("Error getting self " + error)
     );
   }
 
@@ -45,6 +45,13 @@ export class ProfileComponent implements OnInit {
         error => console.error("Error adding friend " + error)
       );
     }
+  }
+
+  onRemoveFriend(friendId: string) {
+    this.userService.removeFriend(friendId).subscribe(
+      () => window.location.reload(),
+      error => console.error("Error removing friend " + error)
+    );
   }
 
   onCopyId() {

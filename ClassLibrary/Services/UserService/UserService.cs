@@ -188,5 +188,35 @@ namespace ClassLibrary.Services.UserService
 
             return new UserResponseDTO(user);
         }
+
+        public async Task<UserResponseDTO?> RemoveFriend(Guid id, Guid friendId)
+        {
+            User user = await _unitOfWork._userRepository.GetWithFriendsAsync(id);
+            User? friend = await _unitOfWork._userRepository.FindByIdAsync(friendId);
+
+            if (friend == null)
+            {
+                return null;
+            }
+
+            Friendship? friendship = user.FirstFriend.FirstOrDefault(friendship => friendship.User2Id == friendId);
+            if (friendship != null)
+            {
+                user.FirstFriend.Remove(friendship);
+            } else
+            {
+                friendship = user.SecondFriend.FirstOrDefault(friendship => friendship.User1Id == friendId);
+                if (friendship != null)
+                {
+                    user.SecondFriend.Remove(friendship);
+                }
+
+            }
+
+            _unitOfWork._userRepository.Update(user);
+            await _unitOfWork.SaveAsync();
+
+            return new UserResponseDTO(user);
+        }
     }
 }

@@ -17,7 +17,7 @@ export class AuthService {
     return this.apiService.post<any>(this.route + '/login', user).pipe(
       map((response: any) => {
         if (response) {
-          localStorage.setItem('token', response.token);
+          sessionStorage.setItem('token', response.token);
         } else {
           console.log("HELLO");
         }
@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     return (token != null);
   }
 }

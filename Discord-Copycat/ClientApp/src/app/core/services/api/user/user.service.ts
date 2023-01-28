@@ -32,6 +32,10 @@ export class UserService {
     return this.apiService.post<any>(`${this.route}add-friend/${friendId}`);
   }
 
+  removeFriend(friendId: string) {
+    return this.apiService.post<any>(`${this.route}remove-friend/${friendId}`);
+  }
+
   deleteAll() {
     return this.apiService.delete<any>(`${this.route}`);
   }

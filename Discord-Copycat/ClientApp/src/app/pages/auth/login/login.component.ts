@@ -24,13 +24,17 @@ export class LoginComponent implements OnInit {
 
   onLogin() {
     this.authService.login(this.loginForm.value).subscribe(
-      data => console.log(data),
+      () => {
+        if (!this.authService.isLoggedIn()) {
+          this.failed = true;
+        } else {
+          this.failed = false;
+        }
+      },
       error => console.error(error)
     )
 
-    if (!this.authService.isLoggedIn()) {
-      this.failed = true;
-    }
+    
   }
 
   onDelete() {

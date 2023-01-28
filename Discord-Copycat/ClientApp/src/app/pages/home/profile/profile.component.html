@@ -17,7 +17,7 @@
     </div>
     <mat-divider></mat-divider>
     <div *ngFor="let friend of friends">
-      <p class="friend" type="button" mat-button>{{friend.username}}<button class="to-the-right" type="button" mat-icon-button><mat-icon>close</mat-icon></button></p>
+      <p class="friend" type="button" mat-button>{{friend.username}}<button class="to-the-right" type="button" mat-icon-button (click)="onRemoveFriend(friend.id)"><mat-icon>close</mat-icon></button></p>
     </div>
     
   </mat-sidenav>

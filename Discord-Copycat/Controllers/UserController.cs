@@ -70,7 +70,31 @@ namespace Discord_Copycat.Controllers
             }
 
             Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
+            if (friendId == UserId)
+            {
+                return BadRequest("You cannot befriend yourself.");
+            }
+
             if (await _userService.AddFriend(UserId, friendId) == null)
+            {
+                return BadRequest("Friend does not exist.");
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("remove-friend/{friendId}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> RemoveFriend([FromRoute]Guid friendId)
+        {
+            if (HttpContext.Items["User"] == null)
+            {
+                return BadRequest("You are not logged in as a valid user.");
+            }
+
+            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
+
+            if (await _userService.RemoveFriend(UserId, friendId) == null)
             {
                 return BadRequest("Friend does not exist.");
             }

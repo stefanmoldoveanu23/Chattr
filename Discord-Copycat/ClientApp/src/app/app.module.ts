@@ -11,8 +11,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 
 export function tokenGetter() {
-  console.log(localStorage.getItem('token'));
-  return localStorage.getItem('token');
+  console.log(sessionStorage.getItem('token'));
+  return sessionStorage.getItem('token');
 }
 
 @NgModule({
