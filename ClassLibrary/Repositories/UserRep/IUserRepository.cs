@@ -10,6 +10,8 @@ namespace ClassLibrary.Repositories.UserRep
 {
     public interface IUserRepository : IGenericRepository<User>
     {
+        Task<User?> GetWithFriendAsync(Guid id, Guid friendId);
+
         Task<User> GetWithFriendsAsync(Guid id);
 
         Task<User> GetWithServersAsync(Guid id);

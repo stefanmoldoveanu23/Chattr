@@ -39,11 +39,35 @@ export class ChatComponent implements OnInit {
             users => this.users = users,
             error => console.error(`Error getting users in chat with id ${params.chatId ?? ''}: ` + error)
           );
-        } else {
 
+          this.chatService.getLogs(params.chatId ?? '').subscribe(
+            logs => this.logs = logs,
+            error => console.error(`Error getting logs in chat with id ${params.chatId ?? ''}: ` + error)
+          );
+
+          this.group = (params.serverId ?? '') + (params.chatId ?? '')
+        } else {
+          this.userService.getSelf().subscribe(
+            self => this.users.push(self),
+            error => console.error(`Error getting self: ${error}.`)
+          );
+
+          this.userService.getUserById(params.chatId ?? '').subscribe(
+            friend => this.users.push(friend),
+            error => console.error(`Error getting friend: ${error}.`)
+          );
+
+          this.userService.getFriendship(params.chatId ?? '').subscribe(
+            friendship => this.group = friendship,
+            error => console.error(`Error getting friendship id: ${error}.`)
+          );
+
+          this.userService.getLogs(params.chatId ?? '').subscribe(
+            logs => this.logs = logs,
+            error => console.error(`Error getting logs: ${error}.`)
+          );
         }
 
-        this.group = (params.serverId ?? '') + (params.chatId ?? '')
       }
     );
 

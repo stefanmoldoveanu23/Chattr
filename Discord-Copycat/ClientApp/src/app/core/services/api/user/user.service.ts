@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { roles } from '../../../../../data/enums/roles';
+import { Log } from '../../../../../data/interfaces/Log';
 import { Server } from '../../../../../data/interfaces/server';
 import { User } from '../../../../../data/interfaces/user';
 import { ApiService } from '../api.service';
@@ -14,6 +15,18 @@ export class UserService {
 
   getSelf() {
     return this.apiService.get<User>(`${this.route}get-self`);
+  }
+
+  getUserById(id: string) {
+    return this.apiService.get<User>(`${this.route}get-by-id/${id}`);
+  }
+
+  getFriendship(friendId: string) {
+    return this.apiService.get<string>(`${this.route}get-friendship/${friendId}`);
+  }
+
+  getLogs(friendId: string) {
+    return this.apiService.get<Log[]>(`${this.route}get-logs/${friendId}`);
   }
 
   getFriends() {

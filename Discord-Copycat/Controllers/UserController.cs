@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Helpers.Attributes;
 using ClassLibrary.Helpers.Hubs;
+using ClassLibrary.Models.DTOs.LogDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using ClassLibrary.Repositories.UserRep;
@@ -43,6 +44,7 @@ namespace Discord_Copycat.Controllers
         }
 
         [HttpGet("get-friends")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetFriends()
         {
             if (HttpContext.Items["User"] == null)
@@ -58,6 +60,46 @@ namespace Discord_Copycat.Controllers
             }
 
             return Ok(friends);
+        }
+
+        [HttpGet("get-friendship/{friendId}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> GetFriendship([FromRoute]Guid friendId)
+        {
+            if (HttpContext.Items["User"] == null)
+            {
+                return NotFound();
+            }
+
+            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
+            Guid? FriendshipId = await _userService.GetFriendshipAsync(UserId, friendId);
+
+            if (FriendshipId == null)
+            {
+                return NotFound();
+            } else
+            {
+                return Ok(FriendshipId);
+            }
+        }
+
+        [HttpGet("get-logs/{friendId}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> GetLogsWithFriend([FromRoute]Guid friendId)
+        {
+            if (HttpContext.Items["User"] == null)
+            {
+                return NotFound();
+            }
+
+            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
+            List<LogResponseDTO>? Logs = await _userService.GetLogsWithFriendAsync(UserId, friendId);
+            if (Logs == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Logs);
         }
 
         [HttpPost("add-friend/{friendId}")]
@@ -100,6 +142,18 @@ namespace Discord_Copycat.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpGet("get-by-id/{id}")]
+        public async Task<IActionResult> GetUserById([FromRoute]Guid id)
+        {
+            UserResponseDTO? User = await _userService.GetUserByIdAsync(id);
+            if (User == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(User);
         }
 
         [HttpPost("register")]

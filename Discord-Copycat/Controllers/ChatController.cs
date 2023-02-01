@@ -1,4 +1,5 @@
-﻿using ClassLibrary.Models.DTOs.UserDTO;
+﻿using ClassLibrary.Models.DTOs.LogDTO;
+using ClassLibrary.Models.DTOs.UserDTO;
 using ClassLibrary.Services.ChatService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,18 @@ namespace Discord_Copycat.Controllers
             }
 
             return Ok(Users);
-        } 
+        }
+
+        [HttpGet("get-logs/{chatId}")]
+        public async Task<IActionResult> GetLogs([FromRoute]Guid chatId)
+        {
+            List<LogResponseDTO>? Logs = await _chatService.GetLogsAsync(chatId);
+            if (Logs == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Logs);
+        }
     }
 }

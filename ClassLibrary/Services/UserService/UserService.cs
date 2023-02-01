@@ -218,5 +218,23 @@ namespace ClassLibrary.Services.UserService
 
             return new UserResponseDTO(user);
         }
+
+        public async Task<Guid?> GetFriendshipAsync(Guid id, Guid friendId)
+        {
+            User? user = await _unitOfWork._userRepository.GetWithFriendAsync(id, friendId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            if (user.FirstFriend.Count == 1)
+            {
+                return user.FirstFriend.First().Id;
+            } else
+            {
+                return user.SecondFriend.First().Id;
+            }
+
+        }
     }
 }

@@ -14,4 +14,8 @@ export class ChatService {
   getUsers(chatId: string) {
     return this.apiService.get<User[]>(`${this.route}get-users/${chatId}`);
   }
+
+  getLogs(chatId: string) {
+    return this.apiService.get<User[]>(`${this.route}get-logs/${chatId}`);
+  }
 }

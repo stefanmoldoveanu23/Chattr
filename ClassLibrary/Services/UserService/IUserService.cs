@@ -27,6 +27,8 @@ namespace ClassLibrary.Services.UserService
 
         Task<List<UserResponseDTO>> GetFriendsAsync(Guid id);
 
+        Task<Guid?> GetFriendshipAsync(Guid id, Guid friendId);
+
         Task<UserResponseDTO?> AddFriend(Guid id, Guid friendId);
 
         Task<UserResponseDTO?> RemoveFriend(Guid id, Guid friendId);
