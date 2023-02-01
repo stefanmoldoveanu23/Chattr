@@ -20,15 +20,6 @@ namespace ClassLibrary.Helpers.Hubs
 
         public async void JoinGroup(String group)
         {
-            /*string? token = Context.GetHttpContext().Request.Query["access_token"];
-            if (token == null || token == "")
-            {
-                return;
-            }
-
-            Guid userId = _jwtUtils.ValidateJwtToken(token);
-
-            Console.WriteLine("Join Group " + userId);*/
             await Groups.AddToGroupAsync(Context.ConnectionId, group);
         }
 

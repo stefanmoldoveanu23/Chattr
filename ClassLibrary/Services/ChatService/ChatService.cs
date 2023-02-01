@@ -96,6 +96,22 @@ namespace ClassLibrary.Services.ChatService
             return users;
         }
 
+        public async Task<LogResponseDTO?> SendMessage(Guid id, Guid userId, string message)
+        {
+            Chat? chat = await _unitOfWork._chatRepository.GetWithLogs(id);
+            if (chat == null)
+            {
+                return null;
+            }
+
+            ChatLog log = new ChatLog { ChatId = id, SenderId = userId, Message = message };
+            chat.Logs.Add(log);
+            _unitOfWork._chatRepository.Update(chat);
+            await _unitOfWork.SaveAsync();
+            
+            return _mapper.Map<LogResponseDTO>(log);
+        }
+
         public void UpdateChat(Chat chat)
         {
             _unitOfWork._chatRepository.Update(chat);

@@ -76,7 +76,7 @@ namespace ClassLibrary.Services.UserService
 
             List<LogResponseDTO> logs = new();
 
-            if (user.FirstFriend != null)
+            if (user.FirstFriend.Count != 0)
             {
                 foreach(FriendLog log in user.FirstFriend.First().Logs)
                 {
@@ -235,6 +235,32 @@ namespace ClassLibrary.Services.UserService
                 return user.SecondFriend.First().Id;
             }
 
+        }
+
+        public async Task<LogResponseDTO?> SendMessage(Guid id, Guid friendId, string message)
+        {
+            User? user = await _unitOfWork._userRepository.GetWithLogsAsync(id, friendId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            FriendLog log;
+
+            if (user.FirstFriend.Count == 1)
+            {
+                log = new FriendLog { FriendshipId = user.FirstFriend.First().Id, SenderId = id, Message = message };
+                user.FirstFriend.First().Logs.Add(log);
+            } else
+            {
+                log = new FriendLog { FriendshipId = user.SecondFriend.First().Id, SenderId = id, Message = message };
+                user.SecondFriend.First().Logs.Add(log);
+            }
+
+            _unitOfWork._userRepository.Update(user);
+            await _unitOfWork.SaveAsync();
+
+            return _mapper.Map<LogResponseDTO>(log);
         }
     }
 }

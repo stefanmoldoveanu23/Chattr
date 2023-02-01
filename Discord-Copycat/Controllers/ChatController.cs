@@ -1,6 +1,8 @@
-﻿using ClassLibrary.Models.DTOs.LogDTO;
+﻿using ClassLibrary.Helpers.Attributes;
+using ClassLibrary.Models.DTOs.LogDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using ClassLibrary.Services.ChatService;
+using Discord_Copycat.Models.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +28,25 @@ namespace Discord_Copycat.Controllers
             }
 
             return Ok(Users);
+        }
+
+        [HttpPut("send-message/{chatId}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> SendMessage([FromRoute]Guid chatId, [FromBody]string Message)
+        {
+            if (HttpContext.Items["User"] == null)
+            {
+                return NotFound();
+            }
+
+            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
+            LogResponseDTO? Log = await _chatService.SendMessage(chatId, UserId, Message);
+            if (Log == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Log);
         }
 
         [HttpGet("get-logs/{chatId}")]

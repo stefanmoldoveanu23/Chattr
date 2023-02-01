@@ -16,6 +16,8 @@ namespace ClassLibrary.Services.ChatService
 
         Task<ChatResponseDTO?> GetChatByIdAsync(Guid id);
 
+        Task<LogResponseDTO?> SendMessage(Guid id, Guid userId, string message);
+
         Task<ChatResponseDTO> CreateChatAsync(ChatRequestDTO chat);
 
         void UpdateChat(Chat chat);

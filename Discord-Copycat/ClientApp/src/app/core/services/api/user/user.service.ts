@@ -29,6 +29,10 @@ export class UserService {
     return this.apiService.get<Log[]>(`${this.route}get-logs/${friendId}`);
   }
 
+  sendMessage(friendId: string, message: string) {
+    return this.apiService.put<Log>(`${this.route}send-message/${friendId}`, { 'message': message });
+  }
+
   getFriends() {
     return this.apiService.get<User[]>(`${this.route}get-friends`);
   }

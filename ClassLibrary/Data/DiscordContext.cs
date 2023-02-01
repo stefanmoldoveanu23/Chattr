@@ -1,5 +1,8 @@
 ﻿using Discord_Copycat.Models;
+using Discord_Copycat.Models.Base;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace Discord_Copycat.Data
 {
@@ -79,6 +82,48 @@ namespace Discord_Copycat.Data
 
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is BaseEntity && (
+                    e.State == EntityState.Added || e.State == EntityState.Modified
+                ));
+
+            foreach (var entry in entries)
+            {
+                ((BaseEntity)entry.Entity).DateModified = DateTime.Now;
+
+                if (entry.State == EntityState.Added)
+                {
+                    ((BaseEntity)entry.Entity).DateCreated = DateTime.Now;
+                }
+            }
+
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is BaseEntity && (
+                    e.State == EntityState.Added || e.State == EntityState.Modified
+                ));
+
+            foreach (var entry in entries)
+            {
+                ((BaseEntity)entry.Entity).DateModified = DateTime.Now;
+
+                if (entry.State == EntityState.Added)
+                {
+                    ((BaseEntity)entry.Entity).DateCreated = DateTime.Now;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

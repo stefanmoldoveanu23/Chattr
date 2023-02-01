@@ -75,7 +75,7 @@ namespace ClassLibrary.Repositories.UserRep
 
         public User? FindByData(String username, String password)
         {
-            return _table.Where(u => u.Username == username && BCryptNet.Verify(password, u.Password)).FirstOrDefault();
+            return _table.AsEnumerable().Where(u => u.Username == username && BCryptNet.Verify(password, u.Password)).FirstOrDefault();
         }
 
         public async Task<User> GetWithFriendsAsync(Guid id)

@@ -125,6 +125,27 @@ namespace Discord_Copycat.Controllers
             return Ok();
         }
 
+        [HttpPut("send-message/{friendId}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> SendMessage([FromRoute]Guid friendId, [FromBody]LogRequestDTO Message)
+        {
+            if (HttpContext.Items["User"] == null)
+            {
+                return NotFound();
+            }
+
+            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
+            LogResponseDTO? Log = await _userService.SendMessage(UserId, friendId, Message.Message);
+
+            if (Log == null)
+            {
+                return NotFound();
+            }
+            Console.Write(Log.Message);
+
+            return Ok(Log);
+        }
+
         [HttpPost("remove-friend/{friendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> RemoveFriend([FromRoute]Guid friendId)
@@ -157,7 +178,7 @@ namespace Discord_Copycat.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserRequestDTO User)
+        public async Task<IActionResult> Register([FromBody]UserRequestDTO User)
         {
             await _userService.CreateUserAsync(User);
             return Ok();
@@ -165,7 +186,7 @@ namespace Discord_Copycat.Controllers
 
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] UserRequestDTO User)
+        public IActionResult Login([FromBody]UserRequestDTO User)
         {
             UserResponseDTO? response = _userService.Authenticate(User);
             if (response == null)
@@ -193,7 +214,7 @@ namespace Discord_Copycat.Controllers
 
         [HttpPost("join-server/{ServerId}/{role}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public async Task<IActionResult> JoinServer([FromRoute]Guid ServerId , [FromRoute] Roles role)
+        public async Task<IActionResult> JoinServer([FromRoute]Guid ServerId, [FromRoute]Roles role)
         {
             if (HttpContext.Items["User"] == null)
             {

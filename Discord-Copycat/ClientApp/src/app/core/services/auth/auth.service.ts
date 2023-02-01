@@ -18,8 +18,11 @@ export class AuthService {
       map((response: any) => {
         if (response) {
           var users = JSON.parse(localStorage.getItem('users') ?? '[]');
-          users.push(response.token);
-          localStorage.setItem('users', JSON.stringify(users));
+
+          if (users.find((u: string) => u === response.token) == undefined) {
+            users.push(response.token);
+            localStorage.setItem('users', JSON.stringify(users));
+          }
           sessionStorage.setItem('token', response.token);
           window.location.reload();
         }

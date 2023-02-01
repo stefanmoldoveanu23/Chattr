@@ -1,5 +1,12 @@
 .log {
-    height: 90%;
+    overflow-y: scroll;
+    height: 85%;
+    word-wrap: break-word;
+}
+
+mat-card {
+    background-color: gainsboro;
+    margin-bottom: 20px;
 }
 
 .chat {
