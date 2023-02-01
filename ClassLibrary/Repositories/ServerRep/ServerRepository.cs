@@ -14,22 +14,22 @@ namespace ClassLibrary.Repositories.ServerRep
     {
         public ServerRepository(DiscordContext discordContext) : base(discordContext) { }
 
-        public async Task<Server> GetWithChats(Guid id)
+        public async Task<Server?> GetWithChats(Guid id)
         {
-            Server chats = await _table.Where(s => s.Id == id)
+            Server? chats = await _table.Where(s => s.Id == id)
                 .Include(s => s.Chats)
                 .AsSplitQuery()
-                .FirstAsync();
+                .FirstOrDefaultAsync();
             return chats;
         }
 
-        public async Task<Server> GetWithUsers(Guid id)
+        public async Task<Server?> GetWithUsers(Guid id)
         {
-            Server users = await _table.Where(s => s.Id == id)
+            Server? users = await _table.Where(s => s.Id == id)
                 .Include(s => s.Users)
                 .ThenInclude(u => u.User)
                 .AsSplitQuery()
-                .FirstAsync();
+                .FirstOrDefaultAsync();
             return users;
         }
     }

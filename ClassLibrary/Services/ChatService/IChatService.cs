@@ -22,8 +22,8 @@ namespace ClassLibrary.Services.ChatService
 
         void DeleteChat(Chat chat);
 
-        Task<List<UserResponseDTO>> GetUsersAsync(Guid id);
+        Task<List<UserResponseDTO>?> GetUsersAsync(Guid id);
 
-        Task<List<LogResponseDTO>> GetLogsAsync(Guid id);
+        Task<List<LogResponseDTO>?> GetLogsAsync(Guid id);
     }
 }

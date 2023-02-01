@@ -28,7 +28,11 @@ namespace Discord_Copycat.Controllers
         [HttpGet("get-members/{Id}")]
         public async Task<IActionResult> GetMembers([FromRoute]Guid Id)
         {
-            List<UserResponseDTO> users = (await _serverService.GetUsersAsync(Id));
+            List<UserResponseDTO>? users = (await _serverService.GetUsersAsync(Id));
+            if (users == null)
+            {
+                return NotFound();
+            }
 
             return Ok(users);
         }

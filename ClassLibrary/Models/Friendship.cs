@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Discord_Copycat.Models
 {
-    public class Friendship
+    public class Friendship : BaseEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
 
         public Guid? User1Id { get; set; }
         public User User1 { get; set; }

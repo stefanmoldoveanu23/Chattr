@@ -6,7 +6,8 @@ import { ServerComponent } from './server/server.component';
 const routes: Routes = [
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
+    loadChildren: () => import('./profile/profile.module').then(p => p.ProfileModule)
   },
   {
     path: ':serverId',

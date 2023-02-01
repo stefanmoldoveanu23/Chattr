@@ -14,24 +14,24 @@ export class SignalrService {
   public startConnection(group: String) {
 
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:7291/chatHub', {
-        accessTokenFactory: () => (localStorage.getItem('token') ?? '')
-      })
+      .withUrl('https://localhost:7291/chatHub')
       .build();
 
     this.group = group;
 
     this.hubConnection
       .start()
-      .then((data: any) => {
+      .then(() => {
         this.hubConnection.invoke('JoinGroup', this.group)
+          .then(() => {
+            console.log(`Connection started to group ${this.group}!`);
+          })
           .catch((error: any) => {
-            console.log('Error entering group ' + this.group);
+            console.log(`Error entering group ${this.group}: ` + error);
             return;
           })
-        console.log('Connection started!');
       })
-      .catch((error: any) => console.log('Error while starting connection: ' + error));
+      .catch((error: any) => console.log(`Error while starting connection to group ${this.group}: ` + error));
   }
 
   public receiveMessage() {

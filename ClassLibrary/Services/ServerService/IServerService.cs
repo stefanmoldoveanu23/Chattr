@@ -22,8 +22,8 @@ namespace ClassLibrary.Services.ServerService
 
         void DeleteServer(Server server);
 
-        Task<List<UserResponseDTO>> GetUsersAsync(Guid id);
+        Task<List<UserResponseDTO>?> GetUsersAsync(Guid id);
 
-        Task<List<ChatResponseDTO>> GetChatsAsync(Guid id);
+        Task<List<ChatResponseDTO>?> GetChatsAsync(Guid id);
     }
 }

@@ -38,9 +38,13 @@ namespace ClassLibrary.Services.ServerService
             _unitOfWork.Save();
         }
 
-        public async Task<List<ChatResponseDTO>> GetChatsAsync(Guid id)
+        public async Task<List<ChatResponseDTO>?> GetChatsAsync(Guid id)
         {
             Server server = await _unitOfWork._serverRepository.GetWithChats(id);
+            if (server == null)
+            {
+                return null;
+            }
 
             List<ChatResponseDTO> chats = new();
             foreach (Chat chat in server.Chats)
@@ -73,9 +77,13 @@ namespace ClassLibrary.Services.ServerService
             return servers;
         }
 
-        public async Task<List<UserResponseDTO>> GetUsersAsync(Guid id)
+        public async Task<List<UserResponseDTO>?> GetUsersAsync(Guid id)
         {
-            Server server = await _unitOfWork._serverRepository.GetWithUsers(id);
+            Server? server = await _unitOfWork._serverRepository.GetWithUsers(id);
+            if (server == null)
+            {
+                return null;
+            }
 
             List<UserResponseDTO> users = new();
 

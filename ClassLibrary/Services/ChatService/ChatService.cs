@@ -60,9 +60,13 @@ namespace ClassLibrary.Services.ChatService
             return chats;
         }
 
-        public async Task<List<LogResponseDTO>> GetLogsAsync(Guid id)
+        public async Task<List<LogResponseDTO>?> GetLogsAsync(Guid id)
         {
-            Chat chat = await _unitOfWork._chatRepository.GetWithLogs(id);
+            Chat? chat = await _unitOfWork._chatRepository.GetWithLogs(id);
+            if (chat == null)
+            {
+                return null;
+            }
 
             List<LogResponseDTO> logs = new();
 
@@ -74,9 +78,13 @@ namespace ClassLibrary.Services.ChatService
             return logs;
         }
 
-        public async Task<List<UserResponseDTO>> GetUsersAsync(Guid id)
+        public async Task<List<UserResponseDTO>?> GetUsersAsync(Guid id)
         {
-            Chat chat = await _unitOfWork._chatRepository.GetWithUsers(id);
+            Chat? chat = await _unitOfWork._chatRepository.GetWithUsers(id);
+            if (chat == null)
+            {
+                return null;
+            }
 
             List<UserResponseDTO> users = new();
 

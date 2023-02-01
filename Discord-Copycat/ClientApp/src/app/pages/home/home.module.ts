@@ -13,12 +13,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CreateServerDialogComponent } from './create-server-dialog/create-server-dialog.component';
-import { ProfileComponent } from './profile/profile.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 
 @NgModule({
-  declarations: [HomeComponent, CreateServerDialogComponent, ProfileComponent],
+  declarations: [HomeComponent, CreateServerDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -31,6 +31,7 @@ import { ProfileComponent } from './profile/profile.component';
     MatIconModule,
     MatDialogModule,
     MatCardModule,
+    MatMenuModule,
     ClipboardModule,
     HomeRoutingModule,
   ]

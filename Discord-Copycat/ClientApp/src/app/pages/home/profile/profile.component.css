@@ -2,6 +2,14 @@ mat-sidenav {
     padding-left: 10px;
 }
 
+mat-sidenav-content {
+  padding-left: 10px;
+
+  height: 100%;
+  justify-content: center;
+  margin-bottom: 0px;
+}
+
 .chat-button {
   margin: 10px 10px 10px 10px;
 }

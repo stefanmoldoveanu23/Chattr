@@ -1,0 +1,17 @@
+<div class="log">
+  <div *ngFor="let log of logs">
+    <p>Date Sent: {{(log.dateCreated) | date : 'yyyy/MM/dd hh-mm-ss'}}</p> <br />
+    <p>Sender: {{log.senderId}}</p> <br />
+    <p id="{{log.id}}">Message: {{log.message}}</p> <br />
+  </div>
+</div>
+<div class="chat">
+  <div>
+    <form [formGroup]="form" (keyup.enter)="onSendMessage()">
+      <mat-form-field>
+        <mat-label>Write message here...</mat-label>
+        <input matInput placeholder="Hi!" formControlName="message" />
+      </mat-form-field>
+    </form>
+  </div>
+</div>

@@ -15,23 +15,28 @@ namespace ClassLibrary.Repositories.ChatRep
     {
         public ChatRepository(DiscordContext discordContext) : base(discordContext) { }
 
-        public async Task<Chat> GetWithLogs(Guid id)
+        public async Task<Chat?> GetWithLogs(Guid id)
         {
-            Chat logs = await _table.Where(c => c.Id == id)
+            Chat? logs = await _table.Where(c => c.Id == id)
                 .Include(c => c.Logs)
                 .AsSplitQuery()
-                .FirstAsync();
+                .FirstOrDefaultAsync();
             return logs;
         }
 
-        public async Task<Chat> GetWithUsers(Guid id)
+        public async Task<Chat?> GetWithUsers(Guid id)
         {
-            Chat users = await _table.Where(c => c.Id == id)
+            Chat? users = await _table.Where(c => c.Id == id)
                 .Include(c => c.Server)
                 .ThenInclude(s => s.Users)
                 .ThenInclude(u => u.User)
                 .AsSplitQuery()
-                .FirstAsync();
+                .FirstOrDefaultAsync();
+
+            if (users == null)
+            {
+                return null;
+            }
 
             users.Server.Users = users.Server.Users.Where(u => u.Role >= users.Role).ToList();
 

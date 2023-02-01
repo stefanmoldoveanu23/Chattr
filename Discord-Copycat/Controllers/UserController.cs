@@ -47,7 +47,7 @@ namespace Discord_Copycat.Controllers
         {
             if (HttpContext.Items["User"] == null)
             {
-                return BadRequest("You are not logged in as a valid user.");
+                return NotFound();
             }
 
             Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
@@ -66,7 +66,7 @@ namespace Discord_Copycat.Controllers
         {
             if (HttpContext.Items["User"] == null)
             {
-                return BadRequest("You are not logged in as a valid user.");
+                return NotFound();
             }
 
             Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
@@ -77,7 +77,7 @@ namespace Discord_Copycat.Controllers
 
             if (await _userService.AddFriend(UserId, friendId) == null)
             {
-                return BadRequest("Friend does not exist.");
+                return NotFound();
             }
 
             return Ok();
@@ -89,14 +89,14 @@ namespace Discord_Copycat.Controllers
         {
             if (HttpContext.Items["User"] == null)
             {
-                return BadRequest("You are not logged in as a valid user.");
+                return NotFound();
             }
 
             Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
 
             if (await _userService.RemoveFriend(UserId, friendId) == null)
             {
-                return BadRequest("Friend does not exist.");
+                return NotFound();
             }
 
             return Ok();
@@ -116,7 +116,7 @@ namespace Discord_Copycat.Controllers
             UserResponseDTO? response = _userService.Authenticate(User);
             if (response == null)
             {
-                return BadRequest("User or password is wrong. Try again.");
+                return NotFound();
             }
 
             return Ok(response);
@@ -128,7 +128,7 @@ namespace Discord_Copycat.Controllers
         {
             if (HttpContext.Items["User"] == null)
             {
-                return BadRequest("You are not logged in as a valid user.");
+                return NotFound();
             }
 
             Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
@@ -143,14 +143,14 @@ namespace Discord_Copycat.Controllers
         {
             if (HttpContext.Items["User"] == null)
             {
-                return BadRequest("You are not logged in as a valid user.");
+                return NotFound();
             }
 
             Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
 
             if (await _userService.JoinServerAsync(UserId, ServerId, role) == null)
             {
-                return BadRequest("Server does not exist.");
+                return NotFound();
             }
             return Ok();
         }

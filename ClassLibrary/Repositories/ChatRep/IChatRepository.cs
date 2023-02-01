@@ -10,8 +10,8 @@ namespace ClassLibrary.Repositories.ChatRep
 {
     public interface IChatRepository: IGenericRepository<Chat>
     {
-        Task<Chat> GetWithLogs(Guid id);
+        Task<Chat?> GetWithLogs(Guid id);
 
-        Task<Chat> GetWithUsers(Guid id);
+        Task<Chat?> GetWithUsers(Guid id);
     }
 }

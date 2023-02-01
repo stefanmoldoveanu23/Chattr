@@ -10,8 +10,8 @@ namespace ClassLibrary.Repositories.ServerRep
 {
     public interface IServerRepository: IGenericRepository<Server>
     {
-        Task<Server> GetWithUsers(Guid id);
+        Task<Server?> GetWithUsers(Guid id);
 
-        Task<Server> GetWithChats(Guid id);
+        Task<Server?> GetWithChats(Guid id);
     }
 }

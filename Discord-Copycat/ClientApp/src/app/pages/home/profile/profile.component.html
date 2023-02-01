@@ -1,8 +1,20 @@
-<mat-sidenav-container>
+<mat-sidenav-container fullscreen>
   <mat-sidenav #sidenav mode="side" [opened]="true" class="chats-menu"
                [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
     <div>
-      <p class="friend">{{self.username}}<button class="to-the-right" type="button" mat-icon-button (click)="onCopyId()"><mat-icon>library_books</mat-icon></button></p>
+      <p class="friend">
+        {{self.username}}
+        <span class="to-the-right">
+          <button type="button" mat-icon-button (click)="onCopyId()"><mat-icon>library_books</mat-icon></button>
+          <button type="button" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>settings</mat-icon></button>
+          <mat-menu #menu="matMenu">
+            <button type="button" mat-menu-item (click)="onLogout()">
+              <mat-icon>power_settings_new</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
+        </span>
+      </p>
     </div>
     <mat-divider></mat-divider>
     <h3>Friends</h3>
@@ -23,8 +35,6 @@
   </mat-sidenav>
 
   <mat-sidenav-content class="chats-content">
-    <p>{{self.id}}</p>
-    <button type="button" mat-button (click)="onLogout()">Logout</button>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 

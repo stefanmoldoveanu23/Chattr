@@ -1,11 +1,16 @@
 .servers-menu {
 }
 
+mat-sidenav-container {
+    height: 100%;
+}
+
 .servers {
     width: auto;
 }
 
 .servers-content {
+    height: 100%;
 }
 
 .server-button {
