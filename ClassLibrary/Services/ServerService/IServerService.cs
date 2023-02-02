@@ -2,6 +2,7 @@
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using Discord_Copycat.Models;
+using Discord_Copycat.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +26,7 @@ namespace ClassLibrary.Services.ServerService
         Task<List<UserResponseDTO>?> GetUsersAsync(Guid id);
 
         Task<List<ChatResponseDTO>?> GetChatsAsync(Guid id);
+
+        Task<List<ChatResponseDTO>?> GetChatsForRoleAsync(Guid id, Roles role);
     }
 }

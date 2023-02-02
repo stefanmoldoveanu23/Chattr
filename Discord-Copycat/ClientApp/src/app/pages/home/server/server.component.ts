@@ -7,11 +7,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./server.component.css']
 })
 export class ServerComponent implements OnInit {
-  serverId: string|null = "";
+  serverId: string = '';
 
   constructor(public readonly route: ActivatedRoute) {
     this.route.params.subscribe(
-      params => this.serverId = params.serverId
+      params => {
+        this.serverId = params.serverId ?? '';
+
+      }
     );
   }
 

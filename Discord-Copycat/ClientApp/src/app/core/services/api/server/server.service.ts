@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Server } from '../../../../../data/interfaces/server';
 import { ApiService } from '../api.service';
 
 @Injectable({
@@ -11,6 +12,10 @@ export class ServerService {
   constructor(private readonly apiService: ApiService) { }
 
   create(server: any) {
-    return this.apiService.post(`${this.route}create`, server);
+    return this.apiService.post<Server>(`${this.route}create`, server);
+  }
+
+  getChats(serverId: string) {
+    return this.apiService.get<>
   }
 }

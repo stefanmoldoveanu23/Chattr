@@ -1,6 +1,7 @@
 ﻿using ClassLibrary.Repositories.GenericRep;
 using Discord_Copycat.Data;
 using Discord_Copycat.Models;
+using Discord_Copycat.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,22 @@ namespace ClassLibrary.Repositories.ServerRep
                 .AsSplitQuery()
                 .FirstOrDefaultAsync();
             return chats;
+        }
+
+        public async Task<Roles?> GetUserRole(Guid id, Guid userId)
+        {
+            Roles? role = await _table.Where(server => server.Id == id).Join(_discordContext.Members,
+                    server => server.Id,
+                    member => member.ServerId,
+                    (server, member) => new
+                    {
+                        member.UserId,
+                        member.Role
+                    }).Where(member => member.UserId == userId)
+                    .Select(member => member.Role)
+                    .FirstOrDefaultAsync();
+
+            return role;
         }
 
         public async Task<Server?> GetWithUsers(Guid id)

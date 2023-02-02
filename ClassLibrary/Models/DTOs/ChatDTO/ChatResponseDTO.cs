@@ -12,7 +12,5 @@ namespace ClassLibrary.Models.DTOs.ChatDTO
         public Guid Id { get; set; }
         public String Name { get; set; } = "General";
         public Roles Role { get; set; }
-
-        public Guid ServerId { get; set; }
     }
 }

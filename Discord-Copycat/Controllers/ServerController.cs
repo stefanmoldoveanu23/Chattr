@@ -1,8 +1,10 @@
-﻿using ClassLibrary.Models.DTOs.ServerDTO;
+﻿using ClassLibrary.Models.DTOs.ChatDTO;
+using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using ClassLibrary.Services.ServerService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace Discord_Copycat.Controllers
 {
@@ -25,16 +27,28 @@ namespace Discord_Copycat.Controllers
             return Ok(newServer);
         }
 
-        [HttpGet("get-members/{Id}")]
-        public async Task<IActionResult> GetMembers([FromRoute]Guid Id)
+        [HttpGet("get-chats/{Id}")]
+        public async Task<IActionResult> GetChats([FromRoute]Guid Id)
         {
-            List<UserResponseDTO>? users = (await _serverService.GetUsersAsync(Id));
-            if (users == null)
+            List<ChatResponseDTO>? Chats = await _serverService.GetChatsAsync(Id);
+            if (Chats == null)
             {
                 return NotFound();
             }
 
-            return Ok(users);
+            return Ok(Chats);
+        }
+
+        [HttpGet("get-members/{Id}")]
+        public async Task<IActionResult> GetMembers([FromRoute]Guid Id)
+        {
+            List<UserResponseDTO>? Users = (await _serverService.GetUsersAsync(Id));
+            if (Users == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Users);
         }
     }
 }

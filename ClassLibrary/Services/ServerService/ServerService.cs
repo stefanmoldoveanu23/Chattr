@@ -4,6 +4,7 @@ using ClassLibrary.Models.DTOs.ChatDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using Discord_Copycat.Models;
+using Discord_Copycat.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,17 @@ namespace ClassLibrary.Services.ServerService
             }
 
             return chats;
+        }
+
+        public async Task<List<ChatResponseDTO>?> GetChatsForRoleAsync(Guid id, Roles role)
+        {
+            List<ChatResponseDTO>? chats = await GetChatsAsync(id);
+            if (chats == null)
+            {
+                return null;
+            }
+
+            return chats.FindAll(chat => chat.Role <= role);
         }
 
         public async Task<ServerResponseDTO?> GetServerByIdAsync(Guid id)
