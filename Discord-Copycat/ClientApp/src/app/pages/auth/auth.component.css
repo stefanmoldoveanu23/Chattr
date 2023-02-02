@@ -1,0 +1,15 @@
+.border {
+    display: block;
+    margin: auto;
+    width: 375px;
+    height: 300px;
+    border: 2px solid black;
+}
+
+mat-button-toggle-group {
+    width: 100%;
+}
+
+mat-button-toggle {
+    width: 50%;
+}

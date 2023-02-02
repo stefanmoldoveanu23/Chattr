@@ -49,7 +49,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\data\enums\roles.ts" />
-    <TypeScriptCompile Include="ClientApp\src\data\interfaces\Log.ts" />
+    <TypeScriptCompile Include="ClientApp\src\data\interfaces\log.ts" />
     <TypeScriptCompile Include="ClientApp\src\data\interfaces\server.ts" />
     <TypeScriptCompile Include="ClientApp\src\data\interfaces\user.ts" />
     <TypeScriptCompile Include="ClientApp\src\data\types\IForm.ts" />

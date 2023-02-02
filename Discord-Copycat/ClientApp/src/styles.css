@@ -17,8 +17,19 @@ code {
 }
 
 .container {
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+app-auth {
+    display: block;
+    height: 100%;
 }

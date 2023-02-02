@@ -1,2 +1,14 @@
-<p>Auth works!</p>
-<router-outlet></router-outlet>
+<!-- <nav mat-tab-nav-bar>
+  <a mat-tab-link routerLink="./login">Login</a>
+  <a mat-tab-link routerLink="./register">Register</a>
+</nav> -->
+
+<div class="border">
+  <mat-button-toggle-group>
+    <mat-button-toggle routerLink="login">Login</mat-button-toggle>
+    <mat-button-toggle routerLink="register">Register</mat-button-toggle>
+  </mat-button-toggle-group>
+  <div class="auth-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

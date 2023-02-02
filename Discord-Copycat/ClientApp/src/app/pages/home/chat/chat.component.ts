@@ -61,7 +61,7 @@ export class ChatComponent implements OnInit {
                   this.userService.getLogs(params.chatId ?? '').subscribe(
                     logs => {
                       this.logs = logs;
-                      this.logs.forEach(log => log.senderName = this.users.find(user => user.id == log.senderId)?.username ?? '');
+                      this.logs.forEach(log => log.senderName = this.users.find(user => user.id === log.senderId)?.username ?? '');
                     },
                     () => router.navigate(['..'], { relativeTo: activatedRoute })
                   );
@@ -93,6 +93,7 @@ export class ChatComponent implements OnInit {
 
   subscribeToEvents() {
     this.signalR.messageReceived.subscribe((data: Log) => {
+      data.senderName = this.users.find(user => user.id === data.senderId)?.username ?? '';
       this.logs.push(data);
     });
   }
