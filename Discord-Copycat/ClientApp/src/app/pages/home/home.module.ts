@@ -14,11 +14,12 @@ import { MatCardModule } from '@angular/material/card';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CreateServerDialogComponent } from './create-server-dialog/create-server-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { ChatComponent } from './chat/chat.component';
 
 
 
 @NgModule({
-  declarations: [HomeComponent, CreateServerDialogComponent],
+  declarations: [HomeComponent, CreateServerDialogComponent, ChatComponent],
   imports: [
     CommonModule,
     FormsModule,

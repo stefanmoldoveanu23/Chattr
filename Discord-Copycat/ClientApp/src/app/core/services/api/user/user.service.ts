@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { roles } from '../../../../../data/enums/roles';
-import { Log } from '../../../../../data/interfaces/Log';
+import { Roles } from '../../../../../data/enums/roles';
+import { Log } from '../../../../../data/interfaces/log';
 import { Server } from '../../../../../data/interfaces/server';
 import { User } from '../../../../../data/interfaces/user';
 import { ApiService } from '../api.service';
@@ -41,7 +41,7 @@ export class UserService {
     return this.apiService.get<Server[]>(`${this.route}get-servers`);
   }
 
-  joinServer(serverId: string, role: roles) {
+  joinServer(serverId: string, role: Roles) {
     return this.apiService.post<any>(`${this.route}join-server/${serverId}/${role}`);
   }
 

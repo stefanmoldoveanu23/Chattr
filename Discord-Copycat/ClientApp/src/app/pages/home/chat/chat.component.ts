@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, AfterContentChecked } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Log } from '../../../../data/interfaces/Log';
+import { Log } from '../../../../data/interfaces/log';
 import { User } from '../../../../data/interfaces/user';
 import { ChatService } from '../../../core/services/api/chat/chat.service';
 import { UserService } from '../../../core/services/api/user/user.service';
@@ -12,7 +12,7 @@ import { SignalrService } from '../../../core/services/signalr/signalr.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, AfterContentChecked {
   group: string = '';
   whoId: string = '';
 
@@ -27,8 +27,8 @@ export class ChatComponent implements OnInit {
     message: ''
   });
 
-  constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute, private readonly signalR: SignalrService, private readonly formBuilder: FormBuilder, private readonly userService: UserService, private readonly chatService: ChatService) {
-    activatedRoute.params.subscribe(
+  constructor(private readonly changeDetectorRef: ChangeDetectorRef, private readonly router: Router, private readonly activatedRoute: ActivatedRoute, private readonly signalR: SignalrService, private readonly formBuilder: FormBuilder, private readonly userService: UserService, private readonly chatService: ChatService) {
+    this.activatedRoute.params.subscribe(
       params => {
         if (params.serverId != undefined) {
           this.mode = true;
@@ -41,11 +41,11 @@ export class ChatComponent implements OnInit {
                   this.logs = logs;
                   this.logs.forEach(log => log.senderName = this.users.find(user => user.id == log.senderId)?.username ?? '');
                 },
-                () => router.navigate(['..'], { relativeTo: activatedRoute })
+                () => this.router.navigate(['..'], { relativeTo: activatedRoute })
               );
 
             },
-            () => router.navigate(['..'], { relativeTo: activatedRoute })
+            () => this.router.navigate(['..'], { relativeTo: activatedRoute })
           );
 
           this.group = (params.serverId ?? '') + (params.chatId ?? '')
@@ -63,21 +63,21 @@ export class ChatComponent implements OnInit {
                       this.logs = logs;
                       this.logs.forEach(log => log.senderName = this.users.find(user => user.id === log.senderId)?.username ?? '');
                     },
-                    () => router.navigate(['..'], { relativeTo: activatedRoute })
+                    () => this.router.navigate(['..'], { relativeTo: activatedRoute })
                   );
 
                 },
-                () => router.navigate(['..'], { relativeTo: activatedRoute })
+                () => this.router.navigate(['..'], { relativeTo: activatedRoute })
               );
 
             },
-            () => router.navigate(['..'], { relativeTo: activatedRoute })
+            () => this.router.navigate(['..'], { relativeTo: activatedRoute })
           );
 
 
           this.userService.getFriendship(params.chatId ?? '').subscribe(
             friendship => this.group = friendship,
-            () => router.navigate(['..'], { relativeTo: activatedRoute })
+            () => this.router.navigate(['..'], { relativeTo: activatedRoute })
           );
         }
 
@@ -122,6 +122,10 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterContentChecked(): void {
+    this.changeDetectorRef.detectChanges();
   }
 
 }

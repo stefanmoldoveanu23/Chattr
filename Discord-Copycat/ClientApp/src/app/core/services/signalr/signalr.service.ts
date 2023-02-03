@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-import { Log } from '../../../../data/interfaces/Log';
+import { Log } from '../../../../data/interfaces/log';
 
 @Injectable({
   providedIn: 'root'

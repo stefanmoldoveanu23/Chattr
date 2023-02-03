@@ -25,8 +25,10 @@ namespace ClassLibrary.Services.ServerService
 
         Task<List<UserResponseDTO>?> GetUsersAsync(Guid id);
 
+        Task<Roles?> GetUserRole(Guid id, Guid userId);
+
         Task<List<ChatResponseDTO>?> GetChatsAsync(Guid id);
 
-        Task<List<ChatResponseDTO>?> GetChatsForRoleAsync(Guid id, Roles role);
+        Task<List<ChatResponseDTO>?> GetChatsForUserAsync(Guid id, Guid userId);
     }
 }

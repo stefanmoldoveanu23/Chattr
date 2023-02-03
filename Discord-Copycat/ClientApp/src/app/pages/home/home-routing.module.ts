@@ -11,7 +11,8 @@ const routes: Routes = [
   },
   {
     path: ':serverId',
-    component: ServerComponent
+    component: ServerComponent,
+    loadChildren: () => import('./server/server.module').then(s => s.ServerModule)
   },
   {
     path: '**',

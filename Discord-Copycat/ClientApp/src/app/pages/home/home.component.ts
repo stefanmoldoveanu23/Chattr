@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { roles } from '../../../data/enums/roles';
-import { Log } from '../../../data/interfaces/Log';
+import { Roles } from '../../../data/enums/roles';
 import { Server } from '../../../data/interfaces/server';
 import { ServerService } from '../../core/services/api/server/server.service';
 import { UserService } from '../../core/services/api/user/user.service';
@@ -36,7 +35,7 @@ export class HomeComponent {
       form => {
         this.serverService.create(form.data).subscribe(
           serverResponse => {
-            this.userService.joinServer(serverResponse.id, roles.admin).subscribe(
+            this.userService.joinServer(serverResponse.id, Roles.admin).subscribe(
               () => window.location.reload(),
               error => console.log('Error joining creating server: ' + error)
             )

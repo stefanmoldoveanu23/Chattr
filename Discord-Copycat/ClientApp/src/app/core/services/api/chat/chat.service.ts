@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Log } from '../../../../../data/interfaces/Log';
+import { Log } from '../../../../../data/interfaces/log';
 import { User } from '../../../../../data/interfaces/user';
 import { ApiService } from '../api.service';
 

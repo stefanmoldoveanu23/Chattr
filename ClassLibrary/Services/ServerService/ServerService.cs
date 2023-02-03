@@ -41,7 +41,7 @@ namespace ClassLibrary.Services.ServerService
 
         public async Task<List<ChatResponseDTO>?> GetChatsAsync(Guid id)
         {
-            Server server = await _unitOfWork._serverRepository.GetWithChats(id);
+            Server? server = await _unitOfWork._serverRepository.GetWithChats(id);
             if (server == null)
             {
                 return null;
@@ -56,8 +56,14 @@ namespace ClassLibrary.Services.ServerService
             return chats;
         }
 
-        public async Task<List<ChatResponseDTO>?> GetChatsForRoleAsync(Guid id, Roles role)
+        public async Task<List<ChatResponseDTO>?> GetChatsForUserAsync(Guid id, Guid userId)
         {
+            Roles? role = await _unitOfWork._serverRepository.GetUserRole(id, userId);
+            if (role == null)
+            {
+                return null;
+            }
+
             List<ChatResponseDTO>? chats = await GetChatsAsync(id);
             if (chats == null)
             {
@@ -87,6 +93,13 @@ namespace ClassLibrary.Services.ServerService
             }
 
             return servers;
+        }
+
+        public async Task<Roles?> GetUserRole(Guid id, Guid userId)
+        {
+            Roles? role = await _unitOfWork._serverRepository.GetUserRole(id, userId);
+
+            return role;
         }
 
         public async Task<List<UserResponseDTO>?> GetUsersAsync(Guid id)

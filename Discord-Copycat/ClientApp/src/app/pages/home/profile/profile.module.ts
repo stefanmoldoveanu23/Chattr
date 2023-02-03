@@ -17,7 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
-  declarations: [ProfileComponent, ChatComponent],
+  declarations: [ProfileComponent],
   imports: [
     CommonModule,
     FormsModule,

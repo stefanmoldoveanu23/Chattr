@@ -1,1 +1,26 @@
-<p>{{this.serverId}}</p>
+<mat-sidenav-container fullscreen>
+  <mat-sidenav #sidenav mode="side" [opened]="true" class="chats-menu"
+               [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+    <div>
+      <p class="data">
+        {{server.name}}
+        <span class="to-the-right">
+          <button *ngIf="role >= Roles.mod" type="button" mat-icon-button><mat-icon>library_books</mat-icon></button>
+          <button type="button" mat-icon-button [matMenuTriggerFor]="menu"><man-icon>settings</man-icon></button>
+          <mat-menu #menu="matMenu">
+            
+          </mat-menu>
+        </span>
+      </p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <h3>Chats</h3>
+    <div>
+      <form *ngIf="role >= Roles.mod" [formGroup]="addChat">
+
+      </form>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>
