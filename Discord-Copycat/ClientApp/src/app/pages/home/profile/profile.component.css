@@ -1,5 +1,6 @@
 mat-sidenav {
     padding-left: 10px;
+    width: 220px;
 }
 
 mat-sidenav-content {
@@ -22,6 +23,8 @@ mat-sidenav-content {
 
     margin-top: 10px;
     margin-bottom: 10px;
+
+    text-overflow: ellipsis;
 }
 
 .to-the-right {

@@ -6,7 +6,6 @@ import { Roles } from '../../../data/enums/roles';
 import { Server } from '../../../data/interfaces/server';
 import { ServerService } from '../../core/services/api/server/server.service';
 import { UserService } from '../../core/services/api/user/user.service';
-import { SignalrService } from '../../core/services/signalr/signalr.service';
 import { CreateServerDialogComponent } from './create-server-dialog/create-server-dialog.component';
 
 @Component({
@@ -17,9 +16,7 @@ import { CreateServerDialogComponent } from './create-server-dialog/create-serve
 export class HomeComponent {
   servers: Server[] = [];
 
-  
-
-  constructor(private readonly route: ActivatedRoute, private readonly router: Router, private readonly matDialog: MatDialog, private readonly formBuilder: FormBuilder, private readonly signalR: SignalrService, private readonly userService: UserService, private readonly serverService: ServerService) {
+  constructor(private readonly route: ActivatedRoute, private readonly router: Router, private readonly matDialog: MatDialog, private readonly userService: UserService, private readonly serverService: ServerService) {
     this.userService.getServers().subscribe(
       servers => this.servers = servers,
       error => console.error(error)
@@ -29,6 +26,7 @@ export class HomeComponent {
   openCreateServer() {
     const dialogRef = this.matDialog.open(CreateServerDialogComponent, {
       width: '250px',
+      enterAnimationDuration: '0.5s',
     });
 
     dialogRef.afterClosed().subscribe(
@@ -37,13 +35,19 @@ export class HomeComponent {
           serverResponse => {
             this.userService.joinServer(serverResponse.id, Roles.admin).subscribe(
               () => window.location.reload(),
-              error => console.log('Error joining creating server: ' + error)
+              error => {
+                console.log('Error joining creating server.');
+                console.error(error);
+              }
             )
           },
-          error => console.log('Error creating server: ' + error)
+          error => {
+            console.log('Error creating server.');
+            console.error(error);
+          }
         )
       },
-      error => console.log(error)
+      error => console.error(error)
     );
   }
 

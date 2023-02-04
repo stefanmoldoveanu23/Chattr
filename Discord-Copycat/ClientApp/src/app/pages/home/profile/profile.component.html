@@ -20,11 +20,11 @@
     <h3>Friends</h3>
     <div>
       <form [formGroup]="addFriend" (ngSubmit)="onAddFriend()">
-        <mat-form-field>
+        <mat-form-field [style.width.%]="80">
           <mat-label>Add a new friend :)</mat-label>
           <input matInput placeholder="Id goes here" formControlName="id" />
         </mat-form-field>
-        <button matSuffix type="submit" mat-icon-button><mat-icon>add</mat-icon></button>
+        <button matSuffix type="submit" [disabled]="!(addFriend.valid)" mat-icon-button><mat-icon>add</mat-icon></button>
       </form>
     </div>
     <mat-divider></mat-divider>

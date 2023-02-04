@@ -28,40 +28,22 @@ export class ChatComponent implements OnInit, AfterContentChecked {
   });
 
   constructor(private readonly changeDetectorRef: ChangeDetectorRef, private readonly router: Router, private readonly activatedRoute: ActivatedRoute, private readonly signalR: SignalrService, private readonly formBuilder: FormBuilder, private readonly userService: UserService, private readonly chatService: ChatService) {
-    this.activatedRoute.params.subscribe(
-      params => {
-        if (params.serverId != undefined) {
-          this.mode = true;
-          this.chatService.getUsers(params.chatId ?? '').subscribe(
-            users => {
-              this.users = users;
+    this.activatedRoute.parent?.params.subscribe(
+      paramsParent => {
+        this.activatedRoute.params.subscribe(
+          params => {
 
-              this.chatService.getLogs(params.chatId ?? '').subscribe(
-                logs => {
-                  this.logs = logs;
-                  this.logs.forEach(log => log.senderName = this.users.find(user => user.id == log.senderId)?.username ?? '');
-                },
-                () => this.router.navigate(['..'], { relativeTo: activatedRoute })
-              );
+            if (paramsParent.serverId != undefined) {
 
-            },
-            () => this.router.navigate(['..'], { relativeTo: activatedRoute })
-          );
+              this.mode = true;
+              this.chatService.getUsers(params.chatId ?? '').subscribe(
+                users => {
+                  this.users = users;
 
-          this.group = (params.serverId ?? '') + (params.chatId ?? '')
-        } else {
-          this.userService.getSelf().subscribe(
-            self => {
-              this.users.push(self);
-
-              this.userService.getUserById(params.chatId ?? '').subscribe(
-                friend => {
-                  this.users.push(friend);
-
-                  this.userService.getLogs(params.chatId ?? '').subscribe(
+                  this.chatService.getLogs(params.chatId ?? '').subscribe(
                     logs => {
                       this.logs = logs;
-                      this.logs.forEach(log => log.senderName = this.users.find(user => user.id === log.senderId)?.username ?? '');
+                      this.logs.forEach(log => log.senderName = this.users.find(user => user.id == log.senderId)?.username ?? '');
                     },
                     () => this.router.navigate(['..'], { relativeTo: activatedRoute })
                   );
@@ -70,21 +52,47 @@ export class ChatComponent implements OnInit, AfterContentChecked {
                 () => this.router.navigate(['..'], { relativeTo: activatedRoute })
               );
 
-            },
-            () => this.router.navigate(['..'], { relativeTo: activatedRoute })
-          );
+              this.group = (paramsParent.serverId ?? '') + (params.chatId ?? '')
+            } else {
+              this.userService.getSelf().subscribe(
+                self => {
+                  this.users.push(self);
+
+                  this.userService.getUserById(params.chatId ?? '').subscribe(
+                    friend => {
+                      this.users.push(friend);
+
+                      this.userService.getLogs(params.chatId ?? '').subscribe(
+                        logs => {
+                          this.logs = logs;
+                          this.logs.forEach(log => log.senderName = this.users.find(user => user.id === log.senderId)?.username ?? '');
+                        },
+                        () => this.router.navigate(['..'], { relativeTo: activatedRoute })
+                      );
+
+                    },
+                    () => this.router.navigate(['..'], { relativeTo: activatedRoute })
+                  );
+
+                },
+                () => this.router.navigate(['..'], { relativeTo: activatedRoute })
+              );
 
 
-          this.userService.getFriendship(params.chatId ?? '').subscribe(
-            friendship => this.group = friendship,
-            () => this.router.navigate(['..'], { relativeTo: activatedRoute })
-          );
-        }
+              this.userService.getFriendship(params.chatId ?? '').subscribe(
+                friendship => this.group = friendship,
+                () => this.router.navigate(['..'], { relativeTo: activatedRoute })
+              );
+            }
 
-        this.whoId = params.chatId ?? '';
+            this.whoId = params.chatId ?? '';
 
+          }
+        );
       }
     );
+
+    
 
     signalR.startConnection(this.group);
     signalR.receiveMessage();

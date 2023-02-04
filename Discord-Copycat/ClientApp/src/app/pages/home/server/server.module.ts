@@ -10,15 +10,16 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio'
 import { MatMenuModule } from '@angular/material/menu';
 
 import { ServerComponent } from './server.component';
-import { ChatComponent } from '../chat/chat.component';
+import { CreateChatDialogComponent } from './create-chat-dialog/create-chat-dialog.component';
 
 
 
 @NgModule({
-  declarations: [ServerComponent],
+  declarations: [ServerComponent, CreateChatDialogComponent],
   imports: [
     CommonModule,
     ServerRouterModule,
@@ -32,6 +33,7 @@ import { ChatComponent } from '../chat/chat.component';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatRadioModule,
     MatMenuModule,
   ]
 })

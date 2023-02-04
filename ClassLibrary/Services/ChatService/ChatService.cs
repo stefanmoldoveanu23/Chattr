@@ -90,7 +90,7 @@ namespace ClassLibrary.Services.ChatService
 
             foreach (MemberOfServer memberOfServer in chat.Server.Users)
             {
-                users.Add(_mapper.Map<UserResponseDTO>(memberOfServer.User));
+                users.Add(new UserResponseDTO(memberOfServer.User));
             }
 
             return users;

@@ -12,5 +12,5 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <button type="button" form="create-server-form" (click)="sendMessage()" mat-button mat-dialog-close>Ok</button>
+  <button type="button" form="create-server-form" [disabled]="!(form.valid)" (click)="sendMessage()" mat-button mat-dialog-close>Ok</button>
 </div>

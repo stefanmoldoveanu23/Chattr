@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Roles } from '../../../../data/enums/roles';
 import { Chat } from '../../../../data/interfaces/chat';
 import { Server } from '../../../../data/interfaces/server';
+import { ChatService } from '../../../core/services/api/chat/chat.service';
 import { ServerService } from '../../../core/services/api/server/server.service';
+import { CreateChatDialogComponent } from './create-chat-dialog/create-chat-dialog.component';
 
 @Component({
   selector: 'app-server',
@@ -19,7 +22,7 @@ export class ServerComponent implements OnInit {
   Roles = Roles;
   role: Roles = Roles.user;
 
-  constructor(public readonly route: ActivatedRoute, public readonly serverService: ServerService) {
+  constructor(public readonly matDialog: MatDialog, public readonly route: ActivatedRoute, public readonly serverService: ServerService, public readonly chatService: ChatService) {
     this.route.params.subscribe(
       params => {
         this.serverId = params.serverId ?? '';
@@ -52,6 +55,26 @@ export class ServerComponent implements OnInit {
           }
         );
       }
+    );
+  }
+
+  openAddChat() {
+    const dialogRef = this.matDialog.open(CreateChatDialogComponent, {
+      width: '300px',
+      enterAnimationDuration: '0.5s',
+    });
+
+    dialogRef.afterClosed().subscribe(
+      form => {
+        this.chatService.create(this.server.id, form.data).subscribe(
+          () => window.location.reload(),
+          error => {
+            console.log('Error creating new chat.');
+            console.error(error);
+          }
+        );
+      },
+      error => console.error(error)
     );
   }
 
