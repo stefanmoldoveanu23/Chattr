@@ -165,9 +165,12 @@ namespace ClassLibrary.Services.UserService
                 return null;
             }
 
-            user.Servers.Add(new MemberOfServer { UserId = id, ServerId = serverId, Role = role });
-            _unitOfWork._userRepository.Update(user);
-            await _unitOfWork.SaveAsync();
+            if (user.Servers.FirstOrDefault(server => server.ServerId == serverId) == null)
+            {
+                user.Servers.Add(new MemberOfServer { UserId = id, ServerId = serverId, Role = role });
+                _unitOfWork._userRepository.Update(user);
+                await _unitOfWork.SaveAsync();
+            }
 
             return new UserResponseDTO(user);
         }

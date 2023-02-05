@@ -33,15 +33,6 @@ export class LoginComponent implements OnInit {
       },
       error => console.error(error)
     )
-
-    
-  }
-
-  onDelete() {
-    this.userService.deleteAll().subscribe(
-      result => console.log(result),
-      error => console.log(error)
-    );
   }
 
 }

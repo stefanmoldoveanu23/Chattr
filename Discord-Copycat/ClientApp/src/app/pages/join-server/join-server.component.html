@@ -8,7 +8,7 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button type="button" class="join" mat-button>Join</button>
-    <button type="button" class="close" mat-button align="end">Close</button>
+    <button type="button" class="join" (click)="onSubmit(true)" mat-button>Join</button>
+    <button type="button" class="close" (click)="onSubmit(false)" mat-button>Close</button>
   </mat-card-actions>
 </mat-card>
