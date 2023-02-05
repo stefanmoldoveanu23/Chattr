@@ -34,7 +34,7 @@ namespace Discord_Copycat.Controllers
             List<UserResponseDTO>? Users = await _chatService.GetUsersAsync(ChatId);
             if (Users == null)
             {
-                return NotFound();
+                return NotFound($"Error getting users: chat with id {ChatId} not found.");
             }
 
             return Ok(Users);
@@ -44,16 +44,15 @@ namespace Discord_Copycat.Controllers
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> SendMessage([FromRoute]Guid ChatId, [FromBody]LogRequestDTO Message)
         {
-            if (HttpContext.Items["User"] == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound();
+                return BadRequest("Error sending message: no user logged in.");
             }
 
-            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
-            LogResponseDTO? Log = await _chatService.SendMessage(ChatId, UserId, Message.Message);
+            LogResponseDTO? Log = await _chatService.SendMessage(ChatId, User.Id, Message.Message);
             if (Log == null)
             {
-                return NotFound();
+                return NotFound($"Error sending message: chat with id {ChatId} not found.");
             }
 
             return Ok(Log);
@@ -65,7 +64,7 @@ namespace Discord_Copycat.Controllers
             List<LogResponseDTO>? Logs = await _chatService.GetLogsAsync(ChatId);
             if (Logs == null)
             {
-                return NotFound();
+                return NotFound($"Error getting logs: chat with id ${ChatId} not found.");
             }
 
             return Ok(Logs);

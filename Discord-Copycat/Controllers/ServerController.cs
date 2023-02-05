@@ -33,16 +33,15 @@ namespace Discord_Copycat.Controllers
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetRole([FromRoute]Guid Id)
         {
-            UserResponseDTO? User = HttpContext.Items["User"] as UserResponseDTO;
-            if (User == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound("User not logged in.");
+                return BadRequest($"Error getting role of user in server with id {Id}: no user logged in.");
             }
 
             Roles? Role = await _serverService.GetUserRole(Id, User.Id);
             if (Role == null)
             {
-                return BadRequest($"User {User.Id} not in server {Id}.");
+                return NotFound($"Error getting role of user in server with id {Id}: user {User.Id} is not member of this server.");
             }
 
             return Ok(Role);
@@ -52,16 +51,15 @@ namespace Discord_Copycat.Controllers
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetChatsForUser([FromRoute]Guid Id)
         {
-            UserResponseDTO? User = HttpContext.Items["User"] as UserResponseDTO;
-            if (User == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound("User not logged in.");
+                return BadRequest($"Error getting chats for user in server with id {Id}: no user logged in.");
             }
 
             List<ChatResponseDTO>? Chats = await _serverService.GetChatsForUserAsync(Id, User.Id);
             if (Chats == null)
             {
-                return BadRequest($"User {User.Id} not in server ${Id}.");
+                return NotFound($"Error getting chats for user in server with {Id}: user {User.Id} is not member of this server.");
             }
 
             return Ok(Chats);
@@ -73,7 +71,7 @@ namespace Discord_Copycat.Controllers
             List<ChatResponseDTO>? Chats = await _serverService.GetChatsAsync(Id);
             if (Chats == null)
             {
-                return NotFound($"Server with id {Id} doesn't exist.");
+                return NotFound($"Error getting chats of server with id {Id}: no such server exists.");
             }
 
             return Ok(Chats);
@@ -85,7 +83,7 @@ namespace Discord_Copycat.Controllers
             List<UserResponseDTO>? Users = await _serverService.GetUsersAsync(Id);
             if (Users == null)
             {
-                return NotFound($"Server with id ${Id} doesn't exist.");
+                return NotFound($"Error getting member of server with id ${Id}: no such server exists.");
             }
 
             return Ok(Users);
@@ -97,7 +95,7 @@ namespace Discord_Copycat.Controllers
             ServerResponseDTO? Server = await _serverService.GetServerByIdAsync(Id);
             if (Server == null)
             {
-                return NotFound($"Server with id {Id} doesn't exist.");
+                return NotFound($"Error getting server with id {Id}: no such server exists.");
             }
 
             return Ok(Server);

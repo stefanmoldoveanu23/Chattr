@@ -31,11 +31,10 @@ namespace Discord_Copycat.Controllers
 
         [HttpGet("get-self")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public UserResponseDTO GetSelf()
+        public UserResponseDTO? GetSelf()
         {
             return HttpContext.Items["User"] as UserResponseDTO;
         }
-
 
         public async Task<IActionResult> GetAll()
         {
@@ -47,13 +46,12 @@ namespace Discord_Copycat.Controllers
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetFriends()
         {
-            if (HttpContext.Items["User"] == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound();
+                return BadRequest("Error getting friends: no user logged in.");
             }
 
-            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
-            List<UserResponseDTO> friends = (await _userService.GetFriendsAsync(UserId));
+            List<UserResponseDTO> friends = (await _userService.GetFriendsAsync(User.Id));
             foreach (UserResponseDTO friend in friends)
             {
                 friend.Email = "";
@@ -62,116 +60,110 @@ namespace Discord_Copycat.Controllers
             return Ok(friends);
         }
 
-        [HttpGet("get-friendship/{friendId}")]
+        [HttpGet("get-friendship/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public async Task<IActionResult> GetFriendship([FromRoute]Guid friendId)
+        public async Task<IActionResult> GetFriendship([FromRoute]Guid FriendId)
         {
-            if (HttpContext.Items["User"] == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound();
+                return BadRequest($"Error getting friendship id with ${FriendId}: no user logged in.");
             }
 
-            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
-            Guid? FriendshipId = await _userService.GetFriendshipAsync(UserId, friendId);
+            Guid? FriendshipId = await _userService.GetFriendshipAsync(User.Id, FriendId);
 
             if (FriendshipId == null)
             {
-                return NotFound();
+                return NotFound($"Error getting friendship id with ${FriendId}: user ${User.Username} is not friends with ${FriendId}.");
             } else
             {
                 return Ok(FriendshipId);
             }
         }
 
-        [HttpGet("get-logs/{friendId}")]
+        [HttpGet("get-logs/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public async Task<IActionResult> GetLogsWithFriend([FromRoute]Guid friendId)
+        public async Task<IActionResult> GetLogsWithFriend([FromRoute]Guid FriendId)
         {
-            if (HttpContext.Items["User"] == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound();
+                return BadRequest($"Error getting chat logs with ${FriendId}: no user logged in.");
             }
 
-            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
-            List<LogResponseDTO>? Logs = await _userService.GetLogsWithFriendAsync(UserId, friendId);
+            List<LogResponseDTO>? Logs = await _userService.GetLogsWithFriendAsync(User.Id, FriendId);
             if (Logs == null)
             {
-                return NotFound();
+                return NotFound($"Error getting chat logs with ${FriendId}: no friendship found between ${User.Username} and user with id {FriendId}.");
             }
 
             return Ok(Logs);
         }
 
-        [HttpPost("add-friend/{friendId}")]
+        [HttpPost("add-friend/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public async Task<IActionResult> AddFriend([FromRoute]Guid friendId)
+        public async Task<IActionResult> AddFriend([FromRoute]Guid FriendId)
         {
-            if (HttpContext.Items["User"] == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound();
+                return BadRequest($"Error adding friend with id {FriendId}: no user logged in.");
             }
 
-            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
-            if (friendId == UserId)
+            if (FriendId == User.Id)
             {
-                return BadRequest("You cannot befriend yourself.");
+                return BadRequest($"Error adding friend with id {FriendId}: you cannot befriend yourself.");
             }
 
-            if (await _userService.AddFriend(UserId, friendId) == null)
+            if (await _userService.AddFriend(User.Id, FriendId) == null)
             {
-                return NotFound();
+                return NotFound($"Error adding friend with id {FriendId}: user does not exist.");
             }
 
             return Ok();
         }
 
-        [HttpPut("send-message/{friendId}")]
+        [HttpPut("send-message/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public async Task<IActionResult> SendMessage([FromRoute]Guid friendId, [FromBody]LogRequestDTO Message)
+        public async Task<IActionResult> SendMessage([FromRoute]Guid FriendId, [FromBody]LogRequestDTO Message)
         {
-            if (HttpContext.Items["User"] == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound();
+                return BadRequest($"Error sending message to friend with id {FriendId}: no user logged in.");
             }
 
-            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
-            LogResponseDTO? Log = await _userService.SendMessage(UserId, friendId, Message.Message);
+            LogResponseDTO? Log = await _userService.SendMessage(User.Id, FriendId, Message.Message);
 
             if (Log == null)
             {
-                return NotFound();
+                return NotFound($"Error sending message to friend: no friendship found between {User.Id} and {FriendId}.");
             }
-            Console.Write(Log.Message);
 
             return Ok(Log);
         }
 
-        [HttpPost("remove-friend/{friendId}")]
+        [HttpPost("remove-friend/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public async Task<IActionResult> RemoveFriend([FromRoute]Guid friendId)
+        public async Task<IActionResult> RemoveFriend([FromRoute]Guid FriendId)
         {
-            if (HttpContext.Items["User"] == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound();
+                return BadRequest($"Error removing friend with id {FriendId}: no user logged in.");
             }
 
-            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
 
-            if (await _userService.RemoveFriend(UserId, friendId) == null)
+            if (await _userService.RemoveFriend(User.Id, FriendId) == null)
             {
-                return NotFound();
+                return NotFound($"Error removing friend: no friendship found between {User.Id} and {FriendId}");
             }
 
             return Ok();
         }
 
-        [HttpGet("get-by-id/{id}")]
-        public async Task<IActionResult> GetUserById([FromRoute]Guid id)
+        [HttpGet("get-by-id/{Id}")]
+        public async Task<IActionResult> GetUserById([FromRoute]Guid Id)
         {
-            UserResponseDTO? User = await _userService.GetUserByIdAsync(id);
+            UserResponseDTO? User = await _userService.GetUserByIdAsync(Id);
             if (User == null)
             {
-                return NotFound();
+                return NotFound($"Error getting user with id {Id}: no such user exists.");
             }
 
             return Ok(User);
@@ -191,7 +183,7 @@ namespace Discord_Copycat.Controllers
             UserResponseDTO? response = _userService.Authenticate(User);
             if (response == null)
             {
-                return NotFound();
+                return BadRequest($"Error logging in as \"{User.Username}\": no user found with these credentials.");
             }
 
             return Ok(response);
@@ -201,31 +193,27 @@ namespace Discord_Copycat.Controllers
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetServers()
         {
-            if (HttpContext.Items["User"] == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound();
+                return BadRequest("Error getting servers: no user logged in.");
             }
 
-            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
-            List<ServerResponseDTO> Servers = await _userService.GetServersAsync(UserId);
-
+            List<ServerResponseDTO> Servers = await _userService.GetServersAsync(User.Id);
             return Ok(Servers);
         }
 
-        [HttpPost("join-server/{ServerId}/{role}")]
+        [HttpPost("join-server/{ServerId}/{Role}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public async Task<IActionResult> JoinServer([FromRoute]Guid ServerId, [FromRoute]Roles role)
+        public async Task<IActionResult> JoinServer([FromRoute]Guid ServerId, [FromRoute]Roles Role)
         {
-            if (HttpContext.Items["User"] == null)
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
-                return NotFound();
+                return BadRequest($"Error joining server {ServerId}: no user logged in.");
             }
 
-            Guid UserId = (HttpContext.Items["User"] as UserResponseDTO).Id;
-
-            if (await _userService.JoinServerAsync(UserId, ServerId, role) == null)
+            if (await _userService.JoinServerAsync(User.Id, ServerId, Role) == null)
             {
-                return NotFound();
+                return NotFound($"Error joining server {ServerId}: no such server exists.");
             }
             return Ok();
         }
