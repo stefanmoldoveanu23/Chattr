@@ -92,8 +92,6 @@ export class ChatComponent implements OnInit, AfterContentChecked {
       }
     );
 
-    
-
     signalR.startConnection(this.group);
     signalR.receiveMessage();
     this.subscribeToEvents();

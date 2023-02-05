@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -12,8 +12,8 @@ export class ApiService {
     this.apiUrl = baseUrl + "api/";
   }
 
-  get<T>(path: String, params = {}): Observable<any> {
-    return this.httpClient.get<T>(`${this.apiUrl}${path}`, { params });
+  get<T>(path: String, params = {}, headers = new HttpHeaders()): Observable<any> {
+    return this.httpClient.get<T>(`${this.apiUrl}${path}`, { params, headers });
   }
 
   put<T>(path: String, body = {}): Observable<any> {

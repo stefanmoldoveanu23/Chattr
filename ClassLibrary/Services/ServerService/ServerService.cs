@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClassLibrary.Helpers.UOW;
+using ClassLibrary.Helpers.Utils;
 using ClassLibrary.Models.DTOs.ChatDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
@@ -16,11 +17,13 @@ namespace ClassLibrary.Services.ServerService
     internal class ServerService : IServerService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IJwtUtils _jwtUtils;
         private readonly IMapper _mapper;
 
-        public ServerService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ServerService(IUnitOfWork unitOfWork, IJwtUtils jwtUtils, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _jwtUtils = jwtUtils;
             _mapper = mapper;
         }
 
@@ -93,6 +96,17 @@ namespace ClassLibrary.Services.ServerService
             }
 
             return servers;
+        }
+
+        public async Task<string?> GetServerToken(Guid id)
+        {
+            ServerResponseDTO? server = await GetServerByIdAsync(id);
+            if (server == null)
+            {
+                return null;
+            }
+
+            return _jwtUtils.GenerateJwtToken(server);
         }
 
         public async Task<Roles?> GetUserRole(Guid id, Guid userId)

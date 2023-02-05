@@ -1,4 +1,5 @@
-﻿using Discord_Copycat.Models;
+﻿using ClassLibrary.Models.DTOs.ServerDTO;
+using Discord_Copycat.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -40,7 +41,27 @@ namespace ClassLibrary.Helpers.Utils
             return tokenHandler.WriteToken(token);
         }
 
-        public Guid ValidateJwtToken(string token)
+        public string GenerateJwtToken(ServerResponseDTO server)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var appPrivateKey = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim("serverId", server.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddHours(3),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(appPrivateKey), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
+
+        public Guid ValidateUserJwtToken(string token)
         {
             if (token == null)
             {
@@ -70,6 +91,42 @@ namespace ClassLibrary.Helpers.Utils
                 return userId;
             }
             catch(ArgumentException error)
+            {
+                Console.WriteLine(error);
+                return Guid.Empty;
+            }
+        }
+
+        public Guid ValidateServerJwtToken(string token)
+        {
+            if (token == null)
+            {
+                return Guid.Empty;
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var appPrivateKey = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(appPrivateKey),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            try
+            {
+                tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validationToken);
+
+                var jwtToken = (JwtSecurityToken)validationToken;
+                var serverId = new Guid(jwtToken.Claims.FirstOrDefault(x => x.Type == "serverId").Value);
+
+                return serverId;
+            }
+            catch (ArgumentException error)
             {
                 Console.WriteLine(error);
                 return Guid.Empty;

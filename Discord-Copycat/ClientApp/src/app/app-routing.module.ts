@@ -4,6 +4,7 @@ import { LoggedGuard } from './core/guards/logged/logged.guard';
 import { UnloggedGuard } from './core/guards/unlogged/unlogged.guard';
 import { AuthComponent } from './pages/auth/auth.component';
 import { HomeComponent } from './pages/home/home.component';
+import { JoinServerComponent } from './pages/join-server/join-server.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,11 @@ const routes: Routes = [
     canActivate: [UnloggedGuard],
     component: AuthComponent,
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
+  },
+  {
+    path: 'join-server/:token',
+    canActivate: [LoggedGuard],
+    component: JoinServerComponent,
   },
   {
     path: '**',

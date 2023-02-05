@@ -1,0 +1,32 @@
+mat-card {
+    margin: auto;
+    margin-top: 200px;
+    width: 30%;
+
+    background-color: gainsboro;
+}
+
+mat-card-header {
+    display: block;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+}
+
+mat-card-actions {
+    width: 100%;
+    position: relative;
+    margin: auto;
+    padding: 0px 10px 10px 10px;
+}
+
+mat-card-content {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.close {
+    right: 0px;
+    position: absolute;
+}

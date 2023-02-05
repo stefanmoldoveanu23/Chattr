@@ -11,15 +11,18 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { JoinServerComponent } from './pages/join-server/join-server.component';
+import { MatButtonModule } from '@angular/material/button';
 
 export function tokenGetter() {
-  console.log(sessionStorage.getItem('token'));
   return sessionStorage.getItem('token');
 }
 
 @NgModule({
   declarations: [
     AppComponent,
+    JoinServerComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -31,6 +34,8 @@ export function tokenGetter() {
     MatDividerModule,
     MatButtonToggleModule,
     MatTabsModule,
+    MatCardModule,
+    MatButtonModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

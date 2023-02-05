@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Roles } from '../../../data/enums/roles';
@@ -31,21 +30,23 @@ export class HomeComponent {
 
     dialogRef.afterClosed().subscribe(
       form => {
-        this.serverService.create(form.data).subscribe(
-          serverResponse => {
-            this.userService.joinServer(serverResponse.id, Roles.admin).subscribe(
-              () => window.location.reload(),
-              error => {
-                console.log('Error joining creating server.');
-                console.error(error);
-              }
-            )
-          },
-          error => {
-            console.log('Error creating server.');
-            console.error(error);
-          }
-        )
+        if (form != null) {
+          this.serverService.create(form.data).subscribe(
+            serverResponse => {
+              this.userService.joinServer(serverResponse.id, Roles.admin).subscribe(
+                () => window.location.reload(),
+                error => {
+                  console.log('Error joining creating server.');
+                  console.error(error);
+                }
+              )
+            },
+            error => {
+              console.log('Error creating server.');
+              console.error(error);
+            }
+          )
+        }
       },
       error => console.error(error)
     );

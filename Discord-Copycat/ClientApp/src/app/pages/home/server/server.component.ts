@@ -1,3 +1,4 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -22,7 +23,7 @@ export class ServerComponent implements OnInit {
   Roles = Roles;
   role: Roles = Roles.user;
 
-  constructor(public readonly matDialog: MatDialog, public readonly route: ActivatedRoute, public readonly serverService: ServerService, public readonly chatService: ChatService) {
+  constructor(public readonly clipboard: Clipboard, public readonly matDialog: MatDialog, public readonly route: ActivatedRoute, public readonly serverService: ServerService, public readonly chatService: ChatService) {
     this.route.params.subscribe(
       params => {
         this.serverId = params.serverId ?? '';
@@ -66,15 +67,27 @@ export class ServerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       form => {
-        this.chatService.create(this.server.id, form.data).subscribe(
-          () => window.location.reload(),
-          error => {
-            console.log('Error creating new chat.');
-            console.error(error);
-          }
-        );
+        if (form != null) {
+          this.chatService.create(this.server.id, form.data).subscribe(
+            () => window.location.reload(),
+            error => {
+              console.log('Error creating new chat.');
+              console.error(error);
+            }
+          );
+        }
       },
       error => console.error(error)
+    );
+  }
+
+  onCopyServerLink() {
+    this.serverService.getServerLink(this.server.id).subscribe(
+      result => this.clipboard.copy(window.location.origin + '/join-server/' + result.token),
+      error => {
+        console.log('Error copying server link.');
+        console.error(error);
+      }
     );
   }
 

@@ -5,7 +5,7 @@
       <p class="chat">
         <b>{{server.name}}</b>
         <span class="to-the-right">
-          <button *ngIf="role >= Roles.mod" type="button" mat-icon-button><mat-icon>library_books</mat-icon></button>
+          <button *ngIf="role >= Roles.mod" type="button" (click)="onCopyServerLink()" mat-icon-button><mat-icon>library_books</mat-icon></button>
           <button type="button" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>settings</mat-icon></button>
           <mat-menu #menu="matMenu">
             

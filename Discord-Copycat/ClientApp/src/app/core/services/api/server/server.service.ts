@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Roles } from '../../../../../data/enums/roles';
 import { Chat } from '../../../../../data/interfaces/chat';
@@ -19,6 +20,17 @@ export class ServerService {
 
   getServer(serverId: string) {
     return this.apiService.get<Server>(`${this.route}get-server/${serverId}`);
+  }
+
+  getServerFromToken(token: string) {
+    console.log(token);
+    let headers = new HttpHeaders()
+      .append('Server', token);
+    return this.apiService.get<Server>(`${this.route}get-server`, {}, headers);
+  }
+
+  getServerLink(serverId: string) {
+    return this.apiService.get<any>(`${this.route}get-server-token/${serverId}`);
   }
 
   getRole(serverId: string) {

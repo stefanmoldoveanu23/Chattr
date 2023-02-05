@@ -2,6 +2,7 @@
 using ClassLibrary.Helpers.Hubs;
 using ClassLibrary.Helpers.Utils;
 using ClassLibrary.Models.DTOs.UserDTO;
+using ClassLibrary.Services.ServerService;
 using ClassLibrary.Services.UserService;
 using Discord_Copycat.Models;
 using Microsoft.AspNet.SignalR;
@@ -24,16 +25,25 @@ namespace ClassLibrary.Helpers.Middleware
             _nextRequestDelegate = nextRequestDelegate;
         }
 
-        public async Task Invoke(HttpContext httpContext, IUserService userService, IJwtUtils jwtUtils)
+        public async Task Invoke(HttpContext httpContext, IUserService userService, IServerService serverService, IJwtUtils jwtUtils)
         {
 
             var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
-            var userId = jwtUtils.ValidateJwtToken(token);
+            var userId = jwtUtils.ValidateUserJwtToken(token);
 
             if (userId != Guid.Empty)
             {
                 httpContext.Items["User"] = await userService.GetUserByIdAsync(userId);
+            }
+
+            token = httpContext.Request.Headers["Server"].FirstOrDefault()?.Split(" ").Last();
+
+            var serverId = jwtUtils.ValidateServerJwtToken(token);
+
+            if (serverId != Guid.Empty)
+            {
+                httpContext.Items["Server"] = await serverService.GetServerByIdAsync(serverId);
             }
 
             await _nextRequestDelegate(httpContext);

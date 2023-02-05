@@ -100,5 +100,25 @@ namespace Discord_Copycat.Controllers
 
             return Ok(Server);
         }
+
+        [HttpGet("get-server")]
+        public ServerResponseDTO? GetServerFromToken()
+        {
+            return HttpContext.Items["Server"] as ServerResponseDTO;
+        }
+
+        [HttpGet("get-server-token/{Id}")]
+        public async Task<IActionResult> GetServerToken([FromRoute]Guid Id)
+        {
+            string? token = await _serverService.GetServerToken(Id);
+            if (token == null)
+            {
+                return NotFound($"Error getting server join link for server with id {Id}: no such server exists.");
+            }
+
+            Console.WriteLine(HttpContext.Request.Path);
+
+            return Ok(new { token });
+        }
     }
 }
