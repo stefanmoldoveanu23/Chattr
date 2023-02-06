@@ -1,12 +1,13 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Roles } from '../../../../data/enums/roles';
 import { Chat } from '../../../../data/interfaces/chat';
 import { Server } from '../../../../data/interfaces/server';
 import { ChatService } from '../../../core/services/api/chat/chat.service';
 import { ServerService } from '../../../core/services/api/server/server.service';
+import { UserService } from '../../../core/services/api/user/user.service';
 import { CreateChatDialogComponent } from './create-chat-dialog/create-chat-dialog.component';
 
 @Component({
@@ -23,7 +24,7 @@ export class ServerComponent implements OnInit {
   Roles = Roles;
   role: Roles = Roles.user;
 
-  constructor(public readonly clipboard: Clipboard, public readonly matDialog: MatDialog, public readonly route: ActivatedRoute, public readonly serverService: ServerService, public readonly chatService: ChatService) {
+  constructor(public readonly clipboard: Clipboard, public readonly matDialog: MatDialog, public readonly router: Router, public readonly route: ActivatedRoute, public readonly serverService: ServerService, public readonly chatService: ChatService, public readonly userService: UserService) {
     this.route.params.subscribe(
       params => {
         this.serverId = params.serverId ?? '';
@@ -92,11 +93,23 @@ export class ServerComponent implements OnInit {
   }
 
   onLeaveServer() {
-
+    this.userService.leaveServer(this.server.id).subscribe(
+      () => this.router.navigate(['..'], { relativeTo: this.route }),
+      error => {
+        console.log('Error leaving server.');
+        console.error(error);
+      }
+    );
   }
 
   onDeleteServer() {
-
+    this.serverService.delete(this.server.id).subscribe(
+      () => this.router.navigate(['..'], { relativeTo: this.route }),
+      error => {
+        console.log('Error deleting server.');
+        console.error(error);
+      }
+    );
   }
 
   ngOnInit(): void {

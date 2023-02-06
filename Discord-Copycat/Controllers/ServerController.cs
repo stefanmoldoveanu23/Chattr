@@ -150,11 +150,6 @@ namespace Discord_Copycat.Controllers
                 return BadRequest($"Error deleting server with id {Id}: no user logged in.");
             }
 
-            if (await _serverService.GetServerByIdAsync(Id) == null)
-            {
-                return NotFound($"Error deleting server with id {Id}: no such server exists.");
-            }
-
             if (await _serverService.GetUserRole(Id, User.Id) is not Roles Role || Role < Roles.Admin)
             {
                 return BadRequest($"Error deleting server with id {Id}: you don't have the authorization to do this.");
