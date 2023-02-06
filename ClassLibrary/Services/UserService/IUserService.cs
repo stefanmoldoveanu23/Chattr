@@ -1,13 +1,6 @@
-﻿using ClassLibrary.Models.DTOs;
-using ClassLibrary.Models.DTOs.UserDTO;
+﻿using ClassLibrary.Models.DTOs.UserDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using Discord_Copycat.Models;
-using Discord_Copycat.Models.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ClassLibrary.Models.DTOs.LogDTO;
 using Discord_Copycat.Models.Enums;
 
@@ -27,17 +20,19 @@ namespace ClassLibrary.Services.UserService
 
         Task<List<UserResponseDTO>> GetFriendsAsync(Guid id);
 
-        Task<LogResponseDTO?> SendMessage(Guid id, Guid friendId, string message);
+        Task<LogResponseDTO?> SendMessageAsync(Guid id, Guid friendId, string message);
 
         Task<Guid?> GetFriendshipAsync(Guid id, Guid friendId);
 
-        Task<UserResponseDTO?> AddFriend(Guid id, Guid friendId);
+        Task<UserResponseDTO?> AddFriendAsync(Guid id, Guid friendId);
 
-        Task<UserResponseDTO?> RemoveFriend(Guid id, Guid friendId);
+        Task<UserResponseDTO?> RemoveFriendAsync(Guid id, Guid friendId);
 
         Task<List<ServerResponseDTO>> GetServersAsync(Guid id);
 
         Task<UserResponseDTO?> JoinServerAsync(Guid id, Guid serverId, Roles role);
+
+        Task<UserResponseDTO?> LeaveServerAsync(Guid id, Guid serverId);
 
         Task<List<LogResponseDTO>?> GetLogsWithFriendAsync(Guid id, Guid friendId);
 

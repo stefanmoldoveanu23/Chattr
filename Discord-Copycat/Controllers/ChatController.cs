@@ -19,7 +19,8 @@ namespace Discord_Copycat.Controllers
             _chatService = chatService;
         }
 
-        [HttpPost("create/{ServerId}")]
+        [HttpPost("{ServerId}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> Create([FromRoute]Guid ServerId, [FromBody]ChatRequestDTO Chat)
         {
             Chat.ServerId = ServerId;
@@ -28,7 +29,8 @@ namespace Discord_Copycat.Controllers
             return Ok(ChatResult);
         }
 
-        [HttpGet("get-users/{ChatId}")]
+        [HttpGet("{ChatId}/users")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetUsers([FromRoute]Guid ChatId)
         {
             List<UserResponseDTO>? Users = await _chatService.GetUsersAsync(ChatId);
@@ -40,7 +42,7 @@ namespace Discord_Copycat.Controllers
             return Ok(Users);
         }
 
-        [HttpPut("send-message/{ChatId}")]
+        [HttpPost("{ChatId}/log")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> SendMessage([FromRoute]Guid ChatId, [FromBody]LogRequestDTO Message)
         {
@@ -58,7 +60,7 @@ namespace Discord_Copycat.Controllers
             return Ok(Log);
         }
 
-        [HttpGet("get-logs/{ChatId}")]
+        [HttpGet("{ChatId}/logs")]
         public async Task<IActionResult> GetLogs([FromRoute]Guid ChatId)
         {
             List<LogResponseDTO>? Logs = await _chatService.GetLogsAsync(ChatId);

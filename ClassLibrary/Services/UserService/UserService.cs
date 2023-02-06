@@ -158,7 +158,7 @@ namespace ClassLibrary.Services.UserService
 
         public async Task<UserResponseDTO?> JoinServerAsync(Guid id, Guid serverId, Roles role)
         {
-            User? user = await _unitOfWork._userRepository.GetWithServersAsync(id);
+            User user = await _unitOfWork._userRepository.GetWithServersAsync(id);
             Server? server = await _unitOfWork._serverRepository.FindByIdAsync(serverId);
             if (server == null)
             {
@@ -175,7 +175,22 @@ namespace ClassLibrary.Services.UserService
             return new UserResponseDTO(user);
         }
 
-        public async Task<UserResponseDTO?> AddFriend(Guid id, Guid friendId)
+        public async Task<UserResponseDTO?> LeaveServerAsync(Guid id, Guid serverId)
+        {
+            User user = await _unitOfWork._userRepository.GetWithServersAsync(id);
+            if (user.Servers.FirstOrDefault() is not MemberOfServer server)
+            {
+                return null;
+            }
+
+            user.Servers.Remove(server);
+            _unitOfWork._userRepository.Update(user);
+            await _unitOfWork.SaveAsync();
+
+            return new UserResponseDTO(user);
+        }
+
+        public async Task<UserResponseDTO?> AddFriendAsync(Guid id, Guid friendId)
         {
             User user = await _unitOfWork._userRepository.GetWithFriendsAsync(id);
             User? friend = await _unitOfWork._userRepository.FindByIdAsync(friendId);
@@ -192,7 +207,7 @@ namespace ClassLibrary.Services.UserService
             return new UserResponseDTO(user);
         }
 
-        public async Task<UserResponseDTO?> RemoveFriend(Guid id, Guid friendId)
+        public async Task<UserResponseDTO?> RemoveFriendAsync(Guid id, Guid friendId)
         {
             User user = await _unitOfWork._userRepository.GetWithFriendsAsync(id);
             User? friend = await _unitOfWork._userRepository.FindByIdAsync(friendId);
@@ -240,7 +255,7 @@ namespace ClassLibrary.Services.UserService
 
         }
 
-        public async Task<LogResponseDTO?> SendMessage(Guid id, Guid friendId, string message)
+        public async Task<LogResponseDTO?> SendMessageAsync(Guid id, Guid friendId, string message)
         {
             User? user = await _unitOfWork._userRepository.GetWithLogsAsync(id, friendId);
             if (user == null)

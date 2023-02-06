@@ -1,20 +1,10 @@
 ﻿using ClassLibrary.Helpers.Attributes;
-using ClassLibrary.Helpers.Hubs;
 using ClassLibrary.Models.DTOs.LogDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
-using ClassLibrary.Repositories.UserRep;
 using ClassLibrary.Services.UserService;
-using Discord_Copycat.Data;
-using Discord_Copycat.Models;
 using Discord_Copycat.Models.Enums;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.IIS.Core;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using System.Net.Http.Headers;
 
 namespace Discord_Copycat.Controllers
 {
@@ -29,20 +19,22 @@ namespace Discord_Copycat.Controllers
             _userService = userService;
         }
 
-        [HttpGet("get-self")]
+        [HttpGet("self")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public UserResponseDTO? GetSelf()
         {
             return HttpContext.Items["User"] as UserResponseDTO;
         }
 
+        [HttpGet]
+        [Authorization(Roles.Admin, Roles.Mod)]
         public async Task<IActionResult> GetAll()
         {
             var allUsers = await _userService.GetUsersAsync();
             return Ok(allUsers);
         }
 
-        [HttpGet("get-friends")]
+        [HttpGet("friends")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetFriends()
         {
@@ -60,7 +52,7 @@ namespace Discord_Copycat.Controllers
             return Ok(friends);
         }
 
-        [HttpGet("get-friendship/{FriendId}")]
+        [HttpGet("friendship/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetFriendship([FromRoute]Guid FriendId)
         {
@@ -80,7 +72,7 @@ namespace Discord_Copycat.Controllers
             }
         }
 
-        [HttpGet("get-logs/{FriendId}")]
+        [HttpGet("logs/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetLogsWithFriend([FromRoute]Guid FriendId)
         {
@@ -98,7 +90,7 @@ namespace Discord_Copycat.Controllers
             return Ok(Logs);
         }
 
-        [HttpPost("add-friend/{FriendId}")]
+        [HttpPost("friend/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> AddFriend([FromRoute]Guid FriendId)
         {
@@ -112,7 +104,7 @@ namespace Discord_Copycat.Controllers
                 return BadRequest($"Error adding friend with id {FriendId}: you cannot befriend yourself.");
             }
 
-            if (await _userService.AddFriend(User.Id, FriendId) == null)
+            if (await _userService.AddFriendAsync(User.Id, FriendId) == null)
             {
                 return NotFound($"Error adding friend with id {FriendId}: user does not exist.");
             }
@@ -120,7 +112,7 @@ namespace Discord_Copycat.Controllers
             return Ok();
         }
 
-        [HttpPut("send-message/{FriendId}")]
+        [HttpPost("log/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> SendMessage([FromRoute]Guid FriendId, [FromBody]LogRequestDTO Message)
         {
@@ -129,7 +121,7 @@ namespace Discord_Copycat.Controllers
                 return BadRequest($"Error sending message to friend with id {FriendId}: no user logged in.");
             }
 
-            LogResponseDTO? Log = await _userService.SendMessage(User.Id, FriendId, Message.Message);
+            LogResponseDTO? Log = await _userService.SendMessageAsync(User.Id, FriendId, Message.Message);
 
             if (Log == null)
             {
@@ -139,7 +131,7 @@ namespace Discord_Copycat.Controllers
             return Ok(Log);
         }
 
-        [HttpPost("remove-friend/{FriendId}")]
+        [HttpDelete("friend/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> RemoveFriend([FromRoute]Guid FriendId)
         {
@@ -149,7 +141,7 @@ namespace Discord_Copycat.Controllers
             }
 
 
-            if (await _userService.RemoveFriend(User.Id, FriendId) == null)
+            if (await _userService.RemoveFriendAsync(User.Id, FriendId) == null)
             {
                 return NotFound($"Error removing friend: no friendship found between {User.Id} and {FriendId}");
             }
@@ -157,7 +149,7 @@ namespace Discord_Copycat.Controllers
             return Ok();
         }
 
-        [HttpGet("get-by-id/{Id}")]
+        [HttpGet("by-id/{Id}")]
         public async Task<IActionResult> GetUserById([FromRoute]Guid Id)
         {
             UserResponseDTO? User = await _userService.GetUserByIdAsync(Id);
@@ -169,7 +161,7 @@ namespace Discord_Copycat.Controllers
             return Ok(User);
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         public async Task<IActionResult> Register([FromBody]UserRequestDTO User)
         {
             await _userService.CreateUserAsync(User);
@@ -177,7 +169,7 @@ namespace Discord_Copycat.Controllers
         }
 
 
-        [HttpPost("login")]
+        [HttpPut("login")]
         public IActionResult Login([FromBody]UserRequestDTO User)
         {
             UserResponseDTO? response = _userService.Authenticate(User);
@@ -189,7 +181,7 @@ namespace Discord_Copycat.Controllers
             return Ok(response);
         }
 
-        [HttpGet("get-servers")]
+        [HttpGet("servers")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> GetServers()
         {
@@ -202,7 +194,7 @@ namespace Discord_Copycat.Controllers
             return Ok(Servers);
         }
 
-        [HttpPost("join-server/{ServerId}/{Role}")]
+        [HttpPost("server/{ServerId}/{Role}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> JoinServer([FromRoute]Guid ServerId, [FromRoute]Roles Role)
         {
@@ -215,6 +207,23 @@ namespace Discord_Copycat.Controllers
             {
                 return NotFound($"Error joining server {ServerId}: no such server exists.");
             }
+            return Ok();
+        }
+
+        [HttpDelete("server/{ServerId}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> LeaveServer([FromRoute]Guid ServerId)
+        {
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
+            {
+                return BadRequest($"Error leaving server {ServerId}: no user logged in.");
+            }
+
+            if (await _userService.LeaveServerAsync(User.Id, ServerId) == null)
+            {
+                return NotFound($"Error leaving server {ServerId}: no such server exists.");
+            }
+
             return Ok();
         }
     }

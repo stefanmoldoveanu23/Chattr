@@ -91,6 +91,14 @@ export class ServerComponent implements OnInit {
     );
   }
 
+  onLeaveServer() {
+
+  }
+
+  onDeleteServer() {
+
+  }
+
   ngOnInit(): void {
   }
 

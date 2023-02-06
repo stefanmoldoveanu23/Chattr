@@ -11,6 +11,10 @@ mat-sidenav-content {
     margin-bottom: 0px;
 }
 
+.red-button {
+    color: indianred;
+}
+
 .chat-button {
     margin: 10px 10px 10px 10px;
 }

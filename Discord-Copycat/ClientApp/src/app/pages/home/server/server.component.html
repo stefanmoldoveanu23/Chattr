@@ -8,7 +8,15 @@
           <button *ngIf="role >= Roles.mod" type="button" (click)="onCopyServerLink()" mat-icon-button><mat-icon>library_books</mat-icon></button>
           <button type="button" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>settings</mat-icon></button>
           <mat-menu #menu="matMenu">
-            
+            <button type="button" mat-menu-item (click)="onLeaveServer()">
+              <mat-icon>meeting_room</mat-icon>
+              <span>Leave server</span>
+            </button>
+
+            <button *ngIf="role >= Roles.admin" class="red-button" type="button" mat-menu-item (click)="onDeleteServer()">
+              <mat-icon>power_settings_new</mat-icon>
+              <span>Delete server</span>
+            </button>
           </mat-menu>
         </span>
       </p>

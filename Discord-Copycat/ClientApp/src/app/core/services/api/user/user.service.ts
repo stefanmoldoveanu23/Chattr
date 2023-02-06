@@ -14,46 +14,46 @@ export class UserService {
   constructor(private readonly apiService: ApiService) { }
 
   getSelf() {
-    return this.apiService.get<User>(`${this.route}get-self`);
+    return this.apiService.get<User>(`${this.route}self`);
   }
 
   getUserById(id: string) {
-    return this.apiService.get<User>(`${this.route}get-by-id/${id}`);
+    return this.apiService.get<User>(`${this.route}by-id/${id}`);
   }
 
   getFriendship(friendId: string) {
-    return this.apiService.get<string>(`${this.route}get-friendship/${friendId}`);
+    return this.apiService.get<string>(`${this.route}friendship/${friendId}`);
   }
 
   getLogs(friendId: string) {
-    return this.apiService.get<Log[]>(`${this.route}get-logs/${friendId}`);
+    return this.apiService.get<Log[]>(`${this.route}logs/${friendId}`);
   }
 
   sendMessage(friendId: string, message: string) {
-    return this.apiService.put<Log>(`${this.route}send-message/${friendId}`, { 'message': message });
+    return this.apiService.post<Log>(`${this.route}log/${friendId}`, { 'message': message });
   }
 
   getFriends() {
-    return this.apiService.get<User[]>(`${this.route}get-friends`);
+    return this.apiService.get<User[]>(`${this.route}friends`);
   }
 
   getServers() {
-    return this.apiService.get<Server[]>(`${this.route}get-servers`);
+    return this.apiService.get<Server[]>(`${this.route}servers`);
   }
 
   joinServer(serverId: string, role: Roles) {
-    return this.apiService.post<any>(`${this.route}join-server/${serverId}/${role}`);
+    return this.apiService.post<any>(`${this.route}server/${serverId}/${role}`);
+  }
+
+  leaveServer(serverId: string) {
+    return this.apiService.delete<any>(`${this.route}server/${serverId}`);
   }
 
   addFriend(friendId: string) {
-    return this.apiService.post<any>(`${this.route}add-friend/${friendId}`);
+    return this.apiService.post<any>(`${this.route}friend/${friendId}`);
   }
 
   removeFriend(friendId: string) {
-    return this.apiService.post<any>(`${this.route}remove-friend/${friendId}`);
-  }
-
-  deleteAll() {
-    return this.apiService.delete<any>(`${this.route}`);
+    return this.apiService.delete<any>(`${this.route}friend/${friendId}`);
   }
 }

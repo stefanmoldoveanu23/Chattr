@@ -14,18 +14,18 @@ export class ChatService {
   constructor(private readonly apiService: ApiService) { }
 
   create(serverId: string, chat: any) {
-    return this.apiService.post<Chat>(`${this.route}create/${serverId}`, chat);
+    return this.apiService.post<Chat>(`${this.route}${serverId}`, chat);
   }
 
   getUsers(chatId: string) {
-    return this.apiService.get<User[]>(`${this.route}get-users/${chatId}`);
+    return this.apiService.get<User[]>(`${this.route}${chatId}/users`);
   }
 
   sendMessage(chatId: string, message: string) {
-    return this.apiService.put<Log>(`${this.route}send-message/${chatId}`, { 'message': message });
+    return this.apiService.post<Log>(`${this.route}${chatId}/log`, { 'message': message });
   }
 
   getLogs(chatId: string) {
-    return this.apiService.get<User[]>(`${this.route}get-logs/${chatId}`);
+    return this.apiService.get<User[]>(`${this.route}${chatId}/logs`);
   }
 }

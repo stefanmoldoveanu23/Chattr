@@ -3,6 +3,7 @@ using ClassLibrary.Models.DTOs.ChatDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using ClassLibrary.Services.ServerService;
+using Discord_Copycat.Models;
 using Discord_Copycat.Models.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,17 +22,18 @@ namespace Discord_Copycat.Controllers
             _serverService = serverService;
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateServer([FromBody]ServerRequestDTO Server)
+        [HttpPost()]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> CreateServer([FromBody] ServerRequestDTO Server)
         {
             ServerResponseDTO newServer = await _serverService.CreateServerAsync(Server);
 
             return Ok(newServer);
         }
 
-        [HttpGet("get-role/{Id}")]
+        [HttpGet("{Id}/role")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public async Task<IActionResult> GetRole([FromRoute]Guid Id)
+        public async Task<IActionResult> GetRole([FromRoute] Guid Id)
         {
             if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
@@ -47,9 +49,9 @@ namespace Discord_Copycat.Controllers
             return Ok(Role);
         }
 
-        [HttpGet("get-chats-for-user/{Id}")]
+        [HttpGet("{Id}/chats-for-user")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public async Task<IActionResult> GetChatsForUser([FromRoute]Guid Id)
+        public async Task<IActionResult> GetChatsForUser([FromRoute] Guid Id)
         {
             if (HttpContext.Items["User"] is not UserResponseDTO User)
             {
@@ -65,8 +67,9 @@ namespace Discord_Copycat.Controllers
             return Ok(Chats);
         }
 
-        [HttpGet("get-chats/{Id}")]
-        public async Task<IActionResult> GetChats([FromRoute]Guid Id)
+        [HttpGet("{Id}/chats")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> GetChats([FromRoute] Guid Id)
         {
             List<ChatResponseDTO>? Chats = await _serverService.GetChatsAsync(Id);
             if (Chats == null)
@@ -77,8 +80,9 @@ namespace Discord_Copycat.Controllers
             return Ok(Chats);
         }
 
-        [HttpGet("get-members/{Id}")]
-        public async Task<IActionResult> GetMembers([FromRoute]Guid Id)
+        [HttpGet("{Id}/members")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> GetMembers([FromRoute] Guid Id)
         {
             List<UserResponseDTO>? Users = await _serverService.GetUsersAsync(Id);
             if (Users == null)
@@ -89,8 +93,9 @@ namespace Discord_Copycat.Controllers
             return Ok(Users);
         }
 
-        [HttpGet("get-server/{Id}")]
-        public async Task<IActionResult> GetServer([FromRoute]Guid Id)
+        [HttpGet("by-id/{Id}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> GetServer([FromRoute] Guid Id)
         {
             ServerResponseDTO? Server = await _serverService.GetServerByIdAsync(Id);
             if (Server == null)
@@ -101,14 +106,16 @@ namespace Discord_Copycat.Controllers
             return Ok(Server);
         }
 
-        [HttpGet("get-server")]
+        [HttpGet("by-token")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public ServerResponseDTO? GetServerFromToken()
         {
             return HttpContext.Items["Server"] as ServerResponseDTO;
         }
 
-        [HttpGet("get-server-token/{Id}")]
-        public async Task<IActionResult> GetServerToken([FromRoute]Guid Id)
+        [HttpGet("{Id}/token")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> GetServerToken([FromRoute] Guid Id)
         {
             string? token = await _serverService.GetServerToken(Id);
             if (token == null)
@@ -119,6 +126,42 @@ namespace Discord_Copycat.Controllers
             Console.WriteLine(HttpContext.Request.Path);
 
             return Ok(new { token });
+        }
+
+        [HttpDelete("{Id}/admin")]
+        [Authorization(Roles.Admin)]
+        public async Task<IActionResult> DeleteServerNotOwned([FromRoute]Guid Id)
+        {
+            if (await _serverService.GetServerByIdAsync(Id) == null)
+            {
+                return NotFound($"Error deleting server with id {Id}: no such server exists.");
+            }
+
+            _serverService.DeleteServer(new Server { Id = Id });
+            return Ok();
+        }
+
+        [HttpDelete("{Id}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> DeleteServer([FromRoute]Guid Id)
+        {
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
+            {
+                return BadRequest($"Error deleting server with id {Id}: no user logged in.");
+            }
+
+            if (await _serverService.GetServerByIdAsync(Id) == null)
+            {
+                return NotFound($"Error deleting server with id {Id}: no such server exists.");
+            }
+
+            if (await _serverService.GetUserRole(Id, User.Id) is not Roles Role || Role < Roles.Admin)
+            {
+                return BadRequest($"Error deleting server with id {Id}: you don't have the authorization to do this.");
+            }
+
+            _serverService.DeleteServer(new Server { Id = Id });
+            return Ok();
         }
     }
 }

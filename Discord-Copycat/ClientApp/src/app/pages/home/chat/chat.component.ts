@@ -45,11 +45,17 @@ export class ChatComponent implements OnInit, AfterContentChecked {
                       this.logs = logs;
                       this.logs.forEach(log => log.senderName = this.users.find(user => user.id == log.senderId)?.username ?? '');
                     },
-                    () => this.router.navigate(['..'], { relativeTo: activatedRoute })
+                    error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
+                      console.log('Error getting logs.');
+                      console.error(error);
+                    })
                   );
 
                 },
-                () => this.router.navigate(['..'], { relativeTo: activatedRoute })
+                error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
+                  console.log('Error getting users.');
+                  console.error(error);
+                })
               );
 
               this.group = (paramsParent.serverId ?? '') + (params.chatId ?? '')
@@ -67,21 +73,33 @@ export class ChatComponent implements OnInit, AfterContentChecked {
                           this.logs = logs;
                           this.logs.forEach(log => log.senderName = this.users.find(user => user.id === log.senderId)?.username ?? '');
                         },
-                        () => this.router.navigate(['..'], { relativeTo: activatedRoute })
+                        error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
+                          console.log('Error getting logs.');
+                          console.error(error);
+                        })
                       );
 
                     },
-                    () => this.router.navigate(['..'], { relativeTo: activatedRoute })
+                    error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
+                      console.log('Error getting friend.');
+                      console.error(error);
+                    })
                   );
 
                 },
-                () => this.router.navigate(['..'], { relativeTo: activatedRoute })
+                error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
+                  console.log('Error getting self.');
+                  console.error(error);
+                })
               );
 
 
               this.userService.getFriendship(params.chatId ?? '').subscribe(
                 friendship => this.group = friendship,
-                () => this.router.navigate(['..'], { relativeTo: activatedRoute })
+                error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
+                  console.log('Error getting friendship.');
+                  console.error(error);
+                })
               );
             }
 
