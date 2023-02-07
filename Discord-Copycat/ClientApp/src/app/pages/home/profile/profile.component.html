@@ -8,6 +8,10 @@
           <button type="button" mat-icon-button (click)="onCopyId()"><mat-icon>library_books</mat-icon></button>
           <button type="button" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>settings</mat-icon></button>
           <mat-menu #menu="matMenu">
+            <button type="button" mat-menu-item [matMenuTriggerFor]="update">
+              <mat-icon>update</mat-icon>
+              <span>Update data</span>
+            </button>
             <button type="button" mat-menu-item (click)="onLogout()">
               <mat-icon>power_settings_new</mat-icon>
               <span>Logout</span>
@@ -19,6 +23,36 @@
           </mat-menu>
         </span>
       </p>
+      <mat-menu #update="matMenu">
+        <form class="update-data-form" [formGroup]="updateData" (click)="$event.stopPropagation()" (ngSubmit)="onSaveChanges()">
+          <mat-form-field>
+            <mat-label>Change Username</mat-label>
+            <input matInput placeholder="{{self.username}}" formControlName="username" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Change Password</mat-label>
+            <input matInput [type]="passwordHide ? 'password' : 'text'" formControlName="password" />
+            <button type="button" matSuffix mat-icon-button (click)="passwordHide = !passwordHide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordHide">
+              <mat-icon>{{passwordHide ? 'visibility-off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Change Email</mat-label>
+            <input matInput placeholder="{{self.email}}" formControlName="email" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Select Theme</mat-label>
+            <mat-select formControlName="theme">
+              <mat-option value="">Keep Theme</mat-option>
+              <mat-option value="{{Themes.light}}">Light</mat-option>
+              <mat-option value="{{Themes.dark}}">Dark</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-checkbox formControlName="notifs">Show Notifications</mat-checkbox>
+          <mat-checkbox formControlName="appearance">Appear Online</mat-checkbox>
+          <button type="submit" [disabled]="!(updateData.valid)" mat-button>Save Changes</button>
+        </form>
+      </mat-menu>
     </div>
     <mat-divider></mat-divider>
     <h3>Friends</h3>

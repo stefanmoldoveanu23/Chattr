@@ -1,10 +1,11 @@
-﻿using Discord_Copycat.Models.Base;
+﻿using ClassLibrary.Models.Enums;
+using Discord_Copycat.Models.Base;
 
 namespace Discord_Copycat.Models
 {
     public class Settings : BaseEntity
     {
-        public int Theme { get; set; }
+        public Themes Theme { get; set; }
         public bool Notifs { get; set; }
         public bool Appearance { get; set; }
 

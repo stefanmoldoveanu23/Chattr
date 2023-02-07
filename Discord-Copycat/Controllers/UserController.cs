@@ -51,7 +51,7 @@ namespace Discord_Copycat.Controllers
             }
 
             await _userService.DeleteUserByIdAsync(User.Id);
-            return Ok();
+            return Ok(); 
         }
 
         [HttpGet("friends")]

@@ -15,6 +15,8 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CreateServerDialogComponent } from './create-server-dialog/create-server-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ChatComponent } from './chat/chat.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 
@@ -33,6 +35,8 @@ import { ChatComponent } from './chat/chat.component';
     MatDialogModule,
     MatCardModule,
     MatMenuModule,
+    MatSelectModule,
+    MatCheckboxModule,
     ClipboardModule,
     HomeRoutingModule,
   ]
