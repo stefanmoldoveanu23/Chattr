@@ -94,7 +94,9 @@ export class ServerComponent implements OnInit {
 
   onLeaveServer() {
     this.userService.leaveServer(this.server.id).subscribe(
-      () => this.router.navigate(['..'], { relativeTo: this.route }),
+      () => this.router.navigate(['..'], { relativeTo: this.route }).then(() => {
+        window.location.reload();
+      }),
       error => {
         console.log('Error leaving server.');
         console.error(error);
@@ -104,7 +106,9 @@ export class ServerComponent implements OnInit {
 
   onDeleteServer() {
     this.serverService.delete(this.server.id).subscribe(
-      () => this.router.navigate(['..'], { relativeTo: this.route }),
+      () => this.router.navigate(['..'], { relativeTo: this.route }).then(() => {
+        window.location.reload();
+      }),
       error => {
         console.log('Error deleting server.');
         console.error(error);

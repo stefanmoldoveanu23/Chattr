@@ -35,7 +35,6 @@ export class AuthService {
     var users = JSON.parse(localStorage.getItem('users') ?? '[]');
 
     users = users.filter((user: string) => user !== token);
-    console.log(users);
 
     localStorage.setItem('users', JSON.stringify(users));
     window.location.reload();

@@ -56,4 +56,8 @@ export class UserService {
   removeFriend(friendId: string) {
     return this.apiService.delete<any>(`${this.route}friend/${friendId}`);
   }
+
+  deleteAccount() {
+    return this.apiService.delete<any>(`${this.route}`);
+  }
 }

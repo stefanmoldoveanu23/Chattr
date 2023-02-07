@@ -26,7 +26,8 @@ namespace Discord_Copycat.Data
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Settings)
                 .WithOne(s => s.User)
-                .HasForeignKey<Settings>(s => s.UserId);
+                .HasForeignKey<Settings>(s => s.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Friendship>()
                 .HasKey(f => new { f.User1Id, f.User2Id});
@@ -35,13 +36,13 @@ namespace Discord_Copycat.Data
                 .HasOne<User>(f => f.User1)
                 .WithMany(u => u.FirstFriend)
                 .HasForeignKey(f => f.User1Id)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Friendship>()
                 .HasOne<User>(f => f.User2)
                 .WithMany(u => u.SecondFriend)
                 .HasForeignKey(f => f.User2Id)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<FriendLog>()
                 .HasOne<Friendship>(fl => fl.Friendship)

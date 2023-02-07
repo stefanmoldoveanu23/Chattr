@@ -280,5 +280,17 @@ namespace ClassLibrary.Services.UserService
 
             return _mapper.Map<LogResponseDTO>(log);
         }
+
+        public async Task DeleteUserByIdAsync(Guid id)
+        {
+            if (await _unitOfWork._userRepository.GetWithFriendsAsync(id) is User user)
+            {
+                user.FirstFriend.Clear();
+                user.SecondFriend.Clear();
+                await _unitOfWork.SaveAsync();
+
+                DeleteUser(user);
+            }
+        }
     }
 }

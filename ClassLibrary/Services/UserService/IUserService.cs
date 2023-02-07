@@ -18,6 +18,8 @@ namespace ClassLibrary.Services.UserService
 
         void DeleteUser(User user);
 
+        Task DeleteUserByIdAsync(Guid id);
+
         Task<List<UserResponseDTO>> GetFriendsAsync(Guid id);
 
         Task<LogResponseDTO?> SendMessageAsync(Guid id, Guid friendId, string message);

@@ -63,4 +63,14 @@ export class ProfileComponent implements OnInit {
     this.authService.logout();
   }
 
+  onDelete() {
+    this.userService.deleteAccount().subscribe(
+      () => this.authService.logout(),
+      error => {
+        console.log('Error deleting account.');
+        console.error(error);
+      }
+    );
+  }
+
 }

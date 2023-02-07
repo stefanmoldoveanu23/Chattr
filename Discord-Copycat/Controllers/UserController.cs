@@ -4,7 +4,9 @@ using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
 using ClassLibrary.Services.UserService;
 using Discord_Copycat.Models.Enums;
+using Discord_Copycat.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Discord_Copycat.Controllers
 {
@@ -21,9 +23,14 @@ namespace Discord_Copycat.Controllers
 
         [HttpGet("self")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
-        public UserResponseDTO? GetSelf()
+        public IActionResult GetSelf()
         {
-            return HttpContext.Items["User"] as UserResponseDTO;
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
+            {
+                return BadRequest("Error getting logged user: no user logged in.");
+            }
+
+            return Ok(User);
         }
 
         [HttpGet]
@@ -32,6 +39,19 @@ namespace Discord_Copycat.Controllers
         {
             var allUsers = await _userService.GetUsersAsync();
             return Ok(allUsers);
+        }
+
+        [HttpDelete]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> DeleteAccount()
+        {
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
+            {
+                return BadRequest("Error deleting account: no user logged in.");
+            }
+
+            await _userService.DeleteUserByIdAsync(User.Id);
+            return Ok();
         }
 
         [HttpGet("friends")]

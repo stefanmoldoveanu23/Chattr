@@ -300,11 +300,13 @@ namespace DiscordCopycat.Migrations
                     b.HasOne("Discord_Copycat.Models.User", "User1")
                         .WithMany("FirstFriend")
                         .HasForeignKey("User1Id")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Discord_Copycat.Models.User", "User2")
                         .WithMany("SecondFriend")
                         .HasForeignKey("User2Id")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User1");
