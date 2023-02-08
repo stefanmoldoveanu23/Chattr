@@ -292,5 +292,39 @@ namespace ClassLibrary.Services.UserService
                 DeleteUser(user);
             }
         }
+
+        public async Task<LogResponseDTO?> DeleteMessageAsync(Guid id, Guid friendId, Guid logId)
+        {
+            if (await _unitOfWork._userRepository.GetWithLogsAsync(id, friendId) is not User user)
+            {
+                return null;
+            }
+
+            if (user.FirstFriend.Count() > 0)
+            {
+                if (user.FirstFriend.First().Logs.FirstOrDefault(log => log.Id == logId) is not FriendLog log)
+                {
+                    return null;
+                }
+
+                user.FirstFriend.First().Logs.Remove(log);
+            } else if (user.SecondFriend.Count() > 0)
+            {
+                if (user.SecondFriend.First().Logs.FirstOrDefault(log => log.Id == logId) is not FriendLog log)
+                {
+                    return null;
+                }
+
+                user.SecondFriend.First().Logs.Remove(log);
+            } else
+            {
+                return null;
+            }
+
+            _unitOfWork._userRepository.Update(user);
+            await _unitOfWork.SaveAsync();
+
+            return new LogResponseDTO { Id = logId };
+        }
     }
 }

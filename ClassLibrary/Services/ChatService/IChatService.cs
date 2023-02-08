@@ -18,6 +18,8 @@ namespace ClassLibrary.Services.ChatService
 
         Task<LogResponseDTO?> SendMessage(Guid id, Guid userId, string message);
 
+        Task<ChatResponseDTO?> DeleteMessage(Guid id, Guid logId);
+
         Task<ChatResponseDTO> CreateChatAsync(ChatRequestDTO chat);
 
         void UpdateChat(Chat chat);

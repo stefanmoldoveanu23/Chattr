@@ -33,6 +33,10 @@ export class UserService {
     return this.apiService.post<Log>(`${this.route}log/${friendId}`, { 'message': message });
   }
 
+  deleteMessage(friendId: string, logId: string) {
+    return this.apiService.delete<any>(`${this.route}log/${friendId}/${logId}`);
+  }
+
   getFriends() {
     return this.apiService.get<User[]>(`${this.route}friends`);
   }

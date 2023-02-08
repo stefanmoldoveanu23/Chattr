@@ -60,6 +60,23 @@ namespace Discord_Copycat.Controllers
             return Ok(Log);
         }
 
+        [HttpDelete("{ChatId}/log/{LogId}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> DeleteMessage([FromRoute]Guid ChatId, [FromRoute]Guid LogId)
+        {
+            if (HttpContext.Items["User"] is null)
+            {
+                return BadRequest("Error deleting message: no user logged in.");
+            }
+
+            if (await _chatService.DeleteMessage(ChatId, LogId) == null)
+            {
+                return NotFound($"Error deleting message: log with id {LogId} not found in chat with id {ChatId}.");
+            }
+
+            return Ok();
+        }
+
         [HttpGet("{ChatId}/logs")]
         public async Task<IActionResult> GetLogs([FromRoute]Guid ChatId)
         {

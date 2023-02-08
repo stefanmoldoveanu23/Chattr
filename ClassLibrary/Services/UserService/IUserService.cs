@@ -24,6 +24,8 @@ namespace ClassLibrary.Services.UserService
 
         Task<LogResponseDTO?> SendMessageAsync(Guid id, Guid friendId, string message);
 
+        Task<LogResponseDTO?> DeleteMessageAsync(Guid id, Guid friendId, Guid logId);
+
         Task<Guid?> GetFriendshipAsync(Guid id, Guid friendId);
 
         Task<UserResponseDTO?> AddFriendAsync(Guid id, Guid friendId);

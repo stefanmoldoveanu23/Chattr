@@ -38,6 +38,25 @@ namespace ClassLibrary.Services.ChatService
             _unitOfWork.Save();
         }
 
+        public async Task<ChatResponseDTO?> DeleteMessage(Guid id, Guid logId)
+        {
+            if (await _unitOfWork._chatRepository.GetWithLogs(id) is not Chat chat)
+            {
+                return null;
+            }
+            
+            if (chat.Logs.FirstOrDefault() is not ChatLog log)
+            {
+                return null;
+            }
+
+            chat.Logs.Remove(log);
+            _unitOfWork._chatRepository.Update(chat);
+            await _unitOfWork.SaveAsync();
+
+            return new ChatResponseDTO { Id = id };
+        }
+
         public async Task<ChatResponseDTO?> GetChatByIdAsync(Guid id)
         {
             Chat? chat = await _unitOfWork._chatRepository.FindByIdAsync(id);

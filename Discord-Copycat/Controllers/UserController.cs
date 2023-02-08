@@ -151,6 +151,23 @@ namespace Discord_Copycat.Controllers
             return Ok(Log);
         }
 
+        [HttpDelete("log/{FriendId}/{LogId}")]
+        [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
+        public async Task<IActionResult> DeleteMessage([FromRoute]Guid FriendId, [FromRoute]Guid LogId)
+        {
+            if (HttpContext.Items["User"] is not UserResponseDTO User)
+            {
+                return BadRequest($"Error deleting message to friend with id {FriendId}: no user logged in.");
+            }
+
+            if (await _userService.DeleteMessageAsync(User.Id, FriendId, LogId) is null)
+            {
+                return NotFound($"Error deleting message: message with id {LogId} sent to friend with id {FriendId} by user with id {User.Id} was not found.");
+            }
+
+            return Ok();
+        }
+
         [HttpDelete("friend/{FriendId}")]
         [Authorization(Roles.Admin, Roles.Mod, Roles.User)]
         public async Task<IActionResult> RemoveFriend([FromRoute]Guid FriendId)

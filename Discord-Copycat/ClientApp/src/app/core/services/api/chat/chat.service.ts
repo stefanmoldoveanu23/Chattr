@@ -25,6 +25,10 @@ export class ChatService {
     return this.apiService.post<Log>(`${this.route}${chatId}/log`, { 'message': message });
   }
 
+  deleteMessage(chatId: string, logId: string) {
+    return this.apiService.delete<any>(`${this.route}${chatId}/log/${logId}`);
+  }
+
   getLogs(chatId: string) {
     return this.apiService.get<User[]>(`${this.route}${chatId}/logs`);
   }

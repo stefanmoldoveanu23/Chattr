@@ -15,6 +15,7 @@ import { SignalrService } from '../../../core/services/signalr/signalr.service';
 export class ChatComponent implements OnInit, AfterContentChecked {
   group: string = '';
   whoId: string = '';
+  self: User = { id: '', username: '', email: '', token: '' };
 
   // false -> profile; true -> server
   mode: boolean = false;
@@ -28,40 +29,42 @@ export class ChatComponent implements OnInit, AfterContentChecked {
   });
 
   constructor(private readonly changeDetectorRef: ChangeDetectorRef, private readonly router: Router, private readonly activatedRoute: ActivatedRoute, private readonly signalR: SignalrService, private readonly formBuilder: FormBuilder, private readonly userService: UserService, private readonly chatService: ChatService) {
-    this.activatedRoute.parent?.params.subscribe(
-      paramsParent => {
-        this.activatedRoute.params.subscribe(
-          params => {
+    this.userService.getSelf().subscribe(
+      self => {
+        this.self = self;
 
-            if (paramsParent.serverId != undefined) {
+        this.activatedRoute.parent?.params.subscribe(
+          paramsParent => {
+            this.activatedRoute.params.subscribe(
+              params => {
 
-              this.mode = true;
-              this.chatService.getUsers(params.chatId ?? '').subscribe(
-                users => {
-                  this.users = users;
+                if (paramsParent.serverId != undefined) {
 
-                  this.chatService.getLogs(params.chatId ?? '').subscribe(
-                    logs => {
-                      this.logs = logs;
-                      this.logs.forEach(log => log.senderName = this.users.find(user => user.id == log.senderId)?.username ?? '');
+                  this.mode = true;
+                  this.chatService.getUsers(params.chatId ?? '').subscribe(
+                    users => {
+                      this.users = users;
+
+                      this.chatService.getLogs(params.chatId ?? '').subscribe(
+                        logs => {
+                          this.logs = logs;
+                          this.logs.forEach(log => log.senderName = this.users.find(user => user.id == log.senderId)?.username ?? '');
+                        },
+                        error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
+                          console.log('Error getting logs.');
+                          console.error(error);
+                        })
+                      );
+
                     },
                     error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
-                      console.log('Error getting logs.');
+                      console.log('Error getting users.');
                       console.error(error);
                     })
                   );
 
-                },
-                error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
-                  console.log('Error getting users.');
-                  console.error(error);
-                })
-              );
-
-              this.group = (paramsParent.serverId ?? '') + (params.chatId ?? '')
-            } else {
-              this.userService.getSelf().subscribe(
-                self => {
+                  this.group = (paramsParent.serverId ?? '') + (params.chatId ?? '')
+                } else {
                   this.users.push(self);
 
                   this.userService.getUserById(params.chatId ?? '').subscribe(
@@ -86,32 +89,30 @@ export class ChatComponent implements OnInit, AfterContentChecked {
                     })
                   );
 
-                },
-                error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
-                  console.log('Error getting self.');
-                  console.error(error);
-                })
-              );
+                  this.userService.getFriendship(params.chatId ?? '').subscribe(
+                    friendship => this.group = friendship,
+                    error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
+                      console.log('Error getting friendship.');
+                      console.error(error);
+                    })
+                  );
+                }
 
+                this.whoId = params.chatId ?? '';
 
-              this.userService.getFriendship(params.chatId ?? '').subscribe(
-                friendship => this.group = friendship,
-                error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
-                  console.log('Error getting friendship.');
-                  console.error(error);
-                })
-              );
-            }
-
-            this.whoId = params.chatId ?? '';
-
+              }
+            );
           }
-        );
-      }
+        );  
+      },
+      error => this.router.navigate(['..'], { relativeTo: activatedRoute }).then(() => {
+        console.log('Error getting self.');
+        console.error(error);
+      })
     );
 
     signalR.startConnection(this.group);
-    signalR.receiveMessage();
+    signalR.setupSignals();
     this.subscribeToEvents();
   }
 
@@ -119,6 +120,10 @@ export class ChatComponent implements OnInit, AfterContentChecked {
     this.signalR.messageReceived.subscribe((data: Log) => {
       data.senderName = this.users.find(user => user.id === data.senderId)?.username ?? '';
       this.logs.push(data);
+    });
+
+    this.signalR.messageDeleted.subscribe((data: string) => {
+      this.logs = this.logs.filter(log => log.id !== data);
     });
   }
 
@@ -139,6 +144,26 @@ export class ChatComponent implements OnInit, AfterContentChecked {
         log => this.signalR.sendMessage(log),
         error => {
           console.error(`Error creating new log.`);
+          console.error(error);
+        }
+      );
+    }
+  }
+
+  onDeleteMessage(id: string) {
+    if (this.mode) {
+      this.chatService.deleteMessage(this.whoId, id).subscribe(
+        () => this.signalR.deleteMessage(id),
+        error => {
+          console.log("Error deleting message.");
+          console.error(error);
+        }
+      );
+    } else {
+      this.userService.deleteMessage(this.whoId, id).subscribe(
+        () => this.signalR.deleteMessage(id),
+        error => {
+          console.log("Error deleting message.");
           console.error(error);
         }
       );

@@ -1,7 +1,7 @@
 export interface Log {
-  id: String;
+  id: string;
   dateCreated: Date,
-  senderId: String,
-  senderName: String,
-  message: String
+  senderId: string,
+  senderName: string,
+  message: string
 }

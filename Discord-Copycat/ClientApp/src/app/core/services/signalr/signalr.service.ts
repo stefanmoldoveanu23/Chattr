@@ -7,6 +7,7 @@ import { Log } from '../../../../data/interfaces/log';
 })
 export class SignalrService {
   messageReceived = new EventEmitter<Log>();
+  messageDeleted = new EventEmitter<string>();
 
   group !: String;
   private hubConnection !: signalR.HubConnection;
@@ -34,11 +35,15 @@ export class SignalrService {
       .catch((error: any) => console.log(`Error while starting connection to group ${this.group}: ` + error));
   }
 
-  public receiveMessage() {
+  public setupSignals() {
     this.hubConnection.on('ReceiveMessage', (data: any) => {
       console.log('Data received.');
       this.messageReceived.emit(data);
-      console.log(data);
+    });
+
+    this.hubConnection.on('DeleteMessage', (data: any) => {
+      console.log('Message deleted.');
+      this.messageDeleted.emit(data);
     })
   }
 
@@ -46,7 +51,17 @@ export class SignalrService {
     this.hubConnection.invoke('SendMessage', data, this.group)
       .then(() => console.log('Message sent succesfully.'))
       .catch((error: any) => {
-        console.log('An error has occured sending message ' + error);
+        console.log('An error has occured sending message.')
+        console.error(error);
+      })
+  }
+
+  public deleteMessage(logId: string) {
+    this.hubConnection.invoke('DeleteMessage', logId, this.group)
+      .then(() => console.log('Deletion request sent succesfully.'))
+      .catch((error: any) => {
+        console.log('An error has occured deleting message.');
+        console.error(error);
       })
   }
 
