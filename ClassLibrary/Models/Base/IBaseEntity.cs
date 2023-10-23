@@ -1,4 +1,4 @@
-﻿namespace Discord_Copycat.Models.Base
+﻿namespace ClassLibrary.Models.Base
 {
     public interface IBaseEntity
     {

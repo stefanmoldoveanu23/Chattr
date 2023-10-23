@@ -4,7 +4,7 @@ using ClassLibrary.Helpers.Utils;
 using ClassLibrary.Models.DTOs.UserDTO;
 using ClassLibrary.Services.ServerService;
 using ClassLibrary.Services.UserService;
-using Discord_Copycat.Models;
+using ClassLibrary.Models;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;

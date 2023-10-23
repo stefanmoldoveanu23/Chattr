@@ -1,7 +1,7 @@
 ﻿using ClassLibrary.Models.Enums;
-using Discord_Copycat.Models.Base;
+using ClassLibrary.Models.Base;
 
-namespace Discord_Copycat.Models
+namespace ClassLibrary.Models
 {
     public class Settings : BaseEntity
     {

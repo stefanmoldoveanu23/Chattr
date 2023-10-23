@@ -1,7 +1,7 @@
-﻿using Discord_Copycat.Models.Base;
-using Discord_Copycat.Models.Enums;
+﻿using ClassLibrary.Models.Base;
+using ClassLibrary.Models.Enums;
 
-namespace Discord_Copycat.Models
+namespace ClassLibrary.Models
 {
     public class Chat : BaseEntity
     {

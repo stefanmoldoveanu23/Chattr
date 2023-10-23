@@ -1,6 +1,6 @@
 ﻿using ClassLibrary.Models.DTOs.UserDTO;
-using Discord_Copycat.Models;
-using Discord_Copycat.Models.Enums;
+using ClassLibrary.Models;
+using ClassLibrary.Models.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

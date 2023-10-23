@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\stefa\\DOTNET\\Discord-Copycat\\ClassLibrary\\ClassLibrary.csproj": {}
+    "C:\\Users\\stefa\\DOTNET\\Chattr\\ClassLibrary\\ClassLibrary.csproj": {}
   },
   "projects": {
-    "C:\\Users\\stefa\\DOTNET\\Discord-Copycat\\ClassLibrary\\ClassLibrary.csproj": {
+    "C:\\Users\\stefa\\DOTNET\\Chattr\\ClassLibrary\\ClassLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\stefa\\DOTNET\\Discord-Copycat\\ClassLibrary\\ClassLibrary.csproj",
+        "projectUniqueName": "C:\\Users\\stefa\\DOTNET\\Chattr\\ClassLibrary\\ClassLibrary.csproj",
         "projectName": "ClassLibrary",
-        "projectPath": "C:\\Users\\stefa\\DOTNET\\Discord-Copycat\\ClassLibrary\\ClassLibrary.csproj",
+        "projectPath": "C:\\Users\\stefa\\DOTNET\\Chattr\\ClassLibrary\\ClassLibrary.csproj",
         "packagesPath": "C:\\Users\\stefa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\stefa\\DOTNET\\Discord-Copycat\\ClassLibrary\\obj\\",
+        "outputPath": "C:\\Users\\stefa\\DOTNET\\Chattr\\ClassLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,4 +1,4 @@
-﻿namespace Discord_Copycat.Models.Enums
+﻿namespace ClassLibrary.Models.Enums
 {
     public enum Roles
     {

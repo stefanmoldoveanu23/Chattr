@@ -1,6 +1,6 @@
 ﻿using ClassLibrary.Repositories.GenericRep;
-using Discord_Copycat.Data;
-using Discord_Copycat.Models;
+using Chattr.Data;
+using ClassLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace ClassLibrary.Repositories.UserRep
 {
     internal class UserRepository: GenericRepository<User>, IUserRepository
     {
-        public UserRepository(DiscordContext discordContext) : base(discordContext) { }
+        public UserRepository(ChattrContext chattrContext) : base(chattrContext) { }
 
         public async Task<User?> GetWithFriendAsync(Guid id, Guid friendId)
         {

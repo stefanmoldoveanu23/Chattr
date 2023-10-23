@@ -1,5 +1,5 @@
-﻿using Discord_Copycat.Data;
-using Discord_Copycat.Models.Base;
+﻿using Chattr.Data;
+using ClassLibrary.Models.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,43 +11,43 @@ namespace ClassLibrary.Repositories.GenericRep
 {
     internal class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        protected readonly DiscordContext _discordContext;
+        protected readonly ChattrContext _chattrContext;
         protected readonly DbSet<TEntity> _table;
 
-        public GenericRepository(DiscordContext discordContext)
+        public GenericRepository(ChattrContext chattrContext)
         {
-            _discordContext = discordContext;
-            _table = _discordContext.Set<TEntity>();
+            _chattrContext = chattrContext;
+            _table = _chattrContext.Set<TEntity>();
         }
 
         public void Create(TEntity entity)
         {
-            _discordContext.Add(entity);
+            _chattrContext.Add(entity);
         }
 
         public async Task CreateAsync(TEntity entity)
         {
-            await _discordContext.AddAsync(entity);
+            await _chattrContext.AddAsync(entity);
         }
 
         public void CreateRange(IEnumerable<TEntity> entities)
         {
-            _discordContext.AddRange(entities);
+            _chattrContext.AddRange(entities);
         }
 
         public async Task CreateRangeAsync(IEnumerable<TEntity> entities)
         {
-            await _discordContext.AddRangeAsync(entities);
+            await _chattrContext.AddRangeAsync(entities);
         }
 
         public void Delete(TEntity entity)
         {
-            _discordContext.Remove(entity);
+            _chattrContext.Remove(entity);
         }
 
         public void DeleteRange(IEnumerable<TEntity> entities)
         {
-            _discordContext.RemoveRange(entities);
+            _chattrContext.RemoveRange(entities);
         }
 
         public TEntity? FindById(object id)
@@ -75,7 +75,7 @@ namespace ClassLibrary.Repositories.GenericRep
         {
             try
             {
-                return _discordContext.SaveChanges() > 0;
+                return _chattrContext.SaveChanges() > 0;
             }
             catch(Exception ex)
             {
@@ -89,7 +89,7 @@ namespace ClassLibrary.Repositories.GenericRep
         {
             try
             {
-                return await _discordContext.SaveChangesAsync() > 0;
+                return await _chattrContext.SaveChangesAsync() > 0;
             }
             catch(Exception ex)
             {

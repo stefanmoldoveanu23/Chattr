@@ -1,7 +1,7 @@
-﻿using Discord_Copycat.Models.Base;
+﻿using ClassLibrary.Models.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Discord_Copycat.Models
+namespace ClassLibrary.Models
 {
     public class Friendship : BaseEntity
     {

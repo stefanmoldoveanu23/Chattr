@@ -1,8 +1,8 @@
 ﻿using ClassLibrary.Models.DTOs.ChatDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
-using Discord_Copycat.Models;
-using Discord_Copycat.Models.Enums;
+using ClassLibrary.Models;
+using ClassLibrary.Models.Enums;
 
 namespace ClassLibrary.Services.ServerService
 {

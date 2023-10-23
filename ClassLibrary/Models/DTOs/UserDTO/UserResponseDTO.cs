@@ -1,5 +1,5 @@
-﻿using Discord_Copycat.Models;
-using Discord_Copycat.Models.Enums;
+﻿using ClassLibrary.Models;
+using ClassLibrary.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

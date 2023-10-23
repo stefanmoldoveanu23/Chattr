@@ -1,5 +1,5 @@
 ﻿using ClassLibrary.Models.DTOs.ServerDTO;
-using Discord_Copycat.Models;
+using ClassLibrary.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;

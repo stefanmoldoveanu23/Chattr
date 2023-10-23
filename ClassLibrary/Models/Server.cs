@@ -1,7 +1,7 @@
-﻿using Discord_Copycat.Models.Base;
+﻿using ClassLibrary.Models.Base;
 using System.ComponentModel.Design;
 
-namespace Discord_Copycat.Models
+namespace ClassLibrary.Models
 {
     public class Server : BaseEntity
     {

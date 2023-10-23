@@ -4,7 +4,7 @@ using ClassLibrary.Models.DTOs;
 using ClassLibrary.Models.DTOs.LogDTO;
 using ClassLibrary.Services.ServerService;
 using ClassLibrary.Services.UserService;
-using Discord_Copycat.Models.Enums;
+using ClassLibrary.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System; 

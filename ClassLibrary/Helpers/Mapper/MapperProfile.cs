@@ -4,7 +4,7 @@ using ClassLibrary.Models.DTOs.ChatDTO;
 using ClassLibrary.Models.DTOs.LogDTO;
 using ClassLibrary.Models.DTOs.ServerDTO;
 using ClassLibrary.Models.DTOs.UserDTO;
-using Discord_Copycat.Models;
+using ClassLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

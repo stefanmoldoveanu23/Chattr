@@ -1,7 +1,8 @@
-﻿using ClassLibrary.Repositories.ChatRep;
+﻿using Chattr.Data;
+using ClassLibrary.Repositories.ChatRep;
 using ClassLibrary.Repositories.ServerRep;
 using ClassLibrary.Repositories.UserRep;
-using Discord_Copycat.Data;
+using Chattr.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,27 +13,27 @@ namespace ClassLibrary.Helpers.UOW
 {
     public class UnitOfWork : IUnitOfWork
     {
-        protected DiscordContext _discordContext;
+        protected ChattrContext _chattrContext;
         public IUserRepository _userRepository { get; }
         public IServerRepository _serverRepository { get; }
         public IChatRepository _chatRepository { get; }
 
-        public UnitOfWork(DiscordContext discordContext)
+        public UnitOfWork(ChattrContext discordContext)
         {
-            _discordContext = discordContext;
-            _userRepository = new UserRepository(_discordContext);
-            _serverRepository = new ServerRepository(_discordContext);
-            _chatRepository = new ChatRepository(_discordContext);
+            _chattrContext = discordContext;
+            _userRepository = new UserRepository(_chattrContext);
+            _serverRepository = new ServerRepository(_chattrContext);
+            _chatRepository = new ChatRepository(_chattrContext);
         }
 
         public void Save()
         {
-            _discordContext.SaveChanges();
+            _chattrContext.SaveChanges();
         }
 
         public async Task SaveAsync()
         {
-            await _discordContext.SaveChangesAsync();
+            await _chattrContext.SaveChangesAsync();
         }
 
         public void Dispose()
@@ -45,7 +46,7 @@ namespace ClassLibrary.Helpers.UOW
         {
             if (disposing)
             {
-                _discordContext.Dispose();
+                _chattrContext.Dispose();
             }
         }
 

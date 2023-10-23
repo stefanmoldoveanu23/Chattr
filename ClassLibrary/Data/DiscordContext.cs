@@ -1,12 +1,12 @@
-﻿using Discord_Copycat.Models;
-using Discord_Copycat.Models.Base;
+﻿using ClassLibrary.Models;
+using ClassLibrary.Models.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace Discord_Copycat.Data
+namespace Chattr.Data
 {
-    public class DiscordContext : DbContext
+    public class ChattrContext: DbContext
     {
         public DbSet<User> Users { get; set; }
 
@@ -19,7 +19,7 @@ namespace Discord_Copycat.Data
         public DbSet<Chat> Chats { get; set; }
         public DbSet<ChatLog> ChatLogs { get; set; }
 
-        public DiscordContext(DbContextOptions<DiscordContext> options) : base(options) { }
+        public ChattrContext(DbContextOptions<ChattrContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

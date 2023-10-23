@@ -1,6 +1,6 @@
 ﻿using ClassLibrary.Repositories.GenericRep;
-using Discord_Copycat.Data;
-using Discord_Copycat.Models;
+using Chattr.Data;
+using ClassLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace ClassLibrary.Repositories.ChatRep
 {
     internal class ChatRepository: GenericRepository<Chat>, IChatRepository
     {
-        public ChatRepository(DiscordContext discordContext) : base(discordContext) { }
+        public ChatRepository(ChattrContext chattrContext) : base(chattrContext) { }
 
         public async Task<Chat?> GetWithLogs(Guid id)
         {

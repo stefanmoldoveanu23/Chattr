@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Discord_Copycat.Models.Base
+namespace ClassLibrary.Models.Base
 {
     public class BaseEntity : IBaseEntity
     {

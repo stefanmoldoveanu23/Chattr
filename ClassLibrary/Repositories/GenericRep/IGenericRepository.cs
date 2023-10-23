@@ -1,4 +1,4 @@
-﻿using Discord_Copycat.Models.Base;
+﻿using ClassLibrary.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

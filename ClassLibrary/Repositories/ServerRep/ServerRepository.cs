@@ -1,7 +1,7 @@
 ﻿using ClassLibrary.Repositories.GenericRep;
-using Discord_Copycat.Data;
-using Discord_Copycat.Models;
-using Discord_Copycat.Models.Enums;
+using Chattr.Data;
+using ClassLibrary.Models;
+using ClassLibrary.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace ClassLibrary.Repositories.ServerRep
 {
     internal class ServerRepository : GenericRepository<Server>, IServerRepository
     {
-        public ServerRepository(DiscordContext discordContext) : base(discordContext) { }
+        public ServerRepository(ChattrContext chattrContext) : base(chattrContext) { }
 
         public async Task<Server?> GetWithChats(Guid id)
         {
@@ -26,7 +26,7 @@ namespace ClassLibrary.Repositories.ServerRep
 
         public async Task<Roles?> GetUserRole(Guid id, Guid userId)
         {
-            Roles? role = await _table.Where(server => server.Id == id).Join(_discordContext.Members,
+            Roles? role = await _table.Where(server => server.Id == id).Join(_chattrContext.Members,
                     server => server.Id,
                     member => member.ServerId,
                     (server, member) => new

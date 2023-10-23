@@ -1,10 +1,10 @@
-﻿using Discord_Copycat.Data;
+﻿using Chattr.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Discord_Copycat.Models;
+using ClassLibrary.Models;
 using ClassLibrary.Helpers.UOW;
 using BCryptNet = BCrypt.Net.BCrypt;
 
@@ -28,7 +28,7 @@ namespace ClassLibrary.Helpers.Seeders
                     Username = "admin",
                     Password = BCryptNet.HashPassword("extraword12"),
                     Email = "characterme1001@gmail.com",
-                    Role = Discord_Copycat.Models.Enums.Roles.Admin,
+                    Role = ClassLibrary.Models.Enums.Roles.Admin,
                 };
 
                 _unitOfWork._userRepository.CreateAsync(User);
